@@ -1,110 +1,106 @@
-// ══════════════════════════════════════════
-//  DentCare Pro — App.js
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
+//  DentCare — iOS App Logic
+// ══════════════════════════════════════════════
 
 const tg = window.Telegram?.WebApp;
-if (tg) { tg.ready(); tg.expand(); }
+if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#F2F2F7'); }
 
-// ── SPLASH ──────────────────────────────────
+// ── LAUNCH ─────────────────────────────────────
 window.addEventListener('load', () => {
   setTimeout(() => {
-    const s = document.getElementById('splash');
-    s.style.opacity = '0';
-    s.style.transition = 'opacity .5s';
+    const launch = document.getElementById('launch');
+    launch.style.opacity = '0';
     setTimeout(() => {
-      s.style.display = 'none';
+      launch.style.display = 'none';
       document.getElementById('app').classList.remove('hidden');
-      initGreeting();
-      buildDayStrip();
-      buildSlots();
+      buildCalendar();
+      buildTimeSlots();
       buildServices();
-    }, 500);
-  }, 1900);
+    }, 400);
+  }, 1800);
 });
 
-// ── GREETING ────────────────────────────────
-function initGreeting() {
-  const h = new Date().getHours();
-  const g = document.getElementById('greeting');
-  if (!g) return;
-  if (h < 6)  g.textContent = 'Xayrli tun 🌙';
-  else if (h < 12) g.textContent = 'Xayrli tong ☀️';
-  else if (h < 18) g.textContent = 'Xayrli kun 🌤️';
-  else g.textContent = 'Xayrli kech 🌆';
-  if (tg?.initDataUnsafe?.user?.first_name) {
-    g.textContent += ', ' + tg.initDataUnsafe.user.first_name + '!';
+// ── TAB SWITCHING ──────────────────────────────
+let activeTab = 'home';
+
+function switchTab(name) {
+  if (name === activeTab) {
+    // Scroll to top if same tab tapped
+    document.querySelector(`#tab-${name} .scroll-view`)?.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  document.getElementById('tab-' + activeTab)?.classList.remove('active');
+  document.getElementById('tb-' + activeTab)?.classList.remove('active');
+
+  document.getElementById('tab-' + name)?.classList.add('active');
+  document.getElementById('tb-' + name)?.classList.add('active');
+
+  activeTab = name;
+  haptic('selection');
+
+  if (name === 'chat') {
+    document.getElementById('tb-badge')?.classList.add('hidden');
+    setTimeout(() => document.getElementById('chat-msgs')?.scrollTo({ top: 99999 }), 100);
   }
 }
 
-// ── NAVIGATION ──────────────────────────────
-let currentScreen = 'home';
-
-function goTo(name) {
-  if (name === currentScreen) return;
-
-  // Hide current
-  document.getElementById('screen-' + currentScreen)?.classList.remove('active');
-  document.getElementById('nav-' + currentScreen)?.classList.remove('active');
-
-  // Show new
-  const scr = document.getElementById('screen-' + name);
-  if (scr) {
-    scr.classList.add('active');
-    scr.querySelector('.screen-scroll')?.scrollTo(0, 0);
-  }
-  document.getElementById('nav-' + name)?.classList.add('active');
-
-  currentScreen = name;
-
-  if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
-}
-
-// ── UTILS ───────────────────────────────────
-function callClinic() {
-  window.location.href = 'tel:+998711234567';
-}
-
-function openMap() {
-  window.open('https://maps.google.com/?q=Toshkent,Chilonzor', '_blank');
-}
-
+// ── HAPTIC ─────────────────────────────────────
 function haptic(type = 'light') {
-  if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred(type);
+  if (!tg?.HapticFeedback) return;
+  if (type === 'selection') tg.HapticFeedback.selectionChanged();
+  else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+  else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
+  else tg.HapticFeedback.impactOccurred(type);
 }
 
-// ── TOAST ───────────────────────────────────
-let toastT;
-function showToast(msg, duration = 2800) {
-  const t = document.getElementById('toast');
+// ── UTILS ──────────────────────────────────────
+function callClinic() { window.location.href = 'tel:+998711234567'; }
+function openMap() { window.open('https://maps.google.com/?q=Toshkent+Chilonzor', '_blank'); }
+
+const DOW = ['Yak','Du','Se','Cho','Pay','Ju','Sha'];
+const MON = ['Yan','Fev','Mar','Apr','May','Iyn','Iyl','Avg','Sen','Okt','Noy','Dek'];
+
+// ── TOAST ──────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('ios-toast');
   t.textContent = msg;
   t.classList.remove('hidden');
-  clearTimeout(toastT);
-  toastT = setTimeout(() => t.classList.add('hidden'), duration);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.add('hidden'), 2600);
 }
 
-// ── MODAL ───────────────────────────────────
-function showModal(text) {
-  document.getElementById('modal-msg').innerHTML = text;
-  document.getElementById('modal-bg').classList.remove('hidden');
-  if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+// ── SHEETS ─────────────────────────────────────
+function openNotifSheet() {
+  document.getElementById('notif-sheet-bg')?.classList.remove('hidden');
+  haptic('light');
+}
+function closeNotifSheet() {
+  document.getElementById('notif-sheet-bg')?.classList.add('hidden');
+}
+function closeSuccessSheet() {
+  document.getElementById('success-sheet-bg')?.classList.add('hidden');
+}
+function showSuccessSheet(html) {
+  document.getElementById('success-desc').innerHTML = html;
+  document.getElementById('success-sheet-bg')?.classList.remove('hidden');
+  haptic('success');
 }
 
-function closeModal() {
-  document.getElementById('modal-bg').classList.add('hidden');
-}
-
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  SCHEDULE
-// ══════════════════════════════════════════
-let selectedDay = null;
-let selectedSlot = null;
-const BUSY = ['10:00','11:30','14:00','15:30','16:00'];
+// ══════════════════════════════════════════════
+let selDay = null;
+let selSlot = null;
+const BUSY_SLOTS = ['10:00','11:30','14:00','15:30','16:00'];
+const ALL_SLOTS = [
+  '09:00','09:30','10:00','10:30','11:00','11:30',
+  '12:00','12:30','13:00','14:00','14:30',
+  '15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'
+];
 
-const DAYS_UZ = ['Yak','Du','Se','Cho','Pay','Ju','Sha'];
-const MONTHS_UZ = ['Yan','Fev','Mar','Apr','May','Iyn','Iyl','Avg','Sen','Okt','Noy','Dek'];
-
-function buildDayStrip() {
-  const strip = document.getElementById('day-strip');
+function buildCalendar() {
+  const strip = document.getElementById('cal-strip');
   if (!strip) return;
   const today = new Date();
 
@@ -113,104 +109,77 @@ function buildDayStrip() {
     d.setDate(today.getDate() + i);
     const isSun = d.getDay() === 0;
 
-    const pill = document.createElement('div');
-    pill.className = 'day-pill' + (isSun ? ' disabled' : '');
-    pill.innerHTML = `
-      <span class="dp-dow">${DAYS_UZ[d.getDay()]}</span>
-      <span class="dp-num">${d.getDate()}</span>
-      <span class="dp-avail">${isSun ? 'Yopiq' : 'Bo\'sh'}</span>
+    const el = document.createElement('div');
+    el.className = 'cal-day' + (isSun ? ' disabled' : '');
+    el.innerHTML = `
+      <span class="cd-dow">${DOW[d.getDay()]}</span>
+      <span class="cd-num">${d.getDate()}</span>
+      <div class="cd-dot"></div>
     `;
     if (!isSun) {
-      pill.onclick = () => selectDay(pill, d);
-      if (i === 0) selectDay(pill, d);
+      el.onclick = () => pickDay(el, d);
+      if (i === 0) setTimeout(() => pickDay(el, d), 50);
     }
-    strip.appendChild(pill);
+    strip.appendChild(el);
   }
 }
 
-function selectDay(pill, date) {
-  document.querySelectorAll('.day-pill').forEach(p => p.classList.remove('selected'));
-  pill.classList.add('selected');
-  selectedDay = date;
-  selectedSlot = null;
-  buildSlots();
-  updateSteps();
+function pickDay(el, date) {
+  document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  selDay = date;
+  selSlot = null;
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+
+  const label = document.getElementById('sel-date-lbl');
+  if (label) label.textContent = `— ${date.getDate()} ${MON[date.getMonth()]}`;
   haptic('light');
 }
 
-function buildSlots() {
-  const wrap = document.getElementById('slots-wrap');
-  if (!wrap) return;
-  wrap.innerHTML = '';
+function buildTimeSlots() {
+  const grid = document.getElementById('time-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
 
-  const times = [
-    '09:00','09:30','10:00','10:30','11:00','11:30',
-    '12:00','12:30','13:00','13:30','14:00','14:30',
-    '15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'
-  ];
-
-  times.forEach(t => {
+  ALL_SLOTS.forEach(t => {
+    const busy = BUSY_SLOTS.includes(t);
     const btn = document.createElement('button');
-    const isBusy = BUSY.includes(t);
-    btn.className = 'slot-btn' + (isBusy ? ' busy' : '');
+    btn.className = 'time-slot' + (busy ? ' busy' : '');
     btn.textContent = t;
-    if (!isBusy) {
+    if (!busy) {
       btn.onclick = () => {
-        document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('sel'));
-        btn.classList.add('sel');
-        selectedSlot = t;
-        updateSteps();
+        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+        btn.classList.add('selected');
+        selSlot = t;
         haptic('light');
       };
     }
-    wrap.appendChild(btn);
+    grid.appendChild(btn);
   });
 }
 
-function updateSteps() {
-  const s1 = document.getElementById('st1');
-  const s2 = document.getElementById('st2');
-  const s3 = document.getElementById('st3');
-  const l12 = document.getElementById('sl12');
-  const l23 = document.getElementById('sl23');
-  if (!s1) return;
-
-  if (selectedDay) {
-    s1.classList.add('done'); s1.classList.remove('act');
-    l12 && l12.classList.add('done');
-    s2.classList.add('act');
-  }
-  if (selectedSlot) {
-    s2.classList.add('done'); s2.classList.remove('act');
-    l23 && l23.classList.add('done');
-    s3.classList.add('act');
-  }
-}
-
 function submitBooking() {
-  const name    = document.getElementById('f-name')?.value.trim();
-  const phone   = document.getElementById('f-phone')?.value.trim();
-  const service = document.getElementById('f-service')?.value;
-  const note    = document.getElementById('f-note')?.value.trim();
+  const name    = document.getElementById('f-name').value.trim();
+  const phone   = document.getElementById('f-phone').value.trim();
+  const service = document.getElementById('f-service').value;
+  const note    = document.getElementById('f-note').value.trim();
 
-  if (!name)    { showToast('❌ Ismingizni kiriting!'); haptic('medium'); return; }
-  if (!phone)   { showToast('❌ Telefon raqam kiriting!'); haptic('medium'); return; }
-  if (!service) { showToast('❌ Xizmat turini tanlang!'); haptic('medium'); return; }
-  if (!selectedSlot) { showToast('❌ Vaqtni tanlang!'); haptic('medium'); return; }
+  if (!name)    { showToast('❌ Ism kiriting'); haptic('error'); return; }
+  if (!phone)   { showToast('❌ Telefon kiriting'); haptic('error'); return; }
+  if (!service) { showToast('❌ Xizmat tanlang'); haptic('error'); return; }
+  if (!selSlot) { showToast('❌ Vaqt tanlang'); haptic('error'); return; }
 
-  const d = selectedDay || new Date();
-  const dateStr = `${d.getDate()} ${MONTHS_UZ[d.getMonth()]}`;
+  const d = selDay || new Date();
+  const dateStr = `${d.getDate()} ${MON[d.getMonth()]}`;
 
-  const payload = { action:'book', name, phone, service, date: dateStr, time: selectedSlot, note };
-  if (tg) {
-    try { tg.sendData(JSON.stringify(payload)); } catch(e) {}
-  }
+  const payload = { action:'book', name, phone, service, date: dateStr, time: selSlot, note };
+  if (tg) { try { tg.sendData(JSON.stringify(payload)); } catch(e) {} }
 
-  showModal(
-    `<b>${name}</b><br><br>` +
-    `📅 ${dateStr} — ⏰ ${selectedSlot}<br>` +
-    `🛠️ ${service}<br><br>` +
-    `Tez orada siz bilan bog'lanamiz 📞`
+  showSuccessSheet(
+    `<b>${name}</b> uchun qabul band qilindi.<br><br>` +
+    `📅 ${dateStr} · ⏰ ${selSlot}<br>` +
+    `${service}<br><br>` +
+    `Tez orada siz bilan bog'lanamiz. 📞`
   );
 
   // Reset
@@ -218,99 +187,61 @@ function submitBooking() {
   document.getElementById('f-phone').value = '';
   document.getElementById('f-service').value = '';
   document.getElementById('f-note').value = '';
-  document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('sel'));
-  selectedSlot = null;
+  document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+  selSlot = null;
 }
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  SERVICES
-// ══════════════════════════════════════════
-const SERVICES = [
-  {
-    emoji: '🦷',
-    color: '#EFF6FF',
-    name: 'Tish davolash',
-    price: '50 000 – 150 000 so\'m',
-    dur: '⏱ 30–60 daqiqa',
-    desc: 'Karies va tish kasalliklarini zamonaviy fotopolymer to\'ldiruvchilar yordamida og\'riqsiz davolaymiz. Anesteziya bilan ishlash imkoniyati mavjud.'
-  },
-  {
-    emoji: '✨',
-    color: '#FFFBEB',
-    name: 'Tish oqartirish',
-    price: '200 000 – 400 000 so\'m',
-    dur: '⏱ 60–90 daqiqa',
-    desc: 'Professiyonal Zoom Whitening tizimi yordamida tishlarni 8 tonga oqartirish. Xavfsiz gel va LED yorug\'lik texnologiyasi ishlatiladi.'
-  },
-  {
-    emoji: '🔩',
-    color: '#F0FDF4',
-    name: 'Implant qo\'yish',
-    price: '1 500 000 – 3 000 000 so\'m',
-    dur: '⏱ 1–3 seansa',
-    desc: 'Titanium implantlar (Nobel Biocare) yordamida tushib ketgan tishlarga o\'rin bosuvchi sun\'iy tish o\'rnatish. 10 yillik kafolat.'
-  },
-  {
-    emoji: '😁',
-    color: '#F5F3FF',
-    name: 'Ortodontik davolash',
-    price: '2 000 000 so\'mdan',
-    dur: '⏱ 12–24 oy muolaja',
-    desc: 'Metal va sershaffof breket tizimlari, shuningdek, shaffof kappalar (aligners) yordamida tishlarni to\'g\'rilaymiz. Bolalar va kattalarga mos.'
-  },
-  {
-    emoji: '🧹',
-    color: '#FFF7ED',
-    name: 'Tish tozalash',
-    price: '80 000 – 120 000 so\'m',
-    dur: '⏱ 30–45 daqiqa',
-    desc: 'Ultratovush skaleri va Air Flow texnologiyasi bilan tosh (tartar) hamda dog\'larni olib tashlash. Har 6 oyda tavsiya etiladi.'
-  },
-  {
-    emoji: '👶',
-    color: '#FDF2F8',
-    name: 'Bolalar stomatologiyasi',
-    price: '30 000 – 100 000 so\'m',
-    dur: '⏱ 20–40 daqiqa',
-    desc: 'Maxsus bolalar shifokorimiz 3 yoshdan yuqori bolalarga xizmat ko\'rsatadi. Yumshoq muolajalar va ruhiy qo\'llab-quvvatlash.'
-  },
-  {
-    emoji: '💬',
-    color: '#ECFDF5',
-    name: 'Bepul konsultatsiya',
-    price: '🎁 Bepul',
-    dur: '⏱ 20–30 daqiqa',
-    desc: 'Birinchi marta tashrif buyuruvchilar uchun shifokor bilan bepul suhbat va tish holati tekshiruvi. Hech qanday majburiyat yo\'q.'
-  }
+// ══════════════════════════════════════════════
+const SVCS = [
+  { emoji:'🦷', bg:'#EBF5FF', name:'Tish davolash', price:'50 000 – 150 000 so\'m', dur:'30–60 daqiqa',
+    desc:'Karies va tish kasalliklarini zamonaviy fotopolymer to\'ldiruvchilar bilan og\'riqsiz davolaymiz. Anesteziya imkoniyati mavjud.' },
+  { emoji:'✨', bg:'#FFFBEB', name:'Tish oqartirish', price:'200 000 – 400 000 so\'m', dur:'60–90 daqiqa',
+    desc:'Zoom Whitening tizimi yordamida tishlarni 8 tonga oqartirish. LED texnologiyasi va xavfsiz gel ishlatiladi.' },
+  { emoji:'🔩', bg:'#F0FDF4', name:'Implant qo\'yish', price:'1 500 000 – 3 000 000 so\'m', dur:'1–3 seansa',
+    desc:'Nobel Biocare titanium implantlari. 10 yillik kafolat. Og\'riqsiz anesteziya bilan o\'tkaziladi.' },
+  { emoji:'😁', bg:'#F5F0FF', name:'Ortodontik davolash', price:'2 000 000 so\'mdan', dur:'12–24 oy',
+    desc:'Metal va sershaffof breket tizimlari, shaffof kappalar (aligners). Bolalar va kattalar uchun.' },
+  { emoji:'🧹', bg:'#FFF7ED', name:'Tish tozalash', price:'80 000 – 120 000 so\'m', dur:'30–45 daqiqa',
+    desc:'Ultratovush skaleri va Air Flow texnologiyasi. Tosh va dog\'larni olib tashlash. Har 6 oyda tavsiya etiladi.' },
+  { emoji:'👶', bg:'#FDF2F8', name:'Bolalar stomatologiyasi', price:'30 000 – 100 000 so\'m', dur:'20–40 daqiqa',
+    desc:'3 yoshdan yuqori bolalar uchun maxsus shifokor. Yumshoq va qo\'rqmaslik uchun mo\'ljallangan muolajalar.' },
+  { emoji:'💬', bg:'#ECFDF5', name:'Bepul konsultatsiya', price:'🎁 Bepul', dur:'20–30 daqiqa',
+    desc:'Birinchi tashrif buyuruvchilar uchun bepul suhbat va tish holati tekshiruvi. Majburiyat yo\'q.' },
 ];
 
 function buildServices() {
-  renderServices(SERVICES);
+  renderSvcs(SVCS);
 }
 
-function renderServices(list) {
-  const el = document.getElementById('svc-list');
+function renderSvcs(list) {
+  const el = document.getElementById('svc-container');
   if (!el) return;
   el.innerHTML = '';
+  if (list.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:#8E8E93;padding:40px 0;font-size:15px">Hech narsa topilmadi 🔍</div>';
+    return;
+  }
   list.forEach(s => {
     const card = document.createElement('div');
-    card.className = 'svc-card';
+    card.className = 'svc-item';
     card.innerHTML = `
-      <div class="svc-head" onclick="toggleSvc(this.parentElement)">
-        <div class="svc-emoji" style="background:${s.color}">${s.emoji}</div>
-        <div class="svc-meta">
+      <div class="svc-row" onclick="toggleSvc(this.parentElement)">
+        <div class="svc-ico" style="background:${s.bg}">${s.emoji}</div>
+        <div class="svc-info">
           <h4>${s.name}</h4>
           <div class="svc-price">${s.price}</div>
         </div>
         <div class="svc-chev">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+          <svg width="8" height="13" viewBox="0 0 8 13"><path d="M1 1l6 5.5L1 12" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
-      <div class="svc-body">
+      <div class="svc-detail">
         <p>${s.desc}</p>
-        <div class="svc-body-footer">
-          <span class="svc-dur">${s.dur}</span>
-          <button class="svc-book-btn" onclick="goTo('schedule')">📅 Band qilish</button>
+        <div class="svc-detail-foot">
+          <span class="svc-dur">⏱ ${s.dur}</span>
+          <button class="svc-book" onclick="switchTab('schedule')">Band qilish</button>
         </div>
       </div>
     `;
@@ -319,117 +250,128 @@ function renderServices(list) {
 }
 
 function toggleSvc(card) {
-  const was = card.classList.contains('open');
-  document.querySelectorAll('.svc-card').forEach(c => c.classList.remove('open'));
-  if (!was) { card.classList.add('open'); }
+  const open = card.classList.contains('expanded');
+  document.querySelectorAll('.svc-item').forEach(c => c.classList.remove('expanded'));
+  if (!open) card.classList.add('expanded');
   haptic('light');
 }
 
-function filterServices() {
-  const q = document.getElementById('svc-search')?.value.toLowerCase() || '';
-  const filtered = SERVICES.filter(s =>
+function filterSvc() {
+  const q = (document.getElementById('svc-q')?.value || '').toLowerCase();
+  renderSvcs(SVCS.filter(s =>
     s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q)
-  );
-  renderServices(filtered);
+  ));
 }
 
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  AI CHAT
-// ══════════════════════════════════════════
+// ══════════════════════════════════════════════
 const KB = {
-  'vaqt|qabul|band|kela|tashrif|uchrashuv|jadval|qachon': `📅 <b>Qabul vaqtlari:</b><br><br>✅ Dushanba – Juma: 09:00 – 19:00<br>✅ Shanba: 10:00 – 15:00<br>❌ Yakshanba: Yopiq<br><br>Vaqt band qilish uchun <b>"Jadval"</b> tabiga o'ting yoki quyidagi tugmani bosing 👇`,
-  'og\'ri|ach|qattiq|sezgi|pulsir|dens|pain|ауру': `🦷 <b>Tish og'rig'i bo'lsa:</b><br><br>1. Ibuprofen yoki Nimesulid iching (og'riq qoldirgich)<br>2. Issiq yoki juda sovuq narsalarni iste'mol qilmang<br>3. Og'rigan tishni tilning yoki qo'lingiz bilan tegmang<br>4. Imkon qadar tezroq shifoxonaga keling<br><br>⚠️ Kechiktirmang — karies tez tarqaladi!<br>📞 <b>+998 71 123-45-67</b>`,
-  'narx|pul|necha|qancha|arzon|qimmat|price|cost|стоим': `💰 <b>Xizmatlar narxlari:</b><br><br>🦷 Tish davolash: 50 000–150 000 so'm<br>✨ Oqartirish: 200 000–400 000 so'm<br>🔩 Implant: 1 500 000–3 000 000 so'm<br>😁 Breket: 2 000 000 so'mdan<br>🧹 Tish tozalash: 80 000–120 000 so'm<br>💬 Konsultatsiya: <b>Bepul!</b>`,
-  'breket|kappa|to\'g\'ri|ortodont|tekis': `😁 <b>Breket va kappalar:</b><br><br>✅ Yosh chegarasi yo'q (bolalar + kattalar)<br>✅ Metal, sershaffof va shaffof variantlar<br>✅ Davolash muddati: 12–24 oy<br>✅ Oylik ko'riklar bilan nazorat<br><br>💰 2 000 000 so'mdan<br>👩‍⚕️ Dr. Karimova mutaxassis`,
-  'implant|protez|sun\'iy|joy': `🔩 <b>Implant qo'yish:</b><br><br>✅ Nobel Biocare titanium implantlari<br>✅ 10 yillik kafolat<br>✅ Anesteziya bilan — og'riqsiz<br>✅ Jarayon: 1–3 seansa<br>✅ Ovqat chaynanishi to'liq tiklanadi<br><br>💰 1 500 000–3 000 000 so'm<br>👨‍⚕️ Dr. Abdullayev mutaxassis`,
-  'oqart|whitening|zoom|tish oq': `✨ <b>Tish oqartirish:</b><br><br>🔬 Zoom Whitening tizimi<br>📊 8 tonga oqaradi<br>⏱ Davomiyligi: 60–90 daqiqa<br>✅ Xavfsiz va uzoq davomli natija<br>💧 Vaqtincha sezgirlik bo'lishi mumkin<br><br>💰 200 000–400 000 so'm`,
-  'tozala|tosh|dog\'|profgig|ultratovush|air flow': `🧹 <b>Professional tish tozalash:</b><br><br>🔊 Ultratovush skaleri<br>💨 Air Flow texnologiyasi<br>✅ Tosh va dog'larni olib tashlash<br>✅ Milkni sog'lomlashtirish<br><br>💰 80 000–120 000 so'm<br>⏱ 30–45 daqiqa<br>🗓 Har 6 oyda tavsiya etiladi!`,
-  'bola|child|farzand|o\'g\'il|qiz|yosh bola': `👶 <b>Bolalar stomatologiyasi:</b><br><br>✅ Maxsus bolalar mutaxassisi<br>✅ 3 yoshdan xizmat ko'rsatamiz<br>✅ Yumshoq va qo'rqmaslik uchun mo'ljallangan muolajalar<br>✅ Birinchi tashrif bepul!<br><br>📞 +998 71 123-45-67`,
-  'manzil|adres|qaer|qayerda|joylash|ko\'cha|address': `📍 <b>Manzilimiz:</b><br><br>Toshkent shahri<br>Chilonzor tumani, 14-uy<br><br>🚌 Yaqin metro: Chilonzor<br>🚗 Avtoturg'oq mavjud<br>📞 +998 71 123-45-67`,
-  'shifokor|doktor|doctor|vrach|kimlar|kim davolaydi': `👨‍⚕️ <b>Shifokorlarimiz:</b><br><br>🔵 <b>Dr. Abdullayev Jasur</b> — Ortodontist (15 yil) ⭐4.9<br>🟣 <b>Dr. Karimova Zulfiya</b> — Implantolog (12 yil) ⭐4.8<br>🟢 <b>Dr. Yusupov Bobur</b> — Terapevt (10 yil) ⭐4.9<br><br>Barchasi xalqaro sertifikatlarga ega!`,
-  'salom|assalom|hi|hello|hey|privet|ассалом': `Salom! 👋😊<br><br>Men <b>DentAI</b> — DentCare klinikasining AI yordamchisiman!<br><br>Quyidagilar bo'yicha yordam bera olaman:<br>📅 Qabul vaqtlari<br>💰 Narxlar<br>🦷 Tish sog'lig'i maslahati<br>📍 Klinika ma'lumotlari<br><br>Savolingizni bering! 🙂`,
-  'rahmat|sog\'|xayr|ko\'rishguncha|bye|thanks': `Rahmat! 😊<br><br>Tishlaringiz doim sog' bo'lsin! 🦷✨<br><br>Yana savollar bo'lsa bemalol so'rang. Yoki qabul uchun vaqt oling! 📅`,
-  'kafolat|garantiya|garant': `🏆 <b>Kafolatimiz:</b><br><br>✅ Implantlar: 10 yil kafolat<br>✅ To'ldiruvchilar: 2 yil<br>✅ Breket natijasi: doimiy (retentor bilan)<br>✅ Oqartirish: 1–2 yil<br><br>Xizmat sifatiga 100% kafolat beramiz!`,
-  'anestezi|og\'riqsiz|uxlat|ukol|novokain': `💉 <b>Og'riqsizlantirish:</b><br><br>✅ Zamonaviy mahalliy anesteziya<br>✅ Igna kirgizishdan oldin surtma anesteziya<br>✅ Og'riq deyarli sezilmaydi<br>✅ Allerjiya tekshiruvi o'tkaziladi<br><br>🦷 Qo'rqmang — biz ehtiyotkorlik bilan ishlaymiz!`,
+  'vaqt|qabul|band|kela|uchrashuv|jadval|qachon|soat':
+    `📅 <b>Qabul vaqtlari:</b><br><br>✅ Du–Juma: 09:00 – 19:00<br>✅ Shanba: 10:00 – 15:00<br>❌ Yakshanba: Yopiq<br><br>Vaqt band qilish uchun <b>Jadval</b> bo'limiga o'ting.`,
+
+  'og\'ri|ach|qattiq|sezgi|pulsir|pain|ауру|og\'riq':
+    `🦷 <b>Tish og'rig'i bo'lsa:</b><br><br>① Ibuprofen yoki Nimesulid iching<br>② Issiq/sovuq ovqat iste'mol qilmang<br>③ Og'rigan tishga tegmang<br>④ Imkon qadar tezroq keling<br><br>⚠️ Kechiktirmang!<br>📞 <b>+998 71 123-45-67</b>`,
+
+  'narx|pul|necha|qancha|arzon|qimmat|price|cost':
+    `💰 <b>Narxlar ro'yxati:</b><br><br>🦷 Tish davolash — 50–150 ming so'm<br>✨ Oqartirish — 200–400 ming so'm<br>🔩 Implant — 1.5–3 mln so'm<br>😁 Breket — 2 mln so'mdan<br>🧹 Tish tozalash — 80–120 ming so'm<br>💬 Konsultatsiya — <b>Bepul!</b>`,
+
+  'breket|kappa|to\'g\'ri|ortodont|tekis|align':
+    `😁 <b>Breket va kappalar:</b><br><br>✅ Yosh chegarasi yo'q<br>✅ Metal, sershaffof, shaffof variantlar<br>✅ Davolash: 12–24 oy<br>✅ Oylik ko'rik bilan nazorat<br><br>💰 2 mln so'mdan<br>👩‍⚕️ Dr. Karimova mutaxassis`,
+
+  'implant|protez|sun\'iy|joy':
+    `🔩 <b>Dental Implant:</b><br><br>✅ Nobel Biocare titanium<br>✅ 10 yillik kafolat<br>✅ Og'riqsiz anesteziya<br>✅ 1–3 seansa<br><br>💰 1.5–3 mln so'm<br>👨‍⚕️ Dr. Abdullayev mutaxassis`,
+
+  'oqart|whitening|zoom|tish oq':
+    `✨ <b>Tish oqartirish:</b><br><br>🔬 Zoom Whitening tizimi<br>📊 8 tonga oqaradi<br>⏱ 60–90 daqiqa<br>✅ Xavfsiz va uzoq muddatli<br><br>💰 200–400 ming so'm`,
+
+  'tozala|tosh|dog\'|profgig|ultratovush':
+    `🧹 <b>Professional tozalash:</b><br><br>🔊 Ultratovush skaleri<br>💨 Air Flow texnologiyasi<br>✅ Tosh va dog'larni olib tashlash<br>⏱ 30–45 daqiqa<br><br>💰 80–120 ming so'm<br>🗓 Har 6 oyda tavsiya etiladi`,
+
+  'bola|child|farzand|yosh bola|bola uchun':
+    `👶 <b>Bolalar stomatologiyasi:</b><br><br>✅ 3 yoshdan qabul qilamiz<br>✅ Maxsus bolalar mutaxassisi<br>✅ Yumshoq, qo'rqmaslik texnikasi<br>✅ Birinchi tashrif bepul!`,
+
+  'manzil|adres|qaer|qayerda|joylash|ko\'cha':
+    `📍 <b>Manzilimiz:</b><br><br>Toshkent sh., Chilonzor t., 14-uy<br><br>🚌 Yaqin metro: Chilonzor<br>🚗 Bepul avtoturargoh<br>📞 +998 71 123-45-67`,
+
+  'shifokor|doktor|vrach|kimlar':
+    `👨‍⚕️ <b>Shifokorlarimiz:</b><br><br>🔵 Dr. Abdullayev — Ortodontist ⭐4.9<br>🟣 Dr. Karimova — Implantolog ⭐4.8<br>🟢 Dr. Yusupov — Terapevt ⭐4.9<br><br>Barchasi xalqaro sertifikatlarga ega`,
+
+  'kafolat|garantiya':
+    `🏆 <b>Kafolatimiz:</b><br><br>✅ Implantlar: 10 yil<br>✅ To'ldiruvchilar: 2 yil<br>✅ Oqartirish: 1–2 yil<br>✅ 100% sifat kafolati`,
+
+  'anestezi|og\'riqsiz|uxlat|ukol':
+    `💉 <b>Anesteziya:</b><br><br>✅ Zamonaviy mahalliy anesteziya<br>✅ Igna kirishidan oldin surtma<br>✅ Og'riq deyarli sezilmaydi<br>✅ Allerjiya tekshiruvi o'tkaziladi`,
+
+  'salom|assalom|hi|hello|hey|privet|ассалом':
+    `Salom! 👋<br><br>Men <b>DentAI</b> — DentCare klinikasining AI yordamchisiman. Tish sog'lig'i bo'yicha istalgan savolingizga javob bera olaman! 🦷`,
+
+  'rahmat|sog\'|xayr|bye|thanks|ko\'rishguncha':
+    `Rahmat! 😊<br><br>Tishlaringiz doim sog' bo'lsin! 🦷✨<br>Yana savollar bo'lsa, bemalol yozing!`,
 };
 
-let chatCount = 0;
-
-function getAI(msg) {
+function getAIAnswer(msg) {
   const m = msg.toLowerCase();
   for (const [keys, ans] of Object.entries(KB)) {
     if (keys.split('|').some(k => m.includes(k))) return ans;
   }
-  return `Tushundim! 🤔<br><br>Bu savol bo'yicha aniqroq ma'lumot olish uchun shifokorimiz bilan gaplashing:<br><br>📞 <b>+998 71 123-45-67</b><br>📅 Yoki qabul uchun vaqt oling<br><br>Boshqa savollaringiz bo'lsa, yozavering! 😊`;
+  return `Tushundim 🤔<br><br>Bu haqda aniqroq ma'lumot olish uchun:<br><br>📞 <b>+998 71 123-45-67</b><br><br>Yoki <b>Jadval</b> bo'limidan qabul uchun vaqt oling. Boshqa savollaringiz bo'lsa yozing! 😊`;
 }
 
-function addMsg(text, who) {
+function appendMsg(html, who) {
   const box = document.getElementById('chat-msgs');
   if (!box) return;
   const row = document.createElement('div');
-  row.className = 'cmsg ' + who;
-  row.innerHTML = `
-    <div class="cmsg-av">${who === 'bot' ? '🤖' : '👤'}</div>
-    <div class="cmsg-bub">${text}</div>
-  `;
+  row.className = `chat-row ${who === 'bot' ? 'bot-row' : 'user-row'}`;
+  if (who === 'bot') {
+    row.innerHTML = `<div class="chat-av-sm">🤖</div><div class="chat-bubble bot-bubble">${html}</div>`;
+  } else {
+    row.innerHTML = `<div class="chat-bubble user-bubble">${html}</div>`;
+  }
   box.appendChild(row);
   box.scrollTop = box.scrollHeight;
-  return row;
 }
 
-function sendChat() {
-  const inp = document.getElementById('chat-in');
+function showTyping() {
+  const box = document.getElementById('chat-msgs');
+  const el = document.createElement('div');
+  el.className = 'chat-row bot-row typing-indicator';
+  el.innerHTML = `<div class="chat-av-sm">🤖</div><div class="typing-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
+  return el;
+}
+
+let chatStarted = false;
+
+function sendMsg() {
+  const inp = document.getElementById('chat-field');
   const txt = inp?.value.trim();
   if (!txt) return;
   inp.value = '';
 
-  // Hide quick chips after first message
-  const chips = document.getElementById('q-chips');
-  if (chips) chips.style.display = 'none';
+  if (!chatStarted) {
+    const sugg = document.getElementById('suggestions');
+    if (sugg) sugg.style.display = 'none';
+    chatStarted = true;
+  }
 
-  addMsg(txt, 'user');
+  appendMsg(txt, 'user');
   haptic('light');
 
-  // Show badge on nav
-  if (currentScreen !== 'chat') {
-    document.getElementById('nav-bdg')?.classList.remove('hidden');
+  if (activeTab !== 'chat') {
+    document.getElementById('tb-badge')?.classList.remove('hidden');
   }
 
-  // Typing
-  const box = document.getElementById('chat-msgs');
-  const typingRow = document.createElement('div');
-  typingRow.className = 'cmsg bot typing-r';
-  typingRow.innerHTML = `
-    <div class="cmsg-av">🤖</div>
-    <div class="cmsg-bub typing-bub">
-      <div class="typing-dots"><span></span><span></span><span></span></div>
-    </div>
-  `;
-  box.appendChild(typingRow);
-  box.scrollTop = box.scrollHeight;
-
-  const delay = 700 + Math.random() * 800;
+  const typer = showTyping();
   setTimeout(() => {
-    typingRow.remove();
-    addMsg(getAI(txt), 'bot');
-    chatCount++;
-  }, delay);
+    typer.remove();
+    appendMsg(getAIAnswer(txt), 'bot');
+  }, 700 + Math.random() * 700);
 }
 
-function quickAsk(text) {
-  const inp = document.getElementById('chat-in');
+function quickChat(text) {
+  const inp = document.getElementById('chat-field');
   if (inp) inp.value = text;
-  sendChat();
+  sendMsg();
 }
-
-// Clear badge when entering chat
-const origGoTo = goTo;
-window.addEventListener('DOMContentLoaded', () => {
-  // Patch goTo to clear badge
-  const navChat = document.getElementById('nav-chat');
-  if (navChat) {
-    navChat.addEventListener('click', () => {
-      document.getElementById('nav-bdg')?.classList.add('hidden');
-    });
-  }
-});
