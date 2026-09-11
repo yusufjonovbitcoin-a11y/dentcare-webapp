@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>DentCare — Tish Shifoxonasi</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splash" class="splash">
+    <div class="splash-content">
+      <div class="splash-icon">🦷</div>
+      <h2>DentCare</h2>
+      <p>Yuklanmoqda...</p>
+      <div class="splash-bar"><div class="splash-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- App -->
+  <div id="app" class="app hidden">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">🦷</div>
+        <div>
+          <h1 class="clinic-name">DentCare</h1>
+          <p class="clinic-sub">Professional Tish Shifoxonasi</p>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="badge-dot"></span>
+        Ochiq
+      </div>
+    </header>
+
+    <!-- Nav Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab active" data-tab="home" onclick="switchTab('home')">
+        <span class="tab-icon">🏠</span>
+        <span>Bosh sahifa</span>
+      </button>
+      <button class="tab" data-tab="schedule" onclick="switchTab('schedule')">
+        <span class="tab-icon">📅</span>
+        <span>Ish kunlari</span>
+      </button>
+      <button class="tab" data-tab="services" onclick="switchTab('services')">
+        <span class="tab-icon">🛠️</span>
+        <span>Xizmatlar</span>
+      </button>
+      <button class="tab" data-tab="chat" onclick="switchTab('chat')">
+        <span class="tab-icon">🤖</span>
+        <span>AI Chat</span>
+      </button>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- HOME TAB -->
+      <section id="tab-home" class="tab-content active">
+        <!-- Hero -->
+        <div class="hero-card">
+          <div class="hero-text">
+            <h2>Sogʻlom tish —<br/>baxtli hayot 😊</h2>
+            <p>Zamonaviy uskunalar va tajribali shifokorlar bilan tishlaringizni sog'layting.</p>
+            <button class="btn-primary" onclick="switchTab('schedule')">📅 Vaqt band qilish</button>
+          </div>
+          <div class="hero-emoji">🦷✨</div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <span class="stat-num">2000+</span>
+            <span class="stat-label">Bemor</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">15+</span>
+            <span class="stat-label">Yil tajriba</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">98%</span>
+            <span class="stat-label">Muvaffaqiyat</span>
+          </div>
+        </div>
+
+        <!-- Doctors -->
+        <div class="section-title">👨‍⚕️ Shifokorlarimiz</div>
+        <div class="doctors-grid">
+          <div class="doctor-card">
+            <div class="doctor-avatar">👨‍⚕️</div>
+            <div class="doctor-info">
+              <h4>Dr. Abdullayev</h4>
+              <p>Ortodontist</p>
+              <div class="doctor-rating">⭐ 4.9</div>
+            </div>
+          </div>
+          <div class="doctor-card">
+            <div class="doctor-avatar">👩‍⚕️</div>
+            <div class="doctor-info">
+              <h4>Dr. Karimova</h4>
+              <p>Implantolog</p>
+              <div class="doctor-rating">⭐ 4.8</div>
+            </div>
+          </div>
+          <div class="doctor-card">
+            <div class="doctor-avatar">👨‍⚕️</div>
+            <div class="doctor-info">
+              <h4>Dr. Yusupov</h4>
+              <p>Terapevt</p>
+              <div class="doctor-rating">⭐ 4.9</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="section-title">📍 Manzil va aloqa</div>
+        <div class="contact-card">
+          <div class="contact-row">
+            <span class="contact-icon">📍</span>
+            <span>Toshkent sh., Chilonzor t., 14-uy</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-icon">📞</span>
+            <span>+998 71 123-45-67</span>
+          </div>
+          <div class="contact-row">
+            <span class="contact-icon">⏰</span>
+            <span>Du–Shan: 09:00 – 19:00</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCHEDULE TAB -->
+      <section id="tab-schedule" class="tab-content">
+        <div class="section-title">📅 Qabul vaqtlari</div>
+
+        <div class="days-list">
+          <div class="day-card open">
+            <div class="day-name">Dushanba</div>
+            <div class="day-time">09:00 – 19:00</div>
+            <div class="day-badge open-badge">Ochiq</div>
+          </div>
+          <div class="day-card open">
+            <div class="day-name">Seshanba</div>
+            <div class="day-time">09:00 – 19:00</div>
+            <div class="day-badge open-badge">Ochiq</div>
+          </div>
+          <div class="day-card open">
+            <div class="day-name">Chorshanba</div>
+            <div class="day-time">09:00 – 19:00</div>
+            <div class="day-badge open-badge">Ochiq</div>
+          </div>
+          <div class="day-card open">
+            <div class="day-name">Payshanba</div>
+            <div class="day-time">09:00 – 19:00</div>
+            <div class="day-badge open-badge">Ochiq</div>
+          </div>
+          <div class="day-card open">
+            <div class="day-name">Juma</div>
+            <div class="day-time">09:00 – 18:00</div>
+            <div class="day-badge open-badge">Ochiq</div>
+          </div>
+          <div class="day-card open">
+            <div class="day-name">Shanba</div>
+            <div class="day-time">10:00 – 15:00</div>
+            <div class="day-badge open-badge">Ochiq</div>
+          </div>
+          <div class="day-card closed">
+            <div class="day-name">Yakshanba</div>
+            <div class="day-time">—</div>
+            <div class="day-badge closed-badge">Yopiq</div>
+          </div>
+        </div>
+
+        <div class="section-title mt">🕐 Bo'sh vaqtlarni tanlang</div>
+        <div class="timeslot-note">
+          <span>📆 Bugungi bo'sh vaqtlar:</span>
+        </div>
+        <div class="timeslots" id="timeslots"></div>
+
+        <!-- Booking Form -->
+        <div class="section-title mt">✍️ Ma'lumotlaringizni kiriting</div>
+        <div class="form-card">
+          <div class="form-group">
+            <label>Ismingiz</label>
+            <input id="book-name" type="text" placeholder="Ism Familiya" />
+          </div>
+          <div class="form-group">
+            <label>Telefon raqam</label>
+            <input id="book-phone" type="tel" placeholder="+998 90 123 45 67" />
+          </div>
+          <div class="form-group">
+            <label>Xizmat turi</label>
+            <select id="book-service">
+              <option value="">— Tanlang —</option>
+              <option>Tish davolash</option>
+              <option>Tish oqartirish</option>
+              <option>Implant qo'yish</option>
+              <option>Ortodontik davolash</option>
+              <option>Tish tozalash (profgigiyena)</option>
+              <option>Konsultatsiya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Qo'shimcha izoh (ixtiyoriy)</label>
+            <textarea id="book-note" placeholder="Muammo yoki savollaringizni yozing..." rows="3"></textarea>
+          </div>
+          <button class="btn-primary full" onclick="bookAppointment()">✅ Band qilish</button>
+        </div>
+      </section>
+
+      <!-- SERVICES TAB -->
+      <section id="tab-services" class="tab-content">
+        <div class="section-title">🛠️ Bizning xizmatlar</div>
+        <div class="services-list">
+          <div class="service-card" onclick="toggleService(this)">
+            <div class="service-header">
+              <div class="service-icon">🦷</div>
+              <div class="service-info">
+                <h4>Tish davolash</h4>
+                <span class="service-price">50,000 – 150,000 so'm</span>
+              </div>
+              <div class="service-arrow">›</div>
+            </div>
+            <div class="service-body">
+              <p>Karies va tish kasalliklarini zamonaviy uskunalar yordamida og'riqsiz davolaymiz. Fotopolymer to'ldiruvchilardan foydalanamiz.</p>
+              <button class="btn-outline" onclick="switchTab('schedule'); event.stopPropagation()">📅 Band qilish</button>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="toggleService(this)">
+            <div class="service-header">
+              <div class="service-icon">✨</div>
+              <div class="service-info">
+                <h4>Tish oqartirish</h4>
+                <span class="service-price">200,000 – 400,000 so'm</span>
+              </div>
+              <div class="service-arrow">›</div>
+            </div>
+            <div class="service-body">
+              <p>Professiyonal Zoom oqartirish tizimi bilan tishlaringizni 8 tonga oqartiring. Xavfsiz va tez natija.</p>
+              <button class="btn-outline" onclick="switchTab('schedule'); event.stopPropagation()">📅 Band qilish</button>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="toggleService(this)">
+            <div class="service-header">
+              <div class="service-icon">🔩</div>
+              <div class="service-info">
+                <h4>Implant qo'yish</h4>
+                <span class="service-price">1,500,000 – 3,000,000 so'm</span>
+              </div>
+              <div class="service-arrow">›</div>
+            </div>
+            <div class="service-body">
+              <p>Tushib ketgan tishlarga titanium implant o'rnatish. 10 yillik kafolat. Nobel Biocare implantlari ishlatiladi.</p>
+              <button class="btn-outline" onclick="switchTab('schedule'); event.stopPropagation()">📅 Band qilish</button>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="toggleService(this)">
+            <div class="service-header">
+              <div class="service-icon">😁</div>
+              <div class="service-info">
+                <h4>Ortodontik davolash</h4>
+                <span class="service-price">2,000,000 so'mdan</span>
+              </div>
+              <div class="service-arrow">›</div>
+            </div>
+            <div class="service-body">
+              <p>Tishlarni to'g'rilash uchun Breket tizimi va shaffof kappaalar. Bolalar va kattalar uchun.</p>
+              <button class="btn-outline" onclick="switchTab('schedule'); event.stopPropagation()">📅 Band qilish</button>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="toggleService(this)">
+            <div class="service-header">
+              <div class="service-icon">🧹</div>
+              <div class="service-info">
+                <h4>Tish tozalash</h4>
+                <span class="service-price">80,000 – 120,000 so'm</span>
+              </div>
+              <div class="service-arrow">›</div>
+            </div>
+            <div class="service-body">
+              <p>Ultratovush va Air Flow usulida tosh va dog'larni olib tashlash. Har 6 oyda bir marta tavsiya etiladi.</p>
+              <button class="btn-outline" onclick="switchTab('schedule'); event.stopPropagation()">📅 Band qilish</button>
+            </div>
+          </div>
+
+          <div class="service-card" onclick="toggleService(this)">
+            <div class="service-header">
+              <div class="service-icon">💬</div>
+              <div class="service-info">
+                <h4>Bepul konsultatsiya</h4>
+                <span class="service-price">Bepul</span>
+              </div>
+              <div class="service-arrow">›</div>
+            </div>
+            <div class="service-body">
+              <p>Birinchi marta tashrif buyuruvchilar uchun bepul konsultatsiya va tish holati tekshiruvi.</p>
+              <button class="btn-outline" onclick="switchTab('schedule'); event.stopPropagation()">📅 Band qilish</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAT TAB -->
+      <section id="tab-chat" class="tab-content">
+        <div class="chat-header">
+          <div class="ai-avatar">🤖</div>
+          <div>
+            <h3>DentAI Assistant</h3>
+            <p class="ai-sub">Tish sog'lig'i bo'yicha AI yordamchi</p>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chat-messages">
+          <div class="message bot-msg">
+            <div class="msg-avatar">🤖</div>
+            <div class="msg-bubble">
+              Salom! Men DentAI — tish sog'lig'i bo'yicha yordamchingizman. Savollaringizni so'rashingiz mumkin 😊
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-questions">
+          <button class="quick-btn" onclick="sendQuick('Qabul uchun vaqt qanday olaman?')">📅 Qabul vaqtlari</button>
+          <button class="quick-btn" onclick="sendQuick('Tish og\'rig\'iga nima qilish kerak?')">🦷 Tish og'rig'i</button>
+          <button class="quick-btn" onclick="sendQuick('Implant qancha turadi?')">💰 Narxlar</button>
+          <button class="quick-btn" onclick="sendQuick('Breket qo\'yishda yosh chegarasi bormi?')">😁 Breket</button>
+        </div>
+
+        <div class="chat-input-area">
+          <input id="chat-input" type="text" placeholder="Savolingizni yozing..." onkeydown="if(event.key==='Enter') sendMessage()" />
+          <button class="send-btn" onclick="sendMessage()">➤</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
