@@ -3,445 +3,451 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
-  <title>DentCare</title>
+  <title>DentCare — Premium Dental Clinic</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Google Font: Inter & SF-like typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- ══ APP SHELL ════════════════════════════════════ -->
-<div id="app" class="ios-app">
+<div id="app" class="app-root">
 
-  <!-- ━━ TAB 1: BOSH SAHIFA (HEALTH & HIG STYLE) ━━━━━━━━━━━━ -->
-  <div id="tab-home" class="ios-tab-view active">
-    <!-- Navigation Bar with Large Title -->
-    <header class="ios-nav-header">
-      <div class="ios-nav-inline">
-        <span class="ios-nav-inline-title">DentCare</span>
-        <div class="ios-nav-actions">
-          <button class="ios-icon-btn" onclick="openNotifSheet()" aria-label="Bildirishnomalar">
-            <svg class="sf-icon" viewBox="0 0 24 24">
-              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
-            </svg>
-          </button>
+  <!-- ══════════════════════════════════════════════
+       TAB 1: BOSH SAHIFA (PREMIUM HOME)
+       ══════════════════════════════════════════════ -->
+  <section id="tab-home" class="tab-scene active">
+    <!-- Top App Bar -->
+    <header class="top-nav-bar">
+      <div class="user-greeting-box">
+        <div class="user-avatar-wrap">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80" alt="Bemor" class="user-avatar-img"/>
+          <span class="active-dot"></span>
+        </div>
+        <div class="user-info-text">
+          <span class="greet-sub">Xush kelibsiz 👋</span>
+          <h1 class="user-name-title" id="home-patient-name">Hurmatli Mehmon</h1>
         </div>
       </div>
-      <div class="ios-large-title-row">
-        <div class="ios-large-title">DentCare</div>
-        <div class="ios-avatar-badge" onclick="switchTab('chat')">
-          <span class="avatar-text">AI</span>
-          <span class="online-indicator"></span>
-        </div>
-      </div>
-    </header>
-
-    <div class="ios-scroll-content">
-
-      <!-- Today Highlight Card (Apple Health Summary Style) -->
-      <section class="ios-card-widget">
-        <div class="widget-header">
-          <div class="widget-icon-pill" style="background:#E1F0FF; color:#007AFF;">
-            <svg class="sf-icon-sm" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
-            <span>KLINIKA HOLATI</span>
-          </div>
-          <span class="widget-meta">Bugun 09:00 – 19:00</span>
-        </div>
-        <div class="widget-body">
-          <h2 class="widget-title">Zamonaviy va og'riqsiz tish davolash</h2>
-          <p class="widget-desc">Germaniya va Shveysariya texnologiyalari. Birinchi konsultatsiya bepul.</p>
-        </div>
-        <div class="widget-footer">
-          <button class="ios-pill-btn" onclick="switchTab('schedule')">
-            <span>Qabulga yozilish</span>
-            <svg class="sf-chevron-mini" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
-          </button>
-        </div>
-      </section>
-
-      <!-- Stats Metric Cards (iOS Fitness Ring / Metric style) -->
-      <div class="ios-metrics-grid">
-        <div class="metric-card">
-          <span class="metric-label">BEMORLAR</span>
-          <div class="metric-value">2,500<span class="metric-unit">+</span></div>
-          <span class="metric-sub">99.2% qoniqish</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">TAJRIBA</span>
-          <div class="metric-value">15<span class="metric-unit">yil</span></div>
-          <span class="metric-sub">Oliy toifali vrachlar</span>
-        </div>
-      </div>
-
-      <!-- Inset Grouped Section 1: Tezkor xizmatlar -->
-      <div class="ios-section-header">TEZKOR HARAKATLAR</div>
-      <div class="ios-inset-group">
-        <div class="ios-row" onclick="switchTab('schedule')">
-          <div class="ios-sf-badge" style="background:#007AFF;">
-            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-          </div>
-          <div class="ios-row-content">
-            <span class="ios-row-title">Qabul vaqtini band qilish</span>
-            <span class="ios-row-subtitle">Bo'sh soatlarni tanlang</span>
-          </div>
-          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
-        </div>
-        <div class="ios-row" onclick="switchTab('services')">
-          <div class="ios-sf-badge" style="background:#34C759;">
-            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
-          </div>
-          <div class="ios-row-content">
-            <span class="ios-row-title">Xizmatlar va narxlar</span>
-            <span class="ios-row-subtitle">6 ta asosiy yo'nalish</span>
-          </div>
-          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
-        </div>
-        <div class="ios-row" onclick="switchTab('chat')">
-          <div class="ios-sf-badge" style="background:#AF52DE;">
-            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-          </div>
-          <div class="ios-row-content">
-            <span class="ios-row-title">DentAI bilan maslahat</span>
-            <span class="ios-row-subtitle">Onlayn savol-javob</span>
-          </div>
-          <span class="ios-badge-pill">YANGI</span>
-          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
-        </div>
-      </div>
-
-      <!-- Inset Grouped Section 2: Shifokorlar -->
-      <div class="ios-section-header">MUTAXASSIS SHIFOKORLAR</div>
-      <div class="ios-inset-group">
-        <div class="ios-row" onclick="selectDoctorAndBook('Dr. Jasur Abdullayev (Ortodontist)')">
-          <div class="ios-avatar-circle" style="background:#EBF5FF; color:#007AFF;">JA</div>
-          <div class="ios-row-content">
-            <div class="row-title-with-star">
-              <span class="ios-row-title">Dr. Jasur Abdullayev</span>
-              <span class="ios-rating-tag">★ 4.9</span>
-            </div>
-            <span class="ios-row-subtitle">Bosh ortodontist · 15 yil tajriba</span>
-          </div>
-          <button class="ios-inline-action-btn">Yozilish</button>
-        </div>
-        <div class="ios-row" onclick="selectDoctorAndBook('Dr. Zulfiya Karimova (Implantolog)')">
-          <div class="ios-avatar-circle" style="background:#F5F0FF; color:#AF52DE;">ZK</div>
-          <div class="ios-row-content">
-            <div class="row-title-with-star">
-              <span class="ios-row-title">Dr. Zulfiya Karimova</span>
-              <span class="ios-rating-tag">★ 4.8</span>
-            </div>
-            <span class="ios-row-subtitle">Jarroh-implantolog · 12 yil tajriba</span>
-          </div>
-          <button class="ios-inline-action-btn">Yozilish</button>
-        </div>
-        <div class="ios-row" onclick="selectDoctorAndBook('Dr. Bobur Yusupov (Terapevt)')">
-          <div class="ios-avatar-circle" style="background:#F0FFF4; color:#34C759;">BY</div>
-          <div class="ios-row-content">
-            <div class="row-title-with-star">
-              <span class="ios-row-title">Dr. Bobur Yusupov</span>
-              <span class="ios-rating-tag">★ 4.9</span>
-            </div>
-            <span class="ios-row-subtitle">Kattalar va bolalar terapevti · 10 yil</span>
-          </div>
-          <button class="ios-inline-action-btn">Yozilish</button>
-        </div>
-      </div>
-
-      <!-- Inset Grouped Section 3: Klinika ma'lumotlari -->
-      <div class="ios-section-header">ALOQA VA MANZIL</div>
-      <div class="ios-inset-group">
-        <div class="ios-row" onclick="openMap()">
-          <div class="ios-sf-badge" style="background:#FF3B30;">
-            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-          </div>
-          <div class="ios-row-content">
-            <span class="ios-row-title">Toshkent, Chilonzor 14-uy</span>
-            <span class="ios-row-subtitle">Mo'ljal: Mirzo Ulug'bek metrosi</span>
-          </div>
-          <span class="ios-detail-label">Xarita</span>
-          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
-        </div>
-        <div class="ios-row" onclick="callClinic()">
-          <div class="ios-sf-badge" style="background:#34C759;">
-            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
-          </div>
-          <div class="ios-row-content">
-            <span class="ios-row-title">+998 71 123-45-67</span>
-            <span class="ios-row-subtitle">Qo'ng'iroq uchun bepul</span>
-          </div>
-          <span class="ios-detail-label">Bog'lanish</span>
-          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
-        </div>
-        <div class="ios-row">
-          <div class="ios-sf-badge" style="background:#FF9500;">
-            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-          </div>
-          <div class="ios-row-content">
-            <span class="ios-row-title">Du – Shanba: 09:00 – 19:00</span>
-            <span class="ios-row-subtitle">Yakshanba: Dam olish kuni</span>
-          </div>
-          <span class="ios-badge-open">OCHIQ</span>
-        </div>
-      </div>
-
-      <div class="ios-bottom-pad"></div>
-    </div>
-  </div>
-
-  <!-- ━━ TAB 2: JADVAL VA BRON (NATIVE IOS CALENDAR STYLE) ━━━ -->
-  <div id="tab-schedule" class="ios-tab-view">
-    <header class="ios-nav-header">
-      <div class="ios-nav-inline">
-        <span class="ios-nav-inline-title">Qabul</span>
-      </div>
-      <div class="ios-large-title-row">
-        <div class="ios-large-title">Jadval</div>
-      </div>
-    </header>
-
-    <div class="ios-scroll-content">
-
-      <!-- iOS Segmented Control -->
-      <div class="ios-segmented-wrap">
-        <div class="ios-segmented-control">
-          <button class="seg-btn active" id="seg-all" onclick="filterDoctorSlot('all')">Barcha vrachlar</button>
-          <button class="seg-btn" id="seg-ortho" onclick="filterDoctorSlot('ortho')">Ortodont</button>
-          <button class="seg-btn" id="seg-impl" onclick="filterDoctorSlot('impl')">Implantolog</button>
-        </div>
-      </div>
-
-      <!-- Calendar Strip Section -->
-      <div class="ios-section-header">SANANI TANLANG</div>
-      <div class="ios-calendar-container">
-        <div class="ios-cal-scroll" id="cal-strip"></div>
-      </div>
-
-      <!-- Time Slot Section -->
-      <div class="ios-section-header">
-        <span>BO'SH VAQTLAR</span>
-        <span id="selected-date-preview" class="ios-header-extra">Bugun</span>
-      </div>
-      <div class="ios-inset-group ios-p-16">
-        <div class="ios-slots-flow" id="slots-container"></div>
-      </div>
-
-      <!-- Booking Form: iOS Inset Grouped Form Style -->
-      <div class="ios-section-header">BEMOR MA'LUMOTLARI</div>
-      <div class="ios-inset-group">
-        <div class="ios-form-row">
-          <label class="form-label" for="f-name">Ism va familiya</label>
-          <input class="form-input" id="f-name" type="text" placeholder="Aziz Rahimov" autocomplete="name"/>
-        </div>
-        <div class="ios-form-row">
-          <label class="form-label" for="f-phone">Telefon raqam</label>
-          <input class="form-input" id="f-phone" type="tel" placeholder="+998 90 123 45 67" autocomplete="tel"/>
-        </div>
-        <div class="ios-form-row">
-          <label class="form-label" for="f-service">Xizmat turi</label>
-          <div class="form-select-wrap">
-            <select class="form-select" id="f-service">
-              <option value="">Tanlang...</option>
-              <option value="Tish davolash (Terapiya)">Tish davolash (Terapiya)</option>
-              <option value="Professional tozalash (Air Flow)">Professional tozalash (Air Flow)</option>
-              <option value="Tish oqartirish (Zoom 4)">Tish oqartirish (Zoom 4)</option>
-              <option value="Implantatsiya (Nobel Biocare)">Implantatsiya (Nobel Biocare)</option>
-              <option value="Breket o'rnatish (Ortodontiya)">Breket o'rnatish (Ortodontiya)</option>
-              <option value="Bepul konsultatsiya">Bepul konsultatsiya</option>
-            </select>
-            <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
-          </div>
-        </div>
-        <div class="ios-form-row">
-          <label class="form-label" for="f-note">Shifokorga izoh</label>
-          <input class="form-input" id="f-note" type="text" placeholder="Masalan: pastki tishda karies"/>
-        </div>
-      </div>
-
-      <!-- Primary Action Button (iOS 18 Filled Prominent Style) -->
-      <div class="ios-action-area">
-        <button class="ios-primary-btn" onclick="submitBooking()">
-          <span>Qabulni tasdiqlash</span>
-        </button>
-        <p class="ios-caption-hint">Tasdiqlangach, Telegram orqali xabarnoma yuboriladi</p>
-      </div>
-
-      <div class="ios-bottom-pad"></div>
-    </div>
-  </div>
-
-  <!-- ━━ TAB 3: XIZMATLAR VA NARXLAR ━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <div id="tab-services" class="ios-tab-view">
-    <header class="ios-nav-header">
-      <div class="ios-nav-inline">
-        <span class="ios-nav-inline-title">Xizmatlar</span>
-      </div>
-      <div class="ios-large-title-row">
-        <div class="ios-large-title">Xizmatlar</div>
-      </div>
-      <!-- iOS Native Search Bar -->
-      <div class="ios-search-container">
-        <div class="ios-search-bar">
-          <svg class="sf-search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-          <input id="service-search-input" type="search" placeholder="Qidiruv..." oninput="onServiceSearch()"/>
-          <button id="search-clear-btn" class="ios-clear-btn hidden" onclick="clearServiceSearch()">✕</button>
-        </div>
-      </div>
-    </header>
-
-    <div class="ios-scroll-content">
-      <div class="ios-section-header" id="services-count-header">BARCHA XIZMATLAR (6)</div>
-      <div class="ios-inset-group" id="services-list-group">
-        <!-- Rendered dynamically by JS -->
-      </div>
-      <div class="ios-bottom-pad"></div>
-    </div>
-  </div>
-
-  <!-- ━━ TAB 4: DENTAI CHAT (AUTHENTIC IMESSAGE STYLE) ━━━━━━━ -->
-  <div id="tab-chat" class="ios-tab-view ios-imessage-view">
-    <!-- iMessage Navigation Header -->
-    <header class="imessage-nav">
-      <div class="imessage-contact-info">
-        <div class="imessage-avatar">
-          <svg viewBox="0 0 24 24" class="sf-imessage-bot"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7H9V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2zm-4 9a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm8 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-6.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/></svg>
-        </div>
-        <div class="imessage-meta">
-          <span class="imessage-name">DentAI Assistant</span>
-          <span class="imessage-sub"><span class="green-dot"></span> iMessage onlayn</span>
-        </div>
-      </div>
-    </header>
-
-    <!-- Chat Messages Flow -->
-    <div class="imessage-body" id="imessage-body">
-      <div class="imessage-timestamp">Bugun 09:41</div>
-
-      <div class="imessage-bubble-row bot">
-        <div class="imessage-bubble bot">
-          Assalomu alaykum! Men DentCare klinikasining sun'iy intellekt yordamchisiman. Tish og'rig'i, narxlar, shifokorlar va bo'sh vaqtlar bo'yicha savollaringizga mamnuniyat bilan javob beraman.
-        </div>
-      </div>
-
-      <!-- Quick prompts pills -->
-      <div class="imessage-chips" id="imessage-chips">
-        <button class="imessage-chip" onclick="quickAskAI('Tish og\'rig\'iga nima qilish kerak?')">🦷 Tishim og'riyapti</button>
-        <button class="imessage-chip" onclick="quickAskAI('Qabul vaqtlari qachon?')">📅 Qabul vaqtlari</button>
-        <button class="imessage-chip" onclick="quickAskAI('Tish davolash narxi qancha?')">💰 Narxlar qanday?</button>
-        <button class="imessage-chip" onclick="quickAskAI('Breket qo\'yish narxi va muddati')">😁 Breket haqida</button>
-        <button class="imessage-chip" onclick="quickAskAI('Klinika manzili va telefon')">📍 Manzil</button>
-      </div>
-    </div>
-
-    <!-- iMessage Input Bar -->
-    <div class="imessage-input-bar">
-      <div class="imessage-input-container">
-        <button class="imessage-plus-btn" onclick="openNotifSheet()" aria-label="Qo'shimcha">
-          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-        </button>
-        <input id="imessage-input" type="text" placeholder="iMessage..." onkeydown="if(event.key==='Enter')sendChatMessage()"/>
-        <button id="imessage-send-btn" class="imessage-send-btn disabled" onclick="sendChatMessage()" aria-label="Yuborish">
-          <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(-90 12 12)"/></svg>
+      <div class="nav-right-actions">
+        <button class="icon-circle-btn" onclick="openNotifications()" aria-label="Xabarlar">
+          <svg viewBox="0 0 24 24" class="svg-icon"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+          <span class="badge-ping"></span>
         </button>
       </div>
-    </div>
-  </div>
+    </header>
 
-  <!-- ━━ NATIVE iOS TAB BAR ━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <nav class="ios-tab-bar">
-    <button class="ios-tab-item active" id="tab-btn-home" onclick="switchTab('home')">
-      <div class="tab-icon-wrap">
-        <svg class="tab-svg" viewBox="0 0 24 24">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-        </svg>
+    <!-- Scrollable Body -->
+    <div class="scroll-area">
+      
+      <!-- Premium Hero Promo Banner -->
+      <div class="hero-banner-card">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-pill-tag">
+            <span class="sparkle-icon">✦</span>
+            <span>SHVEYSARIYA STANDARTI</span>
+          </div>
+          <h2 class="hero-headline">Mukammal tabassum — sog'lom hayot sari yo'l</h2>
+          <p class="hero-subtext">Birinchi tashrifingizda shifokor ko'rigi va 3D diagnostika 100% bepul!</p>
+          <div class="hero-actions">
+            <button class="hero-primary-btn" onclick="switchTab('schedule')">
+              <span>Qabulga yozilish</span>
+              <svg viewBox="0 0 24 24" class="arrow-svg"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <button class="hero-secondary-btn" onclick="switchTab('chat')">
+              <span>AI Savol</span>
+            </button>
+          </div>
+        </div>
       </div>
-      <span class="tab-title">Bosh sahifa</span>
+
+      <!-- Quick Category Pills -->
+      <div class="section-title-row">
+        <h3>Asosiy yo'nalishlar</h3>
+        <button class="link-btn" onclick="switchTab('services')">Barchasi</button>
+      </div>
+      <div class="categories-carousel">
+        <div class="cat-card" onclick="bookCategory('Tish davolash (Karies)')">
+          <div class="cat-icon-box blue">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+          </div>
+          <span class="cat-name">Davolash</span>
+          <span class="cat-price">70k so'mdan</span>
+        </div>
+        <div class="cat-card" onclick="bookCategory('Implantatsiya')">
+          <div class="cat-icon-box teal">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          </div>
+          <span class="cat-name">Implant</span>
+          <span class="cat-price">1.8M so'mdan</span>
+        </div>
+        <div class="cat-card" onclick="bookCategory('Breket tizimlari')">
+          <div class="cat-icon-box purple">
+            <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+          </div>
+          <span class="cat-name">Breketlar</span>
+          <span class="cat-price">2.5M so'mdan</span>
+        </div>
+        <div class="cat-card" onclick="bookCategory('Tish oqartirish (Zoom 4)')">
+          <div class="cat-icon-box amber">
+            <svg viewBox="0 0 24 24"><path d="M12 2l2.4 7.2h7.6l-6.2 4.5 2.4 7.3-6.2-4.5-6.2 4.5 2.4-7.3-6.2-4.5h7.6z"/></svg>
+          </div>
+          <span class="cat-name">Oqartirish</span>
+          <span class="cat-price">450k so'mdan</span>
+        </div>
+      </div>
+
+      <!-- Top Dentists with Real Photography -->
+      <div class="section-title-row">
+        <h3>Yetakchi shifokorlar</h3>
+        <span class="sub-counter">3 nafar mutaxassis</span>
+      </div>
+      <div class="doctors-cards-list">
+        
+        <!-- Doctor Card 1 -->
+        <div class="doctor-pro-card" onclick="selectDoctorQuick('Dr. Jasur Abdullayev', 'Bosh Ortodontist')">
+          <div class="doc-photo-wrapper">
+            <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=300&auto=format&fit=crop&q=80" alt="Dr. Jasur Abdullayev" class="doc-avatar-img"/>
+            <span class="doc-exp-badge">15 yil</span>
+          </div>
+          <div class="doc-meta-info">
+            <div class="doc-name-rating">
+              <h4 class="doc-fullname">Dr. Jasur Abdullayev</h4>
+              <div class="rating-pill">
+                <span class="star-icon">★</span>
+                <span>4.9</span>
+              </div>
+            </div>
+            <span class="doc-specialty">Ortodontist-Gnatolog · Oliy toifa</span>
+            <p class="doc-description">Breketlar, alignerlar va to'g'ri tishlash bo'yicha 2000+ muvaffaqiyatli amaliyot.</p>
+            <div class="doc-action-footer">
+              <span class="slot-badge-free">Bugun bo'sh soat bor</span>
+              <button class="doc-btn-book">Yozilish</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Doctor Card 2 -->
+        <div class="doctor-pro-card" onclick="selectDoctorQuick('Dr. Zulfiya Karimova', 'Bosh Implantolog-Jarroh')">
+          <div class="doc-photo-wrapper">
+            <img src="https://images.unsplash.com/photo-1594824813581-22928574d3a6?w=300&auto=format&fit=crop&q=80" alt="Dr. Zulfiya Karimova" class="doc-avatar-img"/>
+            <span class="doc-exp-badge">12 yil</span>
+          </div>
+          <div class="doc-meta-info">
+            <div class="doc-name-rating">
+              <h4 class="doc-fullname">Dr. Zulfiya Karimova</h4>
+              <div class="rating-pill">
+                <span class="star-icon">★</span>
+                <span>4.8</span>
+              </div>
+            </div>
+            <span class="doc-specialty">Jarroh-Implantolog · Shveysariya litsenziyasi</span>
+            <p class="doc-description">Nobel Biocare va Osstem implantlari. Og'riqsiz 3D implantatsiya.</p>
+            <div class="doc-action-footer">
+              <span class="slot-badge-free">Ertaga bo'sh soat bor</span>
+              <button class="doc-btn-book">Yozilish</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Doctor Card 3 -->
+        <div class="doctor-pro-card" onclick="selectDoctorQuick('Dr. Bobur Yusupov', 'Terapevt-Restavrator')">
+          <div class="doc-photo-wrapper">
+            <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=300&auto=format&fit=crop&q=80" alt="Dr. Bobur Yusupov" class="doc-avatar-img"/>
+            <span class="doc-exp-badge">10 yil</span>
+          </div>
+          <div class="doc-meta-info">
+            <div class="doc-name-rating">
+              <h4 class="doc-fullname">Dr. Bobur Yusupov</h4>
+              <div class="rating-pill">
+                <span class="star-icon">★</span>
+                <span>4.9</span>
+              </div>
+            </div>
+            <span class="doc-specialty">Estetik Terapevt · Mikroskop ostida davolash</span>
+            <p class="doc-description">Tishlarni badiiy restavratsiya qilish va nozik kanallarni tozalash.</p>
+            <div class="doc-action-footer">
+              <span class="slot-badge-free">Bugun bo'sh soat bor</span>
+              <button class="doc-btn-book">Yozilish</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Trust Metrics / Why Us -->
+      <div class="why-us-box">
+        <div class="why-item">
+          <span class="why-num">100%</span>
+          <span class="why-label">Sterilizatsiya (B-Class)</span>
+        </div>
+        <div class="why-divider"></div>
+        <div class="why-item">
+          <span class="why-num">10 yil</span>
+          <span class="why-label">Rasmiy kafolat</span>
+        </div>
+        <div class="why-divider"></div>
+        <div class="why-item">
+          <span class="why-num">0%</span>
+          <span class="why-label">Og'riqsiz muolaja</span>
+        </div>
+      </div>
+
+      <!-- Clinic Address & Working Hours -->
+      <div class="info-card-pro">
+        <div class="info-row" onclick="openGoogleMap()">
+          <div class="info-icon red">📍</div>
+          <div class="info-text">
+            <h4>Toshkent sh., Chilonzor tumani, 14-uy</h4>
+            <p>Mirzo Ulug'bek metrosi yonida (Avtoturargoh mavjud)</p>
+          </div>
+          <span class="info-chevron">›</span>
+        </div>
+        <div class="info-divider"></div>
+        <div class="info-row" onclick="callClinicPhone()">
+          <div class="info-icon green">📞</div>
+          <div class="info-text">
+            <h4>+998 (71) 123-45-67</h4>
+            <p>Qo'ng'iroq bepul · 24/7 qabul</p>
+          </div>
+          <span class="info-chevron">›</span>
+        </div>
+      </div>
+
+      <div class="page-bottom-space"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 2: JADVAL & BRON (INTUITIVE BOOKING FLOW)
+       ══════════════════════════════════════════════ -->
+  <section id="tab-schedule" class="tab-scene">
+    <header class="top-nav-bar compact">
+      <h2 class="scene-title">Qabul vaqti</h2>
+      <span class="scene-sub">Qulay vaqtni tanlang</span>
+    </header>
+
+    <div class="scroll-area">
+      
+      <!-- Doctor Selector (Horizontal cards) -->
+      <div class="booking-section-label">1. SHIFOKORNI TANLANG</div>
+      <div class="doctor-picker-row" id="doc-picker">
+        <div class="doc-pick-card active" onclick="pickDoctorCard(this, 'Dr. Jasur Abdullayev')">
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=160&auto=format&fit=crop&q=80" alt="Dr. Jasur"/>
+          <span class="dp-name">Dr. Abdullayev</span>
+          <span class="dp-spec">Ortodont</span>
+        </div>
+        <div class="doc-pick-card" onclick="pickDoctorCard(this, 'Dr. Zulfiya Karimova')">
+          <img src="https://images.unsplash.com/photo-1594824813581-22928574d3a6?w=160&auto=format&fit=crop&q=80" alt="Dr. Zulfiya"/>
+          <span class="dp-name">Dr. Karimova</span>
+          <span class="dp-spec">Implantolog</span>
+        </div>
+        <div class="doc-pick-card" onclick="pickDoctorCard(this, 'Dr. Bobur Yusupov')">
+          <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=160&auto=format&fit=crop&q=80" alt="Dr. Bobur"/>
+          <span class="dp-name">Dr. Yusupov</span>
+          <span class="dp-spec">Terapevt</span>
+        </div>
+      </div>
+
+      <!-- Date Strip -->
+      <div class="booking-section-label">2. KUNNI TANLANG</div>
+      <div class="calendar-scroll-strip" id="booking-cal-strip">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Time Slots: Morning & Afternoon -->
+      <div class="booking-section-label">
+        <span>3. QABUL SOATINI TANLANG</span>
+        <span id="selected-day-text" class="day-hint-label">Bugun</span>
+      </div>
+      
+      <div class="slots-container-card">
+        <div class="slot-group-header">Ertalabki qabullar</div>
+        <div class="slots-grid" id="morning-slots">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div class="slot-group-header mt-12">Tushdan keyingi qabullar</div>
+        <div class="slots-grid" id="afternoon-slots">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Patient Information Card -->
+      <div class="booking-section-label">4. BEMOR MA'LUMOTLARI</div>
+      <div class="form-card-pro">
+        <div class="input-field-wrap">
+          <label>Ism va familiya *</label>
+          <input type="text" id="patient-name" placeholder="Masalan: Sardor Aliyev" autocomplete="name"/>
+        </div>
+        <div class="field-divider"></div>
+        <div class="input-field-wrap">
+          <label>Telefon raqam *</label>
+          <input type="tel" id="patient-phone" placeholder="+998 90 123 45 67" autocomplete="tel"/>
+        </div>
+        <div class="field-divider"></div>
+        <div class="input-field-wrap">
+          <label>Xizmat turi *</label>
+          <select id="patient-service">
+            <option value="Bepul konsultatsiya va diagnostika">Bepul konsultatsiya va diagnostika (0 so'm)</option>
+            <option value="Tish davolash va plomba">Tish davolash va plomba (70 000 so'mdan)</option>
+            <option value="Air Flow tozalash">Air Flow professional tozalash (120 000 so'm)</option>
+            <option value="Zoom 4 oqartirish">Zoom 4 tish oqartirish (450 000 so'mdan)</option>
+            <option value="Titan implantatsiya">Titan implantatsiya (1 800 000 so'mdan)</option>
+            <option value="Breket o'rnatish">Breket tizimi o'rnatish (2 500 000 so'mdan)</option>
+          </select>
+        </div>
+        <div class="field-divider"></div>
+        <div class="input-field-wrap">
+          <label>Qo'shimcha izoh yoki shikoyat</label>
+          <input type="text" id="patient-note" placeholder="Masalan: chap pastki tishda og'riq bor"/>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="submit-action-area">
+        <button class="confirm-booking-btn" onclick="executeBooking()">
+          <span>Band qilishni tasdiqlash</span>
+          <svg viewBox="0 0 24 24" class="btn-arrow-svg"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <p class="safe-privacy-note">🔒 Sizning ma'lumotlaringiz to'liq himoyalangan</p>
+      </div>
+
+      <div class="page-bottom-space"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 3: XIZMATLAR (RICH SERVICES CATALOG)
+       ══════════════════════════════════════════════ -->
+  <section id="tab-services" class="tab-scene">
+    <header class="top-nav-bar compact">
+      <h2 class="scene-title">Xizmatlar & Narxlar</h2>
+      <span class="scene-sub">Barcha stomatologik yo'nalishlar</span>
+      <div class="search-pro-wrap">
+        <svg viewBox="0 0 24 24" class="search-icon"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="search-svc-input" placeholder="Xizmat nomi bo'yicha qidiruv..." oninput="filterServicesCatalog()"/>
+      </div>
+    </header>
+
+    <div class="scroll-area">
+      <div class="catalog-list" id="services-catalog-container">
+        <!-- Rendered dynamically by JS with rich photos and badges -->
+      </div>
+      <div class="page-bottom-space"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 4: DENTAI CHAT (SMART MEDICAL CHATBOT)
+       ══════════════════════════════════════════════ -->
+  <section id="tab-chat" class="tab-scene chat-scene-mode">
+    <header class="chat-header-pro">
+      <div class="chat-header-user">
+        <div class="ai-avatar-badge">
+          <svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7H9V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2zm-4 9a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm8 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-6.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/></svg>
+        </div>
+        <div class="ai-title-details">
+          <span class="ai-header-name">DentAI Tibbiy Assistent</span>
+          <span class="ai-online-label"><span class="pulse-dot"></span> Onlayn · Sun'iy intellekt</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="chat-messages-container" id="chat-messages-box">
+      <div class="chat-date-chip">Bugun</div>
+
+      <!-- Welcome Message from AI -->
+      <div class="chat-msg-row bot">
+        <div class="bot-msg-card">
+          <p>Assalomu alaykum! Men <b>DentCare</b> klinikasining sun'iy intellekt assistentiman. 🦷</p>
+          <p class="mt-4">Tish og'rig'i, davolash narxlari, shifokorlarimiz malakasi yoki bo'sh vaqtlar haqida bemalol so'rashingiz mumkin.</p>
+        </div>
+      </div>
+
+      <!-- Quick interactive pills -->
+      <div class="chat-chips-scroll" id="chat-quick-chips">
+        <button class="chat-chip-btn" onclick="sendQuickPrompt('Tishim qattiq og\'riyapti, nima qilishim kerak?')">🦷 Tishim og'riyapti</button>
+        <button class="chat-chip-btn" onclick="sendQuickPrompt('Qabul vaqtlari qanday?')">📅 Qabul vaqtlari</button>
+        <button class="chat-chip-btn" onclick="sendQuickPrompt('Implantatsiya qancha turadi va qanday qo\'yiladi?')">🔩 Implant narxi</button>
+        <button class="chat-chip-btn" onclick="sendQuickPrompt('Breket qo\'yish narxi va muddati qancha?')">😁 Breketlar haqida</button>
+        <button class="chat-chip-btn" onclick="sendQuickPrompt('Klinika manzili va telefon raqami')">📍 Klinika manzili</button>
+      </div>
+    </div>
+
+    <!-- Chat Input Floating Bar -->
+    <div class="chat-input-toolbar">
+      <div class="chat-input-pill">
+        <input type="text" id="chat-text-input" placeholder="Savolingizni yozing..." onkeydown="if(event.key==='Enter')handleChatSend()"/>
+        <button id="chat-send-btn" class="send-action-btn disabled" onclick="handleChatSend()">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       BOTTOM DOCK TAB BAR (FLOATING GLASS DESIGN)
+       ══════════════════════════════════════════════ -->
+  <nav class="bottom-dock-nav">
+    <button class="dock-nav-item active" id="dock-btn-home" onclick="switchTab('home')">
+      <div class="dock-icon-box">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </div>
+      <span>Asosiy</span>
     </button>
-    <button class="ios-tab-item" id="tab-btn-schedule" onclick="switchTab('schedule')">
-      <div class="tab-icon-wrap">
-        <svg class="tab-svg" viewBox="0 0 24 24">
-          <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
-        </svg>
+    <button class="dock-nav-item" id="dock-btn-schedule" onclick="switchTab('schedule')">
+      <div class="dock-icon-box">
+        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>
       </div>
-      <span class="tab-title">Jadval</span>
+      <span>Jadval</span>
     </button>
-    <button class="ios-tab-item" id="tab-btn-services" onclick="switchTab('services')">
-      <div class="tab-icon-wrap">
-        <svg class="tab-svg" viewBox="0 0 24 24">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
-        </svg>
+    <button class="dock-nav-item" id="dock-btn-services" onclick="switchTab('services')">
+      <div class="dock-icon-box">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
       </div>
-      <span class="tab-title">Xizmatlar</span>
+      <span>Xizmatlar</span>
     </button>
-    <button class="ios-tab-item" id="tab-btn-chat" onclick="switchTab('chat')">
-      <div class="tab-icon-wrap">
-        <svg class="tab-svg" viewBox="0 0 24 24">
-          <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
-        </svg>
-        <span id="chat-tab-dot" class="ios-tab-badge-dot hidden"></span>
+    <button class="dock-nav-item" id="dock-btn-chat" onclick="switchTab('chat')">
+      <div class="dock-icon-box">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+        <span class="dock-badge-dot hidden" id="chat-notification-dot"></span>
       </div>
-      <span class="tab-title">DentAI</span>
+      <span>DentAI</span>
     </button>
   </nav>
 
 </div>
 
-<!-- ══ iOS ACTION SHEET: BILDIRISHNOMALAR ════════════ -->
-<div id="notif-sheet-backdrop" class="ios-sheet-backdrop hidden" onclick="closeNotifSheet()">
-  <div class="ios-sheet-card" onclick="event.stopPropagation()">
-    <div class="sheet-grabber"></div>
-    <div class="sheet-head">
-      <h3 class="sheet-header-title">Bildirishnomalar</h3>
-      <button class="sheet-done-btn" onclick="closeNotifSheet()">Tayyor</button>
+<!-- ══════════════════════════════════════════════
+     CONFIRMATION BOTTOM SHEET MODAL
+     ══════════════════════════════════════════════ -->
+<div id="booking-modal-overlay" class="modal-overlay hidden" onclick="closeBookingModal()">
+  <div class="modal-sheet-window" onclick="event.stopPropagation()">
+    <div class="sheet-drag-handle"></div>
+    <div class="success-icon-badge">
+      <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
     </div>
-    <div class="ios-inset-group sheet-group">
-      <div class="ios-row">
-        <div class="ios-sf-badge" style="background:#007AFF;">
-          <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-        </div>
-        <div class="ios-row-content">
-          <span class="ios-row-title">Qabul eslatmasi</span>
-          <span class="ios-row-subtitle">Belgilangan vaqtdan 10 daqiqa oldin yetib keling</span>
-        </div>
-        <span class="ios-detail-label">10m</span>
-      </div>
-      <div class="ios-row">
-        <div class="ios-sf-badge" style="background:#34C759;">
-          <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <div class="ios-row-content">
-          <span class="ios-row-title">Bahor aksiyasi</span>
-          <span class="ios-row-subtitle">Air Flow tish tozalash xizmatiga 20% chegirma</span>
-        </div>
-        <span class="ios-detail-label">Aksiya</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ iOS MODAL SHEET: BRON TASDIQLANDI ════════════ -->
-<div id="booking-sheet-backdrop" class="ios-sheet-backdrop hidden" onclick="closeBookingSheet()">
-  <div class="ios-sheet-card ios-sheet-center" onclick="event.stopPropagation()">
-    <div class="sheet-grabber"></div>
-    <div class="ios-check-animation">
-      <svg class="check-svg" viewBox="0 0 52 52">
-        <circle class="check-circle" cx="26" cy="26" r="25" fill="none"/>
-        <path class="check-tick" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-      </svg>
-    </div>
-    <h3 class="sheet-confirmed-title">Qabul muvaffaqiyatli band qilindi</h3>
-    <div class="ios-inset-group confirmed-summary-group" id="confirmed-summary-box">
+    <h3 class="modal-success-heading">Qabul muvaffaqiyatli band qilindi!</h3>
+    <p class="modal-success-sub">Klinikamiz mutaxassislari tez orada siz bilan bog'lanib, qabulni tasdiqlashadi.</p>
+    
+    <div class="booking-receipt-card" id="booking-receipt-details">
       <!-- Injected by JS -->
     </div>
-    <button class="ios-primary-btn w-full" onclick="closeBookingSheet()">Ajoyib</button>
+
+    <button class="modal-primary-btn" onclick="closeBookingModal()">Tushundim, rahmat!</button>
   </div>
 </div>
 
-<!-- ══ iOS DYNAMIC ISLAND / NOTIFICATION BANNER ═════ -->
-<div id="ios-island-banner" class="ios-island-banner hidden">
-  <div class="island-icon-box">✓</div>
-  <div class="island-content">
-    <div class="island-title" id="island-title">Muvaffaqiyatli</div>
-    <div class="island-subtitle" id="island-sub">Amal bajarildi</div>
-  </div>
+<!-- ══════════════════════════════════════════════
+     DYNAMIC TOAST NOTIFICATION
+     ══════════════════════════════════════════════ -->
+<div id="toast-banner" class="toast-banner hidden">
+  <span class="toast-emoji" id="toast-emoji">✓</span>
+  <span class="toast-text" id="toast-text">Xabar yuborildi</span>
 </div>
 
 <script src="app.js"></script>

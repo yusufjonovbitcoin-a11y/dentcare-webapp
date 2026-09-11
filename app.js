@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════
-//  DentCare — iOS Native Controller & Logic
+//  DentCare — Ultra-Professional JavaScript Controller
 // ═══════════════════════════════════════════════════════════════════
 
 const tg = window.Telegram?.WebApp;
@@ -7,388 +7,398 @@ if (tg) {
   tg.ready();
   tg.expand();
   try {
-    tg.setHeaderColor('#F2F2F7');
-    tg.setBackgroundColor('#F2F2F7');
+    tg.setHeaderColor('#F8FAFC');
+    tg.setBackgroundColor('#F8FAFC');
   } catch (e) {}
 }
 
-// ── State Management ──
-let currentTab = 'home';
-let selectedDateObj = null;
-let selectedTimeSlot = null;
-let currentDoctorFilter = 'all';
+// ── Application State ──
+let currentActiveTab = 'home';
+let chosenDoctor = 'Dr. Jasur Abdullayev';
+let chosenDateObj = null;
+let chosenTimeSlot = null;
 
-const DAYS_SHORT = ['Yak', 'Du', 'Se', 'Cho', 'Pay', 'Ju', 'Sha'];
-const MONTHS_SHORT = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyn', 'Iyl', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'];
+const WEEKDAYS = ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'];
+const MONTHS = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyn', 'Iyl', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'];
 
-// Xizmatlar ro'yxati
-const SERVICES_DATA = [
+// ── Rich Services Data with Photography ──
+const DENTAL_SERVICES = [
   {
     id: 'therapy',
-    name: 'Tish davolash (Karies & Terapiya)',
-    category: 'Davolash',
-    price: '70 000 – 180 000 so\'m',
+    title: 'Tish davolash & Plomba',
+    category: 'Terapiya',
     duration: '40 daqiqa',
-    description: 'Germaniyaning Dentsply Sirona fotopolimer kompozitlari bilan tishlarni tabiiy shaklda restavratsiya qilish va og\'riqsiz davolash.'
+    price: '70 000 – 180 000 so\'m',
+    image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=500&auto=format&fit=crop&q=80',
+    description: 'Germaniya va Yaponiya fotopolimer kompozitlari yordamida kariesni butunlay og\'riqsiz tozalash va tishning tabiiy anatomik shaklini restavratsiya qilish.'
   },
   {
-    id: 'hygiene',
-    name: 'Professional gigiyena (Air Flow)',
+    id: 'cleaning',
+    title: 'Air Flow Professional Gigiyena',
     category: 'Profilaktika',
-    price: '120 000 – 180 000 so\'m',
     duration: '45 daqiqa',
-    description: 'EMS (Shveysariya) ultratovush skaleri va mayda kukunli Air Flow yordamida tish toshlari va kofe/choy dog\'larini zararsiz tozalash.'
+    price: '120 000 – 180 000 so\'m',
+    image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=500&auto=format&fit=crop&q=80',
+    description: 'Shveysariyaning EMS uskunasi yordamida tish toshlari, qora dog\'lar va bakterial qatlamni milklarni zararlamasdan tozalash va ftorlash.'
   },
   {
     id: 'whitening',
-    name: 'Tishlarni oqartirish (Zoom 4)',
+    title: 'Philips Zoom 4 Oqartirish',
     category: 'Estetika',
-    price: '450 000 – 900 000 so\'m',
     duration: '60 daqiqa',
-    description: 'Philips Zoom 4 eng so\'nggi avlod sovuq LED nuri bilan tish emalini zararlamasdan 6-8 tongacha xavfsiz oqartirish.'
+    price: '450 000 – 900 000 so\'m',
+    image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=500&auto=format&fit=crop&q=80',
+    description: 'Dunyo miqyosidagi eng xavfsiz sovuq LED nuri texnologiyasi. Emalni saqlagan holda tishlarni 6 dan 8 tongacha oppoq qilish.'
   },
   {
     id: 'implant',
-    name: 'Implantatsiya (Nobel Biocare)',
+    title: 'Titanium Implantatsiya',
     category: 'Jarrohlik',
+    duration: '1-3 seans',
     price: '1 800 000 – 3 500 000 so\'m',
-    duration: '45 daqiqa',
-    description: 'Shveysariya va Janubiy Koreya (Osstem) titan implantlari. 100% integratsiya kafolati va umrbod xizmat.'
+    image: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=500&auto=format&fit=crop&q=80',
+    description: 'Nobel Biocare (Shveysariya) va Osstem (Janubiy Koreya) titan implantlari. Yo\'qolgan tishni 100% qayta tiklash va 10 yillik kafolat.'
   },
   {
     id: 'orthodontics',
-    name: 'Breket tizimlari (Metall / Keramika)',
+    title: 'Breket & Aligner Tizimlari',
     category: 'Ortodontiya',
+    duration: 'Kurs bo\'yicha',
     price: '2 500 000 so\'mdan',
-    duration: 'Muolaja kursi',
-    description: 'Damon Q samoligiruvchi metall va shaffof sapfir breketlar. Tish qatorini to\'g\'rilash va to\'g\'ri tishlashni shakllantirish.'
+    image: 'https://images.unsplash.com/photo-1571772996211-2f02c9727629?w=500&auto=format&fit=crop&q=80',
+    description: 'Damon Q metall va shaffof sapfir breketlar, shuningdek shaffof kappa (aligner)lar. Tish qatorini tekislash va go\'zal tabassum yaratish.'
   },
   {
-    id: 'consultation',
-    name: 'Bepul konsultatsiya va rentgen',
-    category: 'Tashxis',
-    price: 'Bepul',
-    duration: '20 daqiqa',
-    description: 'Birinchi marotaba tashrif buyuruvchilar uchun shifokor ko\'rigi, tish holatini 3D tekshirish va shaxsiy davolash rejasi.'
+    id: 'free-checkup',
+    title: 'Bepul Konsultatsiya & Rentgen',
+    category: 'Diagnostika',
+    duration: '25 daqiqa',
+    price: '0 so\'m (Bepul)',
+    image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=500&auto=format&fit=crop&q=80',
+    description: 'Birinchi marta kelgan barcha bemorlar uchun shifokor ko\'rigi, rentgen tahlili va individual davolash rejasi mutlaqo bepul taqdim etiladi.'
   }
 ];
 
-// ── Tab Switching ──
+// ── Tab Navigation ──
 function switchTab(tabId) {
-  if (tabId === currentTab) {
-    // Agar o'sha tab bo'lsa yuqoriga qaytarish
-    const activeScroll = document.querySelector(`#tab-${tabId} .ios-scroll-content`);
-    if (activeScroll) activeScroll.scrollTo({ top: 0, behavior: 'smooth' });
+  if (tabId === currentActiveTab) {
+    const scrollBox = document.querySelector(`#tab-${tabId} .scroll-area`);
+    if (scrollBox) scrollBox.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
 
-  // Oldingisini o'chirish
-  document.getElementById(`tab-${currentTab}`)?.classList.remove('active');
-  document.getElementById(`tab-btn-${currentTab}`)?.classList.remove('active');
+  // Remove active from old tab
+  document.getElementById(`tab-${currentActiveTab}`)?.classList.remove('active');
+  document.getElementById(`dock-btn-${currentActiveTab}`)?.classList.remove('active');
 
-  // Yangisini yoqish
-  const nextTab = document.getElementById(`tab-${tabId}`);
-  const nextBtn = document.getElementById(`tab-btn-${tabId}`);
+  // Activate new tab
+  const targetScene = document.getElementById(`tab-${tabId}`);
+  const targetDockBtn = document.getElementById(`dock-btn-${tabId}`);
 
-  if (nextTab && nextBtn) {
-    nextTab.classList.add('active');
-    nextBtn.classList.add('active');
-    currentTab = tabId;
+  if (targetScene && targetDockBtn) {
+    targetScene.classList.add('active');
+    targetDockBtn.classList.add('active');
+    currentActiveTab = tabId;
   }
 
-  hapticFeedback('selection');
+  triggerHaptic('selection');
 
   if (tabId === 'chat') {
-    document.getElementById('chat-tab-dot')?.classList.add('hidden');
-    scrollChatBottom();
+    document.getElementById('chat-notification-dot')?.classList.add('hidden');
+    scrollChatToEnd();
   }
 }
 
-// ── Haptic Feedback Helpers ──
-function hapticFeedback(style) {
+// ── Haptics ──
+function triggerHaptic(type) {
   if (!tg?.HapticFeedback) return;
-  if (style === 'selection') tg.HapticFeedback.selectionChanged();
-  else if (style === 'success') tg.HapticFeedback.notificationOccurred('success');
-  else if (style === 'warning') tg.HapticFeedback.notificationOccurred('warning');
-  else if (style === 'error') tg.HapticFeedback.notificationOccurred('error');
-  else tg.HapticFeedback.impactOccurred(style || 'light');
+  if (type === 'selection') tg.HapticFeedback.selectionChanged();
+  else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+  else if (type === 'warning') tg.HapticFeedback.notificationOccurred('warning');
+  else tg.HapticFeedback.impactOccurred(type || 'light');
+}
+
+// ── Doctor Picker Helpers ──
+function selectDoctorQuick(doctorName, doctorSpec) {
+  chosenDoctor = doctorName;
+  switchTab('schedule');
+
+  // Highlight selected card in schedule
+  document.querySelectorAll('.doc-pick-card').forEach(card => {
+    if (card.textContent.includes(doctorName.split(' ')[1])) {
+      card.classList.add('active');
+    } else {
+      card.classList.remove('active');
+    }
+  });
+
+  const noteField = document.getElementById('patient-note');
+  if (noteField) {
+    noteField.value = `Shifokor: ${doctorName} (${doctorSpec})`;
+  }
+}
+
+function pickDoctorCard(cardElement, doctorName) {
+  document.querySelectorAll('.doc-pick-card').forEach(c => c.classList.remove('active'));
+  cardElement.classList.add('active');
+  chosenDoctor = doctorName;
+  triggerHaptic('selection');
+}
+
+function bookCategory(categoryName) {
+  switchTab('schedule');
+  const serviceSelect = document.getElementById('patient-service');
+  if (serviceSelect) {
+    for (let opt of serviceSelect.options) {
+      if (opt.text.toLowerCase().includes(categoryName.toLowerCase().slice(0, 5))) {
+        serviceSelect.value = opt.value;
+        break;
+      }
+    }
+  }
 }
 
 // ── Calendar Strip Builder ──
-function initCalendarStrip() {
-  const container = document.getElementById('cal-strip');
+function buildCalendarStrip() {
+  const container = document.getElementById('booking-cal-strip');
   if (!container) return;
   container.innerHTML = '';
 
-  const now = new Date();
+  const today = new Date();
 
   for (let i = 0; i < 14; i++) {
-    const d = new Date(now);
-    d.setDate(now.getDate() + i);
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
 
     const isSunday = d.getDay() === 0;
-    const isToday = i === 0;
+    const isSelected = i === 0;
 
     const pill = document.createElement('div');
-    pill.className = `cal-pill ${isToday ? 'active' : ''} ${isSunday ? 'disabled' : 'has-slots'}`;
-    pill.dataset.date = d.toISOString();
+    pill.className = `calendar-day-pill ${isSelected ? 'selected' : ''} ${isSunday ? 'disabled' : ''}`;
 
     pill.innerHTML = `
-      <span class="cal-pill-day">${DAYS_SHORT[d.getDay()]}</span>
-      <span class="cal-pill-date">${d.getDate()}</span>
-      <span class="cal-pill-dot"></span>
+      <span class="cal-day-name">${WEEKDAYS[d.getDay()]}</span>
+      <span class="cal-day-number">${d.getDate()}</span>
+      <span class="cal-status-dot"></span>
     `;
 
     if (!isSunday) {
-      pill.onclick = () => onSelectDate(d, pill);
+      pill.onclick = () => onDayPicked(d, pill);
     }
 
     container.appendChild(pill);
 
-    if (isToday) {
-      selectedDateObj = d;
-      updateDatePreview(d);
+    if (isSelected) {
+      chosenDateObj = d;
+      updateSelectedDayHint(d);
     }
   }
 
-  renderTimeSlots();
+  buildTimeSlots();
 }
 
-function onSelectDate(date, pillEl) {
-  document.querySelectorAll('.cal-pill').forEach(p => p.classList.remove('active'));
-  pillEl.classList.add('active');
-  selectedDateObj = date;
-  selectedTimeSlot = null;
-  updateDatePreview(date);
-  renderTimeSlots();
-  hapticFeedback('selection');
+function onDayPicked(date, pillEl) {
+  document.querySelectorAll('.calendar-day-pill').forEach(p => p.classList.remove('selected'));
+  pillEl.classList.add('selected');
+  chosenDateObj = date;
+  chosenTimeSlot = null;
+
+  updateSelectedDayHint(date);
+  buildTimeSlots();
+  triggerHaptic('selection');
 }
 
-function updateDatePreview(date) {
-  const el = document.getElementById('selected-date-preview');
-  if (!el) return;
+function updateSelectedDayHint(date) {
+  const hint = document.getElementById('selected-day-text');
+  if (!hint) return;
   const isToday = new Date().toDateString() === date.toDateString();
   if (isToday) {
-    el.textContent = `Bugun, ${date.getDate()}-${MONTHS_SHORT[date.getMonth()]}`;
+    hint.textContent = `Bugun, ${date.getDate()}-${MONTHS[date.getMonth()]}`;
   } else {
-    el.textContent = `${DAYS_SHORT[date.getDay()]}, ${date.getDate()}-${MONTHS_SHORT[date.getMonth()]}`;
+    hint.textContent = `${WEEKDAYS[date.getDay()]}, ${date.getDate()}-${MONTHS[date.getMonth()]}`;
   }
 }
 
-// ── Time Slots Builder ──
-function renderTimeSlots() {
-  const container = document.getElementById('slots-container');
-  if (!container) return;
-  container.innerHTML = '';
+// ── Time Slots (Morning & Afternoon) ──
+function buildTimeSlots() {
+  const morningBox = document.getElementById('morning-slots');
+  const afternoonBox = document.getElementById('afternoon-slots');
+  if (!morningBox || !afternoonBox) return;
 
-  const slots = [
-    '09:00', '09:45', '10:30', '11:15',
-    '12:00', '14:00', '14:45', '15:30',
-    '16:15', '17:00', '17:45', '18:30'
-  ];
+  morningBox.innerHTML = '';
+  afternoonBox.innerHTML = '';
 
-  // Imitate booked slots
-  const busySlots = ['10:30', '14:00', '16:15'];
+  const morningTimes = ['09:00', '09:45', '10:30', '11:15', '12:00'];
+  const afternoonTimes = ['14:00', '14:45', '15:30', '16:15', '17:00', '17:45', '18:30'];
 
-  slots.forEach(slot => {
-    const isBusy = busySlots.includes(slot);
-    const btn = document.createElement('button');
-    btn.className = `time-slot-btn ${isBusy ? 'disabled' : ''}`;
-    btn.textContent = slot;
+  const busySlotsList = ['10:30', '14:45', '16:15'];
+
+  // Render Morning
+  morningTimes.forEach(time => {
+    const isBusy = busySlotsList.includes(time);
+    const chip = document.createElement('div');
+    chip.className = `slot-chip ${isBusy ? 'busy' : ''}`;
+    chip.textContent = time;
 
     if (!isBusy) {
-      btn.onclick = () => {
-        document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        selectedTimeSlot = slot;
-        hapticFeedback('light');
-      };
+      chip.onclick = () => selectSlot(chip, time);
     }
+    morningBox.appendChild(chip);
+  });
 
-    container.appendChild(btn);
+  // Render Afternoon
+  afternoonTimes.forEach(time => {
+    const isBusy = busySlotsList.includes(time);
+    const chip = document.createElement('div');
+    chip.className = `slot-chip ${isBusy ? 'busy' : ''}`;
+    chip.textContent = time;
+
+    if (!isBusy) {
+      chip.onclick = () => selectSlot(chip, time);
+    }
+    afternoonBox.appendChild(chip);
   });
 }
 
-function filterDoctorSlot(type) {
-  currentDoctorFilter = type;
-  document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(`seg-${type}`)?.classList.add('active');
-  renderTimeSlots();
-  hapticFeedback('selection');
+function selectSlot(chipEl, time) {
+  document.querySelectorAll('.slot-chip').forEach(c => c.classList.remove('selected'));
+  chipEl.classList.add('selected');
+  chosenTimeSlot = time;
+  triggerHaptic('light');
 }
 
-// ── Quick Doctor select helper ──
-function selectDoctorAndBook(doctorName) {
-  switchTab('schedule');
-  const noteInput = document.getElementById('f-note');
-  if (noteInput) {
-    noteInput.value = `Shifokor: ${doctorName}`;
-  }
-}
-
-// ── Booking Action ──
-function submitBooking() {
-  const name = document.getElementById('f-name')?.value.trim();
-  const phone = document.getElementById('f-phone')?.value.trim();
-  const service = document.getElementById('f-service')?.value;
-  const note = document.getElementById('f-note')?.value.trim() || '—';
+// ── Booking Confirmation ──
+function executeBooking() {
+  const name = document.getElementById('patient-name')?.value.trim();
+  const phone = document.getElementById('patient-phone')?.value.trim();
+  const service = document.getElementById('patient-service')?.value;
+  const note = document.getElementById('patient-note')?.value.trim() || 'Izohsiz';
 
   if (!name) {
-    showIslandBanner('Ismni kiriting', 'Iltimos, ismingizni to\'liq yozing');
-    hapticFeedback('warning');
+    showToast('⚠️ Iltimos, ismingizni kiriting');
+    triggerHaptic('warning');
     return;
   }
   if (!phone || phone.length < 9) {
-    showIslandBanner('Telefon raqam', 'Telefon raqamni to\'g\'ri kiriting');
-    hapticFeedback('warning');
+    showToast('⚠️ Telefon raqamni to\'liq kiriting');
+    triggerHaptic('warning');
     return;
   }
-  if (!service) {
-    showIslandBanner('Xizmat turi', 'Qaysi xizmat kerakligini tanlang');
-    hapticFeedback('warning');
-    return;
-  }
-  if (!selectedTimeSlot) {
-    showIslandBanner('Vaqt belgilanmadi', 'Iltimos, bo\'sh soatlardan birini tanlang');
-    hapticFeedback('warning');
+  if (!chosenTimeSlot) {
+    showToast('⚠️ Qabul soatini tanlang');
+    triggerHaptic('warning');
     return;
   }
 
-  const d = selectedDateObj || new Date();
-  const dateFormatted = `${d.getDate()} ${MONTHS_SHORT[d.getMonth()]}, ${DAYS_SHORT[d.getDay()]}`;
+  const d = chosenDateObj || new Date();
+  const dateStr = `${d.getDate()}-${MONTHS[d.getMonth()]}, ${WEEKDAYS[d.getDay()]}`;
 
-  const bookingData = {
+  const payload = {
     action: 'book',
+    doctor: chosenDoctor,
     name,
     phone,
     service,
-    date: dateFormatted,
-    time: selectedTimeSlot,
+    date: dateStr,
+    time: chosenTimeSlot,
     note
   };
 
-  // Send to Telegram WebApp Bot
+  // Telegramga ma'lumot uzatish
   if (tg) {
     try {
-      tg.sendData(JSON.stringify(bookingData));
+      tg.sendData(JSON.stringify(payload));
     } catch (e) {
-      console.log('tg.sendData error:', e);
+      console.log('Telegram send error:', e);
     }
   }
 
-  // Render Confirmation Sheet
-  const summaryBox = document.getElementById('confirmed-summary-box');
-  if (summaryBox) {
-    summaryBox.innerHTML = `
-      <div class="ios-row">
-        <span class="ios-row-title">Sana va vaqt</span>
-        <span class="ios-detail-label">${dateFormatted} · ${selectedTimeSlot}</span>
+  // Receipt modalni to'ldirish
+  const receiptBox = document.getElementById('booking-receipt-details');
+  if (receiptBox) {
+    receiptBox.innerHTML = `
+      <div class="receipt-row">
+        <span class="receipt-key">Shifokor:</span>
+        <span class="receipt-val">${chosenDoctor}</span>
       </div>
-      <div class="ios-row">
-        <span class="ios-row-title">Bemor</span>
-        <span class="ios-detail-label">${name}</span>
+      <div class="receipt-row">
+        <span class="receipt-key">Sana & Vaqt:</span>
+        <span class="receipt-val">${dateStr} · ${chosenTimeSlot}</span>
       </div>
-      <div class="ios-row">
-        <span class="ios-row-title">Xizmat</span>
-        <span class="ios-detail-label">${service}</span>
+      <div class="receipt-row">
+        <span class="receipt-key">Bemor:</span>
+        <span class="receipt-val">${name}</span>
       </div>
-      <div class="ios-row">
-        <span class="ios-row-title">Telefon</span>
-        <span class="ios-detail-label">${phone}</span>
+      <div class="receipt-row">
+        <span class="receipt-key">Xizmat turi:</span>
+        <span class="receipt-val">${service}</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-key">Telefon:</span>
+        <span class="receipt-val">${phone}</span>
       </div>
     `;
   }
 
-  document.getElementById('booking-sheet-backdrop')?.classList.remove('hidden');
-  hapticFeedback('success');
+  document.getElementById('booking-modal-overlay')?.classList.remove('hidden');
+  triggerHaptic('success');
 
-  // Reset form
-  document.getElementById('f-name').value = '';
-  document.getElementById('f-phone').value = '';
-  document.getElementById('f-service').value = '';
-  document.getElementById('f-note').value = '';
-  document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('selected'));
-  selectedTimeSlot = null;
+  // Formani tozalash
+  document.getElementById('patient-name').value = '';
+  document.getElementById('patient-phone').value = '';
+  document.getElementById('patient-note').value = '';
+  document.querySelectorAll('.slot-chip').forEach(c => c.classList.remove('selected'));
+  chosenTimeSlot = null;
 }
 
-function closeBookingSheet() {
-  document.getElementById('booking-sheet-backdrop')?.classList.add('hidden');
+function closeBookingModal() {
+  document.getElementById('booking-modal-overlay')?.classList.add('hidden');
 }
 
-// ── Notifications Sheet ──
-function openNotifSheet() {
-  document.getElementById('notif-sheet-backdrop')?.classList.remove('hidden');
-  hapticFeedback('light');
-}
-
-function closeNotifSheet() {
-  document.getElementById('notif-sheet-backdrop')?.classList.add('hidden');
-}
-
-// ── Services Section Rendering & Search ──
-function renderServicesList(items) {
-  const container = document.getElementById('services-list-group');
-  const countHeader = document.getElementById('services-count-header');
+// ── Services Catalog Renderer ──
+function renderServicesCatalog(list) {
+  const container = document.getElementById('services-catalog-container');
   if (!container) return;
-
-  if (countHeader) countHeader.textContent = `BARCHA XIZMATLAR (${items.length})`;
   container.innerHTML = '';
 
-  if (items.length === 0) {
+  if (list.length === 0) {
     container.innerHTML = `
-      <div class="ios-row">
-        <span class="ios-row-subtitle" style="padding: 12px 0;">Qidiruv bo'yicha xizmat topilmadi.</span>
+      <div style="text-align:center; padding:40px 20px; color:var(--text-muted);">
+        <p style="font-size:16px; font-weight:600;">Hech narsa topilmadi 🔍</p>
+        <p style="font-size:13px; margin-top:4px;">Boshqa so'z bilan qidirib ko'ring</p>
       </div>
     `;
     return;
   }
 
-  items.forEach((svc, index) => {
-    const row = document.createElement('div');
-    row.className = 'ios-service-wrapper';
-    row.innerHTML = `
-      <div class="ios-row" onclick="toggleServiceDetail(${index})">
-        <div class="ios-sf-badge" style="background:#007AFF;">
-          <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+  list.forEach(svc => {
+    const card = document.createElement('div');
+    card.className = 'service-catalog-card';
+    card.innerHTML = `
+      <img src="${svc.image}" alt="${svc.title}" class="service-card-image"/>
+      <div class="service-card-body">
+        <div class="service-top-badge-row">
+          <span class="service-category-badge">${svc.category}</span>
+          <span class="service-duration-badge">⏱ ${svc.duration}</span>
         </div>
-        <div class="ios-row-content">
-          <span class="ios-row-title">${svc.name}</span>
-          <span class="ios-row-subtitle">${svc.category} · ⏱ ${svc.duration}</span>
+        <h4 class="service-title">${svc.title}</h4>
+        <p class="service-desc">${svc.description}</p>
+        <div class="service-card-footer">
+          <span class="service-price-text">${svc.price}</span>
+          <button class="service-book-cta" onclick="bookServiceItem('${svc.title}')">Yozilish</button>
         </div>
-        <span class="ios-detail-label" style="font-weight:600; color:var(--ios-blue);">${svc.price}</span>
-        <svg class="sf-chevron" id="chevron-${index}" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
-      </div>
-      <div class="service-expand-body" id="svc-detail-${index}">
-        <p>${svc.description}</p>
-        <button class="service-book-mini-btn" onclick="bookFromService('${svc.name}')">Vaqt band qilish</button>
       </div>
     `;
-    container.appendChild(row);
+    container.appendChild(card);
   });
 }
 
-function toggleServiceDetail(index) {
-  const detail = document.getElementById(`svc-detail-${index}`);
-  const chevron = document.getElementById(`chevron-${index}`);
-  if (!detail) return;
-
-  const isOpen = detail.classList.contains('open');
-  document.querySelectorAll('.service-expand-body').forEach(el => el.classList.remove('open'));
-  document.querySelectorAll('.sf-chevron').forEach(el => el.style.transform = 'none');
-
-  if (!isOpen) {
-    detail.classList.add('open');
-    if (chevron) chevron.style.transform = 'rotate(90deg)';
-  }
-  hapticFeedback('light');
-}
-
-function bookFromService(svcName) {
+function bookServiceItem(svcTitle) {
   switchTab('schedule');
-  const sel = document.getElementById('f-service');
+  const sel = document.getElementById('patient-service');
   if (sel) {
     for (let opt of sel.options) {
-      if (opt.value.includes(svcName.slice(0, 8))) {
+      if (opt.text.toLowerCase().includes(svcTitle.toLowerCase().slice(0, 5))) {
         sel.value = opt.value;
         break;
       }
@@ -396,139 +406,123 @@ function bookFromService(svcName) {
   }
 }
 
-function onServiceSearch() {
-  const input = document.getElementById('service-search-input');
-  const clearBtn = document.getElementById('search-clear-btn');
-  const q = (input?.value || '').toLowerCase().trim();
-
-  if (clearBtn) {
-    if (q.length > 0) clearBtn.classList.remove('hidden');
-    else clearBtn.classList.add('hidden');
-  }
-
-  const filtered = SERVICES_DATA.filter(s =>
-    s.name.toLowerCase().includes(q) ||
-    s.category.toLowerCase().includes(q) ||
-    s.description.toLowerCase().includes(q)
+function filterServicesCatalog() {
+  const query = document.getElementById('search-svc-input')?.value.toLowerCase().trim() || '';
+  const filtered = DENTAL_SERVICES.filter(s =>
+    s.title.toLowerCase().includes(query) ||
+    s.category.toLowerCase().includes(query) ||
+    s.description.toLowerCase().includes(query)
   );
-
-  renderServicesList(filtered);
+  renderServicesCatalog(filtered);
 }
 
-function clearServiceSearch() {
-  const input = document.getElementById('service-search-input');
-  if (input) input.value = '';
-  document.getElementById('search-clear-btn')?.classList.add('hidden');
-  renderServicesList(SERVICES_DATA);
-}
+// ── DentAI Smart Chat Knowledge Base ──
+const AI_RESPONSES = {
+  'og\'ri|achish|yallig\'|puls': `🦷 <b>Tish og'rig'ida birinchi yordam:</b>\n\n1. Ibuprofen (400 mg) yoki Nimesulid tabletkasi ichishingiz mumkin;\n2. 1 stakan iliq suvga 1 choy qoshiq soda va tuz solib og'izni chayqang;\n3. Og'rigan joyga issiq narsa qo'ymang (bu yallig'lanishni kuchaytiradi);\n4. Karies asab tolalariga yetmasligi uchun zudlik bilan qabulga yoziling.\n\nKlinikamiz bugun soat 19:00 gacha ochiq! 📞 +998 (71) 123-45-67`,
 
-// ── iMessage AI Chat Engine ──
-const AI_KNOWLEDGE = {
-  'og\'ri|achish|yallig\'|puls': `Tish og'rig'i bo'lganda quyidagi tavsiyalarga amal qiling:\n\n1. Og'riq qoldiruvchi (Ibuprofen yoki Nimesulid) qabul qilishingiz mumkin;\n2. Iliq tuzli suv (1 stakan suvga 1 choy qoshiq tuz) bilan chayqang;\n3. Hech qachon og'rigan tish ustiga issiq kompress qo'ymang;\n4. Karies yoki pulpit kuchaymasligi uchun zudlik bilan shifokor ko'rigiga yoziling.\n\nKlinikamiz bugun soat 19:00 gacha ishlaydi: +998 71 123-45-67`,
+  'vaqt|qabul|soat|jadval|qachon': `📅 <b>DentCare ish jadvali:</b>\n\n• Dushanba – Shanba: 09:00 dan 19:00 gacha;\n• Tushlik tanaffusisiz;\n• Yakshanba: Dam olish kuni.\n\n"Jadval" bo'limida sizga qulay shifokor va vaqtni bemalol tanlashingiz mumkin!`,
 
-  'vaqt|qabul|soat|jadval|qachon': `DentCare klinikasining ish jadvali:\n\n• Dushanba – Shanba: 09:00 dan 19:00 gacha;\n• Tushlik tanaffusisiz;\n• Yakshanba: Dam olish kuni.\n\nQabulga yozilish uchun "Jadval" bo'limiga o'ting yoki xohlagan bo'sh vaqtingizni ayting.`,
+  'narx|pul|qancha|to\'lov|summa': `💰 <b>Xizmatlar narxi:</b>\n\n• Bepul konsultatsiya va rentgen — 0 so'm\n• Tish davolash & Plomba — 70 000 so'mdan\n• Air Flow tozalash — 120 000 so'mdan\n• Zoom 4 oqartirish — 450 000 so'mdan\n• Titan implant — 1 800 000 so'mdan\n• Breket tizimlari — 2 500 000 so'mdan\n\nTo'lovlarni Uzcard, Humo, Naqd va Payme orqali amalga oshirish mumkin.`,
 
-  'narx|pul|qancha|to\'lov|summa': `Asosiy xizmatlar narxi:\n\n• Bepul konsultatsiya va tekshiruv — 0 so'm\n• Tish davolash (plomba) — 70 000 so'mdan\n• Air Flow tozalash — 120 000 so'mdan\n• Zoom 4 oqartirish — 450 000 so'mdan\n• Titan implant — 1 800 000 so'mdan\n• Breket tizimi — 2 500 000 so'mdan\n\nBarcha to'lovlar naqd, Uzcard, Humo va Payme orqali qabul qilinadi.`,
+  'breket|qiyshiq|to\'g\'ri|ortodont': `😁 <b>Breket tizimlari haqida:</b>\n\n• Damon Q metall va estetik sapfir (shaffof) breketlar mavjud;\n• Shuningdek, ko'rinmas shaffof aligner (kappa)lar bor;\n• Davolanish muddati o'rtacha 12 – 18 oy;\n• Bosh mutaxassisimiz Dr. Jasur Abdullayev 15 yillik tajribaga ega.\n\nDastlabki 3D tashxis bepul!`,
 
-  'breket|qiyshiq|to\'g\'ri|ortodont': `Breketlar tish qatoridagi nuqsonlarni to'liq to'g'rilaydi:\n\n• Yosh chegarasi: 12 yoshdan kattalargacha barchaga to'g'ri keladi;\n• Turlari: Metall (mustahkam) va Shaffof keramika/sapfir (ko'rinmaydi);\n• Muolaja davomiyligi: o'rtacha 12 – 18 oy;\n\nOrtodontimiz Dr. Jasur Abdullayev bilan dastlabki bepul konsultatsiyaga yozilishingiz mumkin.`,
+  'implant|tushgan|ildiz|suyak': `🔩 <b>Titanium Implantatsiya:</b>\n\n• Nobel Biocare (Shveysariya) va Osstem (Koreya) implantlari;\n• Suyakka to'liq 100% integratsiya kafolati;\n• Zamonaviy anesteziya sababli muolaja mutlaqo og'riqsiz kechadi;\n• Rasmiy 10 yillik pasport va kafolat beriladi.`,
 
-  'implant|tushgan|ildiz|suyak': `Titanium implantatsiya — tushib ketgan tish o'rnini 100% tiklaydi:\n\n• Titan vinti to'qimaga to'liq moslashadi (biomoslashuvchan);\n• Shveysariya (Nobel) va Koreya (Osstem) tizimlaridan foydalanamiz;\n• Jarayon mahalliy anesteziya bilan mutlaqo og'riqsiz kechadi;\n• 10 yillik rasmiy kafolat beriladi.`,
+  'manzil|qaer|qayerda|metro|joy': `📍 <b>Manzilimiz:</b>\n\nToshkent shahri, Chilonzor tumani, 14-uy.\nMo'ljal: Mirzo Ulug'bek metro bekati yonida.\nAvtomobil uchun bepul xavfsiz to'xtash joyi bor.\nTelefon: +998 (71) 123-45-67`,
 
-  'manzil|qaer|qayerda|metro|joy': `Manzilimiz:\n\nToshkent shahri, Chilonzor tumani, 14-uy.\nMo'ljal: Mirzo Ulug'bek metro bekati yonida.\nAvtomobil uchun bepul to'xtash joyi mavjud.\nTelefon: +998 71 123-45-67`,
+  'salom|assalom|qalaysiz|qalesiz': `Salom! 👋 Men DentCare klinikasining sun'iy intellekt assistentiman. Tish parvarishi, narxlar, shifokorlar yoki qabul vaqtlari bo'yicha qanday yordam bera olaman?`,
 
-  'salom|assalom|qalaysiz|qalesiz': `Assalomu alaykum! DentCare sun'iy intellekt xizmati sizni qutlaydi. Tish parvarishi, qabul soatlari yoki shifokorlarimiz bo'yicha qanday savolingiz bor?`,
-
-  'rahmat|tashakkur|spasibo': `Salomat bo'ling! Tishlaringiz doimo sog'lom va oppoq bo'lsin. Savollaringiz bo'lsa har doim xizmatingizdamiz! 😊`
+  'rahmat|tashakkur|spasibo': `Salomat bo'ling! 😊 Tishlaringiz doimo sog'lom, tabassumingiz esa jozibali bo'lsin! Boshqa savollaringiz bo'lsa marhamat.`
 };
 
-function getAIResponse(userText) {
-  const lower = userText.toLowerCase();
-  for (let key in AI_KNOWLEDGE) {
-    const patterns = key.split('|');
-    if (patterns.some(p => lower.includes(p))) {
-      return AI_KNOWLEDGE[key];
+function getBotReply(userText) {
+  const query = userText.toLowerCase();
+  for (let key in AI_RESPONSES) {
+    const keywords = key.split('|');
+    if (keywords.some(kw => query.includes(kw))) {
+      return AI_RESPONSES[key];
     }
   }
-  return `Tushundim. Tishingiz holati bo'yicha aniq tashxis qo'yish uchun shifokorimiz ko'rigi zarur. "Jadval" bo'limidan bepul konsultatsiyaga yozilishingiz yoki to'g'ridan-to'g'ri +998 71 123-45-67 raqamiga qo'ng'iroq qilishingiz mumkin.`;
+  return `Tushundim. Tishingiz holati bo'yicha aniq tashxis va tavsiya berish uchun klinikamiz shifokori ko'rigidan o'tishingizni maslahat beramiz.\n\n"Jadval" bo'limidan bepul ko'rikka yozilishingiz yoki to'g'ridan-to'g'ri +998 (71) 123-45-67 raqamiga qo'ng'iroq qilishingiz mumkin.`;
 }
 
-function sendChatMessage() {
-  const input = document.getElementById('imessage-input');
+function handleChatSend() {
+  const input = document.getElementById('chat-text-input');
   const text = input?.value.trim();
   if (!text) return;
 
-  // Append user bubble
-  appendBubble(text, 'user');
+  // Append user message
+  appendChatMessage(text, 'user');
   input.value = '';
-  updateSendBtnState();
-  hapticFeedback('light');
+  updateChatSendButton();
+  triggerHaptic('light');
 
-  // Hide suggestion chips
-  document.getElementById('imessage-chips')?.classList.add('hidden');
+  // Hide quick suggestion chips after first use
+  document.getElementById('chat-quick-chips')?.classList.add('hidden');
 
   // Show typing
-  const typingRow = showTypingIndicator();
-  scrollChatBottom();
+  const typingRow = showChatTyping();
+  scrollChatToEnd();
 
   setTimeout(() => {
     typingRow.remove();
-    const reply = getAIResponse(text);
-    appendBubble(reply, 'bot');
-    scrollChatBottom();
-    hapticFeedback('light');
-  }, 700 + Math.random() * 500);
+    const reply = getBotReply(text);
+    appendChatMessage(reply, 'bot');
+    scrollChatToEnd();
+    triggerHaptic('light');
+  }, 650 + Math.random() * 450);
 }
 
-function quickAskAI(text) {
-  const input = document.getElementById('imessage-input');
-  if (input) input.value = text;
-  sendChatMessage();
+function sendQuickPrompt(promptText) {
+  const input = document.getElementById('chat-text-input');
+  if (input) input.value = promptText;
+  handleChatSend();
 }
 
-function appendBubble(content, type) {
-  const body = document.getElementById('imessage-body');
-  if (!body) return;
+function appendChatMessage(htmlText, type) {
+  const chatBox = document.getElementById('chat-messages-box');
+  if (!chatBox) return;
 
   const row = document.createElement('div');
-  row.className = `imessage-bubble-row ${type}`;
+  row.className = `chat-msg-row ${type}`;
 
-  const bubble = document.createElement('div');
-  bubble.className = `imessage-bubble ${type}`;
-  bubble.style.whiteSpace = 'pre-line';
-  bubble.textContent = content;
+  const card = document.createElement('div');
+  card.className = `${type}-msg-card`;
+  card.style.whiteSpace = 'pre-line';
+  card.innerHTML = htmlText;
 
-  row.appendChild(bubble);
-  body.appendChild(row);
+  row.appendChild(card);
+  chatBox.appendChild(row);
 }
 
-function showTypingIndicator() {
-  const body = document.getElementById('imessage-body');
+function showChatTyping() {
+  const chatBox = document.getElementById('chat-messages-box');
   const row = document.createElement('div');
-  row.className = 'imessage-bubble-row bot';
+  row.className = 'chat-msg-row bot';
 
-  const bubble = document.createElement('div');
-  bubble.className = 'imessage-bubble bot typing-bubble';
-  bubble.innerHTML = `
-    <span class="typing-dot"></span>
-    <span class="typing-dot"></span>
-    <span class="typing-dot"></span>
+  const card = document.createElement('div');
+  card.className = 'bot-msg-card typing-dots-box';
+  card.innerHTML = `
+    <span class="typing-dot-circle"></span>
+    <span class="typing-dot-circle"></span>
+    <span class="typing-dot-circle"></span>
   `;
 
-  row.appendChild(bubble);
-  body.appendChild(row);
+  row.appendChild(card);
+  chatBox.appendChild(row);
   return row;
 }
 
-function scrollChatBottom() {
-  const body = document.getElementById('imessage-body');
-  if (body) {
-    body.scrollTop = body.scrollHeight;
+function scrollChatToEnd() {
+  const box = document.getElementById('chat-messages-box');
+  if (box) {
+    box.scrollTop = box.scrollHeight;
   }
 }
 
-function updateSendBtnState() {
-  const input = document.getElementById('imessage-input');
-  const btn = document.getElementById('imessage-send-btn');
+function updateChatSendButton() {
+  const input = document.getElementById('chat-text-input');
+  const btn = document.getElementById('chat-send-btn');
   if (!input || !btn) return;
 
   if (input.value.trim().length > 0) {
@@ -538,40 +532,50 @@ function updateSendBtnState() {
   }
 }
 
-// ── Dynamic Island Toast Banner ──
-let islandTimeout = null;
-function showIslandBanner(title, subtitle) {
-  const banner = document.getElementById('ios-island-banner');
-  const t = document.getElementById('island-title');
-  const s = document.getElementById('island-sub');
-  if (!banner || !t || !s) return;
+// ── Toast Banner ──
+let toastTimerInstance = null;
+function showToast(message) {
+  const toast = document.getElementById('toast-banner');
+  const text = document.getElementById('toast-text');
+  if (!toast || !text) return;
 
-  t.textContent = title;
-  s.textContent = subtitle;
-  banner.classList.remove('hidden');
+  text.textContent = message;
+  toast.classList.remove('hidden');
 
-  clearTimeout(islandTimeout);
-  islandTimeout = setTimeout(() => {
-    banner.classList.add('hidden');
-  }, 2800);
+  clearTimeout(toastTimerInstance);
+  toastTimerInstance = setTimeout(() => {
+    toast.classList.add('hidden');
+  }, 2600);
 }
 
-// ── External Navigation Helpers ──
-function callClinic() {
-  window.location.href = 'tel:+998711234567';
+function openNotifications() {
+  showToast('🔔 Bugun barcha qabullar o\'z vaqtida amalga oshirilmoqda');
+  triggerHaptic('light');
 }
 
-function openMap() {
+function openGoogleMap() {
   window.open('https://maps.google.com/?q=Toshkent+Chilonzor+14', '_blank');
 }
 
-// ── App Init ──
-window.addEventListener('DOMContentLoaded', () => {
-  initCalendarStrip();
-  renderServicesList(SERVICES_DATA);
+function callClinicPhone() {
+  window.location.href = 'tel:+998711234567';
+}
 
-  const imessageInput = document.getElementById('imessage-input');
-  if (imessageInput) {
-    imessageInput.addEventListener('input', updateSendBtnState);
+// ── Application Initialization ──
+window.addEventListener('DOMContentLoaded', () => {
+  // Set patient name if Telegram user is available
+  if (tg?.initDataUnsafe?.user?.first_name) {
+    const pName = document.getElementById('home-patient-name');
+    if (pName) {
+      pName.textContent = tg.initDataUnsafe.user.first_name;
+    }
+  }
+
+  buildCalendarStrip();
+  renderServicesCatalog(DENTAL_SERVICES);
+
+  const chatInput = document.getElementById('chat-text-input');
+  if (chatInput) {
+    chatInput.addEventListener('input', updateChatSendButton);
   }
 });
