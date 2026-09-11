@@ -1,21 +1,25 @@
 // ═══════════════════════════════════════════════════════════════════
-//  DentCare — Ultra-Professional JavaScript Controller
+//  DentCare — Bulletproof Mobile Controller (app.js)
 // ═══════════════════════════════════════════════════════════════════
 
-const tg = window.Telegram?.WebApp;
-if (tg) {
-  tg.ready();
-  tg.expand();
-  try {
-    tg.setHeaderColor('#F8FAFC');
-    tg.setBackgroundColor('#F8FAFC');
-  } catch (e) {}
+// Safely initialize Telegram WebApp
+let tg = null;
+try {
+  if (window.Telegram && window.Telegram.WebApp) {
+    tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+    if (tg.setHeaderColor) tg.setHeaderColor('#F8FAFC');
+    if (tg.setBackgroundColor) tg.setBackgroundColor('#F8FAFC');
+  }
+} catch (err) {
+  console.log('Telegram SDK init warning:', err);
 }
 
 // ── Application State ──
 let currentActiveTab = 'home';
 let chosenDoctor = 'Dr. Jasur Abdullayev';
-let chosenDateObj = null;
+let chosenDateObj = new Date();
 let chosenTimeSlot = null;
 
 const WEEKDAYS = ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'];
@@ -30,7 +34,7 @@ const DENTAL_SERVICES = [
     duration: '40 daqiqa',
     price: '70 000 – 180 000 so\'m',
     image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=500&auto=format&fit=crop&q=80',
-    description: 'Germaniya va Yaponiya fotopolimer kompozitlari yordamida kariesni butunlay og\'riqsiz tozalash va tishning tabiiy anatomik shaklini restavratsiya qilish.'
+    description: 'Germaniya va Yaponiya fotopolimer kompozitlari yordamida kariesni butunlay og\'riqsiz tozalash va tishning tabiiy shaklini tiklash.'
   },
   {
     id: 'cleaning',
@@ -39,7 +43,7 @@ const DENTAL_SERVICES = [
     duration: '45 daqiqa',
     price: '120 000 – 180 000 so\'m',
     image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=500&auto=format&fit=crop&q=80',
-    description: 'Shveysariyaning EMS uskunasi yordamida tish toshlari, qora dog\'lar va bakterial qatlamni milklarni zararlamasdan tozalash va ftorlash.'
+    description: 'Shveysariyaning EMS uskunasi yordamida tish toshlari, qora dog\'lar va bakterial qatlamni milklarga teginmasdan tozalash va ftorlash.'
   },
   {
     id: 'whitening',
@@ -48,7 +52,7 @@ const DENTAL_SERVICES = [
     duration: '60 daqiqa',
     price: '450 000 – 900 000 so\'m',
     image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=500&auto=format&fit=crop&q=80',
-    description: 'Dunyo miqyosidagi eng xavfsiz sovuq LED nuri texnologiyasi. Emalni saqlagan holda tishlarni 6 dan 8 tongacha oppoq qilish.'
+    description: 'Sovuq LED nuri texnologiyasi. Emalni saqlagan holda tishlarni 6 dan 8 tongacha oppoq qilish. 1 yildan ortiq saqlanadi.'
   },
   {
     id: 'implant',
@@ -57,7 +61,7 @@ const DENTAL_SERVICES = [
     duration: '1-3 seans',
     price: '1 800 000 – 3 500 000 so\'m',
     image: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=500&auto=format&fit=crop&q=80',
-    description: 'Nobel Biocare (Shveysariya) va Osstem (Janubiy Koreya) titan implantlari. Yo\'qolgan tishni 100% qayta tiklash va 10 yillik kafolat.'
+    description: 'Nobel Biocare (Shveysariya) va Osstem (Koreya) titan implantlari. Yo\'qolgan tishni 100% qayta tiklash va 10 yillik kafolat.'
   },
   {
     id: 'orthodontics',
@@ -66,7 +70,7 @@ const DENTAL_SERVICES = [
     duration: 'Kurs bo\'yicha',
     price: '2 500 000 so\'mdan',
     image: 'https://images.unsplash.com/photo-1571772996211-2f02c9727629?w=500&auto=format&fit=crop&q=80',
-    description: 'Damon Q metall va shaffof sapfir breketlar, shuningdek shaffof kappa (aligner)lar. Tish qatorini tekislash va go\'zal tabassum yaratish.'
+    description: 'Damon Q metall va shaffof sapfir breketlar, shuningdek shaffof kappa (aligner)lar. Tish qatorini tekislash va jozibali tabassum.'
   },
   {
     id: 'free-checkup',
@@ -75,7 +79,7 @@ const DENTAL_SERVICES = [
     duration: '25 daqiqa',
     price: '0 so\'m (Bepul)',
     image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=500&auto=format&fit=crop&q=80',
-    description: 'Birinchi marta kelgan barcha bemorlar uchun shifokor ko\'rigi, rentgen tahlili va individual davolash rejasi mutlaqo bepul taqdim etiladi.'
+    description: 'Birinchi marotaba tashrif buyuruvchilar uchun shifokor ko\'rigi, rentgen tahlili va shaxsiy davolash rejasi bepul taqdim etiladi.'
   }
 ];
 
@@ -87,14 +91,15 @@ function switchTab(tabId) {
     return;
   }
 
-  // Remove active from old tab
-  document.getElementById(`tab-${currentActiveTab}`)?.classList.remove('active');
-  document.getElementById(`dock-btn-${currentActiveTab}`)?.classList.remove('active');
+  // Hide old tab
+  const oldScene = document.getElementById(`tab-${currentActiveTab}`);
+  const oldDockBtn = document.getElementById(`dock-btn-${currentActiveTab}`);
+  if (oldScene) oldScene.classList.remove('active');
+  if (oldDockBtn) oldDockBtn.classList.remove('active');
 
-  // Activate new tab
+  // Show new tab
   const targetScene = document.getElementById(`tab-${tabId}`);
   const targetDockBtn = document.getElementById(`dock-btn-${tabId}`);
-
   if (targetScene && targetDockBtn) {
     targetScene.classList.add('active');
     targetDockBtn.classList.add('active');
@@ -104,18 +109,21 @@ function switchTab(tabId) {
   triggerHaptic('selection');
 
   if (tabId === 'chat') {
-    document.getElementById('chat-notification-dot')?.classList.add('hidden');
+    const dot = document.getElementById('chat-notification-dot');
+    if (dot) dot.classList.add('hidden');
     scrollChatToEnd();
   }
 }
 
 // ── Haptics ──
 function triggerHaptic(type) {
-  if (!tg?.HapticFeedback) return;
-  if (type === 'selection') tg.HapticFeedback.selectionChanged();
-  else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
-  else if (type === 'warning') tg.HapticFeedback.notificationOccurred('warning');
-  else tg.HapticFeedback.impactOccurred(type || 'light');
+  try {
+    if (!tg?.HapticFeedback) return;
+    if (type === 'selection') tg.HapticFeedback.selectionChanged();
+    else if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+    else if (type === 'warning') tg.HapticFeedback.notificationOccurred('warning');
+    else tg.HapticFeedback.impactOccurred(type || 'light');
+  } catch (e) {}
 }
 
 // ── Doctor Picker Helpers ──
@@ -123,7 +131,6 @@ function selectDoctorQuick(doctorName, doctorSpec) {
   chosenDoctor = doctorName;
   switchTab('schedule');
 
-  // Highlight selected card in schedule
   document.querySelectorAll('.doc-pick-card').forEach(card => {
     if (card.textContent.includes(doctorName.split(' ')[1])) {
       card.classList.add('active');
@@ -134,7 +141,7 @@ function selectDoctorQuick(doctorName, doctorSpec) {
 
   const noteField = document.getElementById('patient-note');
   if (noteField) {
-    noteField.value = `Shifokor: ${doctorName} (${doctorSpec})`;
+    noteField.value = `Shifokor: ${doctorName}`;
   }
 }
 
@@ -150,7 +157,7 @@ function bookCategory(categoryName) {
   const serviceSelect = document.getElementById('patient-service');
   if (serviceSelect) {
     for (let opt of serviceSelect.options) {
-      if (opt.text.toLowerCase().includes(categoryName.toLowerCase().slice(0, 5))) {
+      if (opt.text.toLowerCase().includes(categoryName.toLowerCase().slice(0, 4))) {
         serviceSelect.value = opt.value;
         break;
       }
@@ -230,29 +237,24 @@ function buildTimeSlots() {
 
   const morningTimes = ['09:00', '09:45', '10:30', '11:15', '12:00'];
   const afternoonTimes = ['14:00', '14:45', '15:30', '16:15', '17:00', '17:45', '18:30'];
-
   const busySlotsList = ['10:30', '14:45', '16:15'];
 
-  // Render Morning
   morningTimes.forEach(time => {
     const isBusy = busySlotsList.includes(time);
     const chip = document.createElement('div');
     chip.className = `slot-chip ${isBusy ? 'busy' : ''}`;
     chip.textContent = time;
-
     if (!isBusy) {
       chip.onclick = () => selectSlot(chip, time);
     }
     morningBox.appendChild(chip);
   });
 
-  // Render Afternoon
   afternoonTimes.forEach(time => {
     const isBusy = busySlotsList.includes(time);
     const chip = document.createElement('div');
     chip.className = `slot-chip ${isBusy ? 'busy' : ''}`;
     chip.textContent = time;
-
     if (!isBusy) {
       chip.onclick = () => selectSlot(chip, time);
     }
@@ -375,7 +377,7 @@ function renderServicesCatalog(list) {
     const card = document.createElement('div');
     card.className = 'service-catalog-card';
     card.innerHTML = `
-      <img src="${svc.image}" alt="${svc.title}" class="service-card-image"/>
+      <img src="${svc.image}" alt="${svc.title}" class="service-card-image" loading="lazy"/>
       <div class="service-card-body">
         <div class="service-top-badge-row">
           <span class="service-category-badge">${svc.category}</span>
@@ -418,7 +420,7 @@ function filterServicesCatalog() {
 
 // ── DentAI Smart Chat Knowledge Base ──
 const AI_RESPONSES = {
-  'og\'ri|achish|yallig\'|puls': `🦷 <b>Tish og'rig'ida birinchi yordam:</b>\n\n1. Ibuprofen (400 mg) yoki Nimesulid tabletkasi ichishingiz mumkin;\n2. 1 stakan iliq suvga 1 choy qoshiq soda va tuz solib og'izni chayqang;\n3. Og'rigan joyga issiq narsa qo'ymang (bu yallig'lanishni kuchaytiradi);\n4. Karies asab tolalariga yetmasligi uchun zudlik bilan qabulga yoziling.\n\nKlinikamiz bugun soat 19:00 gacha ochiq! 📞 +998 (71) 123-45-67`,
+  'og\'ri|achish|yallig\'|puls': `🦷 <b>Tish og'rig'ida birinchi yordam:</b>\n\n1. Ibuprofen (400 mg) yoki Nimesulid tabletkasi ichishingiz mumkin;\n2. 1 stakan iliq suvga 1 choy qoshiq soda va tuz solib og'izni chayqang;\n3. Og'rigan joyga issiq narsa qo'ymang;\n4. Karies asab tolalariga yetmasligi uchun zudlik bilan qabulga yoziling.\n\nKlinikamiz bugun soat 19:00 gacha ochiq! 📞 +998 (71) 123-45-67`,
 
   'vaqt|qabul|soat|jadval|qachon': `📅 <b>DentCare ish jadvali:</b>\n\n• Dushanba – Shanba: 09:00 dan 19:00 gacha;\n• Tushlik tanaffusisiz;\n• Yakshanba: Dam olish kuni.\n\n"Jadval" bo'limida sizga qulay shifokor va vaqtni bemalol tanlashingiz mumkin!`,
 
@@ -443,7 +445,7 @@ function getBotReply(userText) {
       return AI_RESPONSES[key];
     }
   }
-  return `Tushundim. Tishingiz holati bo'yicha aniq tashxis va tavsiya berish uchun klinikamiz shifokori ko'rigidan o'tishingizni maslahat beramiz.\n\n"Jadval" bo'limidan bepul ko'rikka yozilishingiz yoki to'g'ridan-to'g'ri +998 (71) 123-45-67 raqamiga qo'ng'iroq qilishingiz mumkin.`;
+  return `Tushundim. Tishingiz holati bo'yicha aniq tashxis va tavsiya berish uchun shifokorimiz ko'rigidan o'tishingizni maslahat beramiz.\n\n"Jadval" bo'limidan bepul ko'rikka yozilishingiz yoki to'g'ridan-to'g'ri +998 (71) 123-45-67 raqamiga qo'ng'iroq qilishingiz mumkin.`;
 }
 
 function handleChatSend() {
@@ -451,16 +453,13 @@ function handleChatSend() {
   const text = input?.value.trim();
   if (!text) return;
 
-  // Append user message
   appendChatMessage(text, 'user');
   input.value = '';
   updateChatSendButton();
   triggerHaptic('light');
 
-  // Hide quick suggestion chips after first use
   document.getElementById('chat-quick-chips')?.classList.add('hidden');
 
-  // Show typing
   const typingRow = showChatTyping();
   scrollChatToEnd();
 
@@ -561,21 +560,43 @@ function callClinicPhone() {
   window.location.href = 'tel:+998711234567';
 }
 
-// ── Application Initialization ──
-window.addEventListener('DOMContentLoaded', () => {
-  // Set patient name if Telegram user is available
-  if (tg?.initDataUnsafe?.user?.first_name) {
-    const pName = document.getElementById('home-patient-name');
-    if (pName) {
-      pName.textContent = tg.initDataUnsafe.user.first_name;
+// ── Make functions available globally on window for inline HTML onclick ──
+window.switchTab = switchTab;
+window.selectDoctorQuick = selectDoctorQuick;
+window.pickDoctorCard = pickDoctorCard;
+window.bookCategory = bookCategory;
+window.executeBooking = executeBooking;
+window.closeBookingModal = closeBookingModal;
+window.bookServiceItem = bookServiceItem;
+window.filterServicesCatalog = filterServicesCatalog;
+window.handleChatSend = handleChatSend;
+window.sendQuickPrompt = sendQuickPrompt;
+window.openNotifications = openNotifications;
+window.openGoogleMap = openGoogleMap;
+window.callClinicPhone = callClinicPhone;
+
+// ── App Init (Immediate & Safe) ──
+function initApp() {
+  try {
+    if (tg?.initDataUnsafe?.user?.first_name) {
+      const pName = document.getElementById('home-patient-name');
+      if (pName) pName.textContent = tg.initDataUnsafe.user.first_name;
     }
-  }
 
-  buildCalendarStrip();
-  renderServicesCatalog(DENTAL_SERVICES);
+    buildCalendarStrip();
+    renderServicesCatalog(DENTAL_SERVICES);
 
-  const chatInput = document.getElementById('chat-text-input');
-  if (chatInput) {
-    chatInput.addEventListener('input', updateChatSendButton);
+    const chatInput = document.getElementById('chat-text-input');
+    if (chatInput) {
+      chatInput.addEventListener('input', updateChatSendButton);
+    }
+  } catch (e) {
+    console.error('App init error:', e);
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
