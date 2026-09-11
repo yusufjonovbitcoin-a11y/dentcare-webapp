@@ -2,425 +2,447 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
   <title>DentCare</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- ══ LAUNCH SCREEN ══════════════════════════ -->
-<div id="launch">
-  <div class="launch-icon">
-    <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-      <rect width="80" height="80" rx="20" fill="url(#li)"/>
-      <path d="M40 16C29.5 16 21 25.5 21 35c0 6 3 11.5 7.5 15L30 64h6l2.5-10h3L44 64h6l1.5-14c4.5-3.5 7.5-9 7.5-15C59 25.5 50.5 16 40 16z" fill="white"/>
-      <defs>
-        <linearGradient id="li" x1="0" y1="0" x2="80" y2="80">
-          <stop offset="0%" stop-color="#34AADC"/>
-          <stop offset="100%" stop-color="#007AFF"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  </div>
-  <h1 class="launch-title">DentCare</h1>
-  <p class="launch-sub">Dental Clinic</p>
-</div>
+<!-- ══ APP SHELL ════════════════════════════════════ -->
+<div id="app" class="ios-app">
 
-<!-- ══ APP ════════════════════════════════════ -->
-<div id="app" class="app hidden">
-
-  <!-- ━━ TAB: HOME ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <div id="tab-home" class="tab-view active">
-
-    <!-- iOS Navigation Bar -->
-    <div class="ios-nav">
-      <div class="ios-nav-inner">
-        <span class="ios-nav-title">DentCare</span>
-        <button class="ios-nav-action" onclick="openNotifSheet()">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="scroll-view">
-
-      <!-- Hero -->
-      <div class="hero-wrap">
-        <div class="ios-hero">
-          <div class="hero-badge">⭐ Toshkentdagi #1</div>
-          <h2 class="hero-h">Sogʻlom tish —<br>baxtli hayot</h2>
-          <p class="hero-p">Og'riqsiz davolash · Zamonaviy uskunalar</p>
-          <button class="hero-btn ios-btn-filled" onclick="switchTab('schedule')">
-            Qabul olish
+  <!-- ━━ TAB 1: BOSH SAHIFA (HEALTH & HIG STYLE) ━━━━━━━━━━━━ -->
+  <div id="tab-home" class="ios-tab-view active">
+    <!-- Navigation Bar with Large Title -->
+    <header class="ios-nav-header">
+      <div class="ios-nav-inline">
+        <span class="ios-nav-inline-title">DentCare</span>
+        <div class="ios-nav-actions">
+          <button class="ios-icon-btn" onclick="openNotifSheet()" aria-label="Bildirishnomalar">
+            <svg class="sf-icon" viewBox="0 0 24 24">
+              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+            </svg>
           </button>
-          <div class="hero-tooth">🦷</div>
-          <div class="hero-ring r1"></div>
-          <div class="hero-ring r2"></div>
+        </div>
+      </div>
+      <div class="ios-large-title-row">
+        <div class="ios-large-title">DentCare</div>
+        <div class="ios-avatar-badge" onclick="switchTab('chat')">
+          <span class="avatar-text">AI</span>
+          <span class="online-indicator"></span>
+        </div>
+      </div>
+    </header>
+
+    <div class="ios-scroll-content">
+
+      <!-- Today Highlight Card (Apple Health Summary Style) -->
+      <section class="ios-card-widget">
+        <div class="widget-header">
+          <div class="widget-icon-pill" style="background:#E1F0FF; color:#007AFF;">
+            <svg class="sf-icon-sm" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+            <span>KLINIKA HOLATI</span>
+          </div>
+          <span class="widget-meta">Bugun 09:00 – 19:00</span>
+        </div>
+        <div class="widget-body">
+          <h2 class="widget-title">Zamonaviy va og'riqsiz tish davolash</h2>
+          <p class="widget-desc">Germaniya va Shveysariya texnologiyalari. Birinchi konsultatsiya bepul.</p>
+        </div>
+        <div class="widget-footer">
+          <button class="ios-pill-btn" onclick="switchTab('schedule')">
+            <span>Qabulga yozilish</span>
+            <svg class="sf-chevron-mini" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- Stats Metric Cards (iOS Fitness Ring / Metric style) -->
+      <div class="ios-metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">BEMORLAR</span>
+          <div class="metric-value">2,500<span class="metric-unit">+</span></div>
+          <span class="metric-sub">99.2% qoniqish</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">TAJRIBA</span>
+          <div class="metric-value">15<span class="metric-unit">yil</span></div>
+          <span class="metric-sub">Oliy toifali vrachlar</span>
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="ios-grouped-card mx">
-        <div class="stat-row">
-          <div class="stat-cell">
-            <span class="stat-val">2,000+</span>
-            <span class="stat-key">Bemor</span>
+      <!-- Inset Grouped Section 1: Tezkor xizmatlar -->
+      <div class="ios-section-header">TEZKOR HARAKATLAR</div>
+      <div class="ios-inset-group">
+        <div class="ios-row" onclick="switchTab('schedule')">
+          <div class="ios-sf-badge" style="background:#007AFF;">
+            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
           </div>
-          <div class="stat-sep"></div>
-          <div class="stat-cell">
-            <span class="stat-val">15+</span>
-            <span class="stat-key">Yil tajriba</span>
+          <div class="ios-row-content">
+            <span class="ios-row-title">Qabul vaqtini band qilish</span>
+            <span class="ios-row-subtitle">Bo'sh soatlarni tanlang</span>
           </div>
-          <div class="stat-sep"></div>
-          <div class="stat-cell">
-            <span class="stat-val">98%</span>
-            <span class="stat-key">Muvaffaqiyat</span>
+          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
+        </div>
+        <div class="ios-row" onclick="switchTab('services')">
+          <div class="ios-sf-badge" style="background:#34C759;">
+            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
           </div>
+          <div class="ios-row-content">
+            <span class="ios-row-title">Xizmatlar va narxlar</span>
+            <span class="ios-row-subtitle">6 ta asosiy yo'nalish</span>
+          </div>
+          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
+        </div>
+        <div class="ios-row" onclick="switchTab('chat')">
+          <div class="ios-sf-badge" style="background:#AF52DE;">
+            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+          </div>
+          <div class="ios-row-content">
+            <span class="ios-row-title">DentAI bilan maslahat</span>
+            <span class="ios-row-subtitle">Onlayn savol-javob</span>
+          </div>
+          <span class="ios-badge-pill">YANGI</span>
+          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
         </div>
       </div>
 
-      <!-- Section: Quick -->
-      <div class="section-hd mx"><span>Tezkor harakatlar</span></div>
-      <div class="quick-row mx">
-        <button class="quick-cell" onclick="switchTab('schedule')">
-          <div class="qc-icon" style="background:linear-gradient(145deg,#34AADC,#007AFF)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="white" stroke-width="1.8"/><path d="M3 9h18M8 2v4M16 2v4" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <!-- Inset Grouped Section 2: Shifokorlar -->
+      <div class="ios-section-header">MUTAXASSIS SHIFOKORLAR</div>
+      <div class="ios-inset-group">
+        <div class="ios-row" onclick="selectDoctorAndBook('Dr. Jasur Abdullayev (Ortodontist)')">
+          <div class="ios-avatar-circle" style="background:#EBF5FF; color:#007AFF;">JA</div>
+          <div class="ios-row-content">
+            <div class="row-title-with-star">
+              <span class="ios-row-title">Dr. Jasur Abdullayev</span>
+              <span class="ios-rating-tag">★ 4.9</span>
+            </div>
+            <span class="ios-row-subtitle">Bosh ortodontist · 15 yil tajriba</span>
           </div>
-          <span>Qabul</span>
-        </button>
-        <button class="quick-cell" onclick="switchTab('services')">
-          <div class="qc-icon" style="background:linear-gradient(145deg,#4CD964,#28A745)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12h6M9 16h4" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
-          </div>
-          <span>Xizmatlar</span>
-        </button>
-        <button class="quick-cell" onclick="switchTab('chat')">
-          <div class="qc-icon" style="background:linear-gradient(145deg,#BF5AF2,#9B27D0)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>
-          </div>
-          <span>AI Chat</span>
-        </button>
-        <button class="quick-cell" onclick="callClinic()">
-          <div class="qc-icon" style="background:linear-gradient(145deg,#FF9500,#FF6B00)">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .91h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <span>Qo'ng'iroq</span>
-        </button>
-      </div>
-
-      <!-- Section: Doctors -->
-      <div class="section-hd mx"><span>Shifokorlarimiz</span><button class="see-all" onclick="">Barchasi</button></div>
-      <div class="ios-table mx">
-        <div class="ios-cell" onclick="switchTab('schedule')">
-          <div class="cell-icon-wrap" style="background:#EBF5FF"><span style="font-size:26px">👨‍⚕️</span></div>
-          <div class="cell-body">
-            <span class="cell-title">Dr. Abdullayev Jasur</span>
-            <span class="cell-sub">Ortodontist · 15 yil tajriba</span>
-            <span class="cell-badge">⭐ 4.9</span>
-          </div>
-          <div class="cell-chev">
-            <svg width="8" height="13" viewBox="0 0 8 13"><path d="M1 1l6 5.5L1 12" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+          <button class="ios-inline-action-btn">Yozilish</button>
         </div>
-        <div class="cell-sep"></div>
-        <div class="ios-cell" onclick="switchTab('schedule')">
-          <div class="cell-icon-wrap" style="background:#F5F0FF"><span style="font-size:26px">👩‍⚕️</span></div>
-          <div class="cell-body">
-            <span class="cell-title">Dr. Karimova Zulfiya</span>
-            <span class="cell-sub">Implantolog · 12 yil tajriba</span>
-            <span class="cell-badge">⭐ 4.8</span>
+        <div class="ios-row" onclick="selectDoctorAndBook('Dr. Zulfiya Karimova (Implantolog)')">
+          <div class="ios-avatar-circle" style="background:#F5F0FF; color:#AF52DE;">ZK</div>
+          <div class="ios-row-content">
+            <div class="row-title-with-star">
+              <span class="ios-row-title">Dr. Zulfiya Karimova</span>
+              <span class="ios-rating-tag">★ 4.8</span>
+            </div>
+            <span class="ios-row-subtitle">Jarroh-implantolog · 12 yil tajriba</span>
           </div>
-          <div class="cell-chev">
-            <svg width="8" height="13" viewBox="0 0 8 13"><path d="M1 1l6 5.5L1 12" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+          <button class="ios-inline-action-btn">Yozilish</button>
         </div>
-        <div class="cell-sep"></div>
-        <div class="ios-cell" onclick="switchTab('schedule')">
-          <div class="cell-icon-wrap" style="background:#F0FFF4"><span style="font-size:26px">👨‍⚕️</span></div>
-          <div class="cell-body">
-            <span class="cell-title">Dr. Yusupov Bobur</span>
-            <span class="cell-sub">Terapevt · 10 yil tajriba</span>
-            <span class="cell-badge">⭐ 4.9</span>
+        <div class="ios-row" onclick="selectDoctorAndBook('Dr. Bobur Yusupov (Terapevt)')">
+          <div class="ios-avatar-circle" style="background:#F0FFF4; color:#34C759;">BY</div>
+          <div class="ios-row-content">
+            <div class="row-title-with-star">
+              <span class="ios-row-title">Dr. Bobur Yusupov</span>
+              <span class="ios-rating-tag">★ 4.9</span>
+            </div>
+            <span class="ios-row-subtitle">Kattalar va bolalar terapevti · 10 yil</span>
           </div>
-          <div class="cell-chev">
-            <svg width="8" height="13" viewBox="0 0 8 13"><path d="M1 1l6 5.5L1 12" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+          <button class="ios-inline-action-btn">Yozilish</button>
         </div>
       </div>
 
-      <!-- Promo Banner -->
-      <div class="mx" style="margin-top:20px">
-        <div class="promo-card">
-          <div class="promo-left">
-            <span class="promo-label">Maxsus taklif</span>
-            <h3>Birinchi tashrif<br><b>BEPUL!</b></h3>
-            <p>Konsultatsiya + tish tekshiruvi</p>
-            <button class="promo-cta" onclick="switchTab('schedule')">Ro'yxatdan o'tish</button>
+      <!-- Inset Grouped Section 3: Klinika ma'lumotlari -->
+      <div class="ios-section-header">ALOQA VA MANZIL</div>
+      <div class="ios-inset-group">
+        <div class="ios-row" onclick="openMap()">
+          <div class="ios-sf-badge" style="background:#FF3B30;">
+            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
           </div>
-          <div class="promo-emo">🏆</div>
+          <div class="ios-row-content">
+            <span class="ios-row-title">Toshkent, Chilonzor 14-uy</span>
+            <span class="ios-row-subtitle">Mo'ljal: Mirzo Ulug'bek metrosi</span>
+          </div>
+          <span class="ios-detail-label">Xarita</span>
+          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
+        </div>
+        <div class="ios-row" onclick="callClinic()">
+          <div class="ios-sf-badge" style="background:#34C759;">
+            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+          </div>
+          <div class="ios-row-content">
+            <span class="ios-row-title">+998 71 123-45-67</span>
+            <span class="ios-row-subtitle">Qo'ng'iroq uchun bepul</span>
+          </div>
+          <span class="ios-detail-label">Bog'lanish</span>
+          <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
+        </div>
+        <div class="ios-row">
+          <div class="ios-sf-badge" style="background:#FF9500;">
+            <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+          </div>
+          <div class="ios-row-content">
+            <span class="ios-row-title">Du – Shanba: 09:00 – 19:00</span>
+            <span class="ios-row-subtitle">Yakshanba: Dam olish kuni</span>
+          </div>
+          <span class="ios-badge-open">OCHIQ</span>
         </div>
       </div>
 
-      <!-- Contact -->
-      <div class="section-hd mx" style="margin-top:20px"><span>Aloqa</span></div>
-      <div class="ios-table mx">
-        <div class="ios-cell" onclick="openMap()">
-          <div class="cell-icon-wrap" style="background:#FFE5E5"><span style="font-size:22px">📍</span></div>
-          <div class="cell-body">
-            <span class="cell-title">Manzil</span>
-            <span class="cell-sub">Toshkent, Chilonzor t., 14-uy</span>
-          </div>
-          <div class="cell-chev"><svg width="8" height="13" viewBox="0 0 8 13"><path d="M1 1l6 5.5L1 12" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="cell-sep"></div>
-        <div class="ios-cell" onclick="callClinic()">
-          <div class="cell-icon-wrap" style="background:#E5FFE9"><span style="font-size:22px">📞</span></div>
-          <div class="cell-body">
-            <span class="cell-title">Telefon</span>
-            <span class="cell-sub">+998 71 123-45-67</span>
-          </div>
-          <div class="cell-chev"><svg width="8" height="13" viewBox="0 0 8 13"><path d="M1 1l6 5.5L1 12" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        </div>
-        <div class="cell-sep"></div>
-        <div class="ios-cell">
-          <div class="cell-icon-wrap" style="background:#FFF5E5"><span style="font-size:22px">⏰</span></div>
-          <div class="cell-body">
-            <span class="cell-title">Ish vaqti</span>
-            <span class="cell-sub">Du–Ju: 09:00–19:00 · Sha: 10:00–15:00</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="bottom-spacer"></div>
+      <div class="ios-bottom-pad"></div>
     </div>
   </div>
 
-  <!-- ━━ TAB: SCHEDULE ━━━━━━━━━━━━━━━━━━━━━━ -->
-  <div id="tab-schedule" class="tab-view">
-    <div class="ios-nav">
-      <div class="ios-nav-inner">
-        <span class="ios-nav-title">Qabul jadvali</span>
+  <!-- ━━ TAB 2: JADVAL VA BRON (NATIVE IOS CALENDAR STYLE) ━━━ -->
+  <div id="tab-schedule" class="ios-tab-view">
+    <header class="ios-nav-header">
+      <div class="ios-nav-inline">
+        <span class="ios-nav-inline-title">Qabul</span>
       </div>
-    </div>
+      <div class="ios-large-title-row">
+        <div class="ios-large-title">Jadval</div>
+      </div>
+    </header>
 
-    <div class="scroll-view">
+    <div class="ios-scroll-content">
 
-      <!-- Calendar strip -->
-      <div class="section-hd mx"><span>Sanani tanlang</span></div>
-      <div class="cal-strip-wrap">
-        <div class="cal-strip" id="cal-strip"></div>
+      <!-- iOS Segmented Control -->
+      <div class="ios-segmented-wrap">
+        <div class="ios-segmented-control">
+          <button class="seg-btn active" id="seg-all" onclick="filterDoctorSlot('all')">Barcha vrachlar</button>
+          <button class="seg-btn" id="seg-ortho" onclick="filterDoctorSlot('ortho')">Ortodont</button>
+          <button class="seg-btn" id="seg-impl" onclick="filterDoctorSlot('impl')">Implantolog</button>
+        </div>
       </div>
 
-      <!-- Time picker -->
-      <div class="section-hd mx"><span>Vaqtni tanlang <span id="sel-date-label" class="sel-date-lbl"></span></span></div>
-      <div class="time-grid mx" id="time-grid"></div>
+      <!-- Calendar Strip Section -->
+      <div class="ios-section-header">SANANI TANLANG</div>
+      <div class="ios-calendar-container">
+        <div class="ios-cal-scroll" id="cal-strip"></div>
+      </div>
 
-      <!-- Form -->
-      <div class="section-hd mx" style="margin-top:20px"><span>Ma'lumotlaringiz</span></div>
+      <!-- Time Slot Section -->
+      <div class="ios-section-header">
+        <span>BO'SH VAQTLAR</span>
+        <span id="selected-date-preview" class="ios-header-extra">Bugun</span>
+      </div>
+      <div class="ios-inset-group ios-p-16">
+        <div class="ios-slots-flow" id="slots-container"></div>
+      </div>
 
-      <div class="ios-form mx">
-        <div class="ios-form-field">
-          <label>To'liq ism</label>
-          <input id="f-name" type="text" placeholder="Ism Familiya" autocomplete="name"/>
+      <!-- Booking Form: iOS Inset Grouped Form Style -->
+      <div class="ios-section-header">BEMOR MA'LUMOTLARI</div>
+      <div class="ios-inset-group">
+        <div class="ios-form-row">
+          <label class="form-label" for="f-name">Ism va familiya</label>
+          <input class="form-input" id="f-name" type="text" placeholder="Aziz Rahimov" autocomplete="name"/>
         </div>
-        <div class="form-sep"></div>
-        <div class="ios-form-field">
-          <label>Telefon</label>
-          <input id="f-phone" type="tel" placeholder="+998 90 000 00 00" autocomplete="tel"/>
+        <div class="ios-form-row">
+          <label class="form-label" for="f-phone">Telefon raqam</label>
+          <input class="form-input" id="f-phone" type="tel" placeholder="+998 90 123 45 67" autocomplete="tel"/>
         </div>
-        <div class="form-sep"></div>
-        <div class="ios-form-field">
-          <label>Xizmat</label>
-          <div class="ios-select-wrap">
-            <select id="f-service">
+        <div class="ios-form-row">
+          <label class="form-label" for="f-service">Xizmat turi</label>
+          <div class="form-select-wrap">
+            <select class="form-select" id="f-service">
               <option value="">Tanlang...</option>
-              <option>🦷 Tish davolash</option>
-              <option>✨ Tish oqartirish</option>
-              <option>🔩 Implant qo'yish</option>
-              <option>😁 Ortodontik davolash</option>
-              <option>🧹 Tish tozalash</option>
-              <option>💬 Bepul konsultatsiya</option>
+              <option value="Tish davolash (Terapiya)">Tish davolash (Terapiya)</option>
+              <option value="Professional tozalash (Air Flow)">Professional tozalash (Air Flow)</option>
+              <option value="Tish oqartirish (Zoom 4)">Tish oqartirish (Zoom 4)</option>
+              <option value="Implantatsiya (Nobel Biocare)">Implantatsiya (Nobel Biocare)</option>
+              <option value="Breket o'rnatish (Ortodontiya)">Breket o'rnatish (Ortodontiya)</option>
+              <option value="Bepul konsultatsiya">Bepul konsultatsiya</option>
             </select>
-            <svg width="8" height="13" viewBox="0 0 8 13"><path d="M1 1l6 5.5L1 12" stroke="#C7C7CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg class="sf-chevron" viewBox="0 0 8 13"><path d="M1.5 1.5l5 5-5 5"/></svg>
           </div>
         </div>
-        <div class="form-sep"></div>
-        <div class="ios-form-field">
-          <label>Izoh</label>
-          <textarea id="f-note" placeholder="Ixtiyoriy..." rows="3"></textarea>
+        <div class="ios-form-row">
+          <label class="form-label" for="f-note">Shifokorga izoh</label>
+          <input class="form-input" id="f-note" type="text" placeholder="Masalan: pastki tishda karies"/>
         </div>
       </div>
 
-      <div class="mx" style="margin-top:12px">
-        <button class="ios-btn-filled full-btn" onclick="submitBooking()">Tasdiqlash</button>
+      <!-- Primary Action Button (iOS 18 Filled Prominent Style) -->
+      <div class="ios-action-area">
+        <button class="ios-primary-btn" onclick="submitBooking()">
+          <span>Qabulni tasdiqlash</span>
+        </button>
+        <p class="ios-caption-hint">Tasdiqlangach, Telegram orqali xabarnoma yuboriladi</p>
       </div>
 
-      <div class="bottom-spacer"></div>
+      <div class="ios-bottom-pad"></div>
     </div>
   </div>
 
-  <!-- ━━ TAB: SERVICES ━━━━━━━━━━━━━━━━━━━━━━ -->
-  <div id="tab-services" class="tab-view">
-    <div class="ios-nav">
-      <div class="ios-nav-inner">
-        <span class="ios-nav-title">Xizmatlar</span>
+  <!-- ━━ TAB 3: XIZMATLAR VA NARXLAR ━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="tab-services" class="ios-tab-view">
+    <header class="ios-nav-header">
+      <div class="ios-nav-inline">
+        <span class="ios-nav-inline-title">Xizmatlar</span>
       </div>
-    </div>
-
-    <div class="scroll-view">
-      <!-- Search -->
-      <div class="mx" style="margin-top:12px">
-        <div class="ios-search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#8E8E93" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#8E8E93" stroke-width="2" stroke-linecap="round"/></svg>
-          <input type="text" id="svc-q" placeholder="Xizmat qidiring..." oninput="filterSvc()"/>
+      <div class="ios-large-title-row">
+        <div class="ios-large-title">Xizmatlar</div>
+      </div>
+      <!-- iOS Native Search Bar -->
+      <div class="ios-search-container">
+        <div class="ios-search-bar">
+          <svg class="sf-search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          <input id="service-search-input" type="search" placeholder="Qidiruv..." oninput="onServiceSearch()"/>
+          <button id="search-clear-btn" class="ios-clear-btn hidden" onclick="clearServiceSearch()">✕</button>
         </div>
       </div>
+    </header>
 
-      <div id="svc-container" class="mx" style="margin-top:12px"></div>
-
-      <div class="bottom-spacer"></div>
+    <div class="ios-scroll-content">
+      <div class="ios-section-header" id="services-count-header">BARCHA XIZMATLAR (6)</div>
+      <div class="ios-inset-group" id="services-list-group">
+        <!-- Rendered dynamically by JS -->
+      </div>
+      <div class="ios-bottom-pad"></div>
     </div>
   </div>
 
-  <!-- ━━ TAB: CHAT ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <div id="tab-chat" class="tab-view chat-tab">
-    <div class="ios-nav chat-nav">
-      <div class="ios-nav-inner">
-        <div class="chat-agent-info">
-          <div class="chat-av-wrap">
-            <div class="chat-av">🤖</div>
-            <div class="chat-av-dot"></div>
-          </div>
-          <div>
-            <div class="chat-agent-name">DentAI Assistant</div>
-            <div class="chat-agent-status">🟢 Onlayn</div>
-          </div>
+  <!-- ━━ TAB 4: DENTAI CHAT (AUTHENTIC IMESSAGE STYLE) ━━━━━━━ -->
+  <div id="tab-chat" class="ios-tab-view ios-imessage-view">
+    <!-- iMessage Navigation Header -->
+    <header class="imessage-nav">
+      <div class="imessage-contact-info">
+        <div class="imessage-avatar">
+          <svg viewBox="0 0 24 24" class="sf-imessage-bot"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7H9V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2zm-4 9a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm8 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-6.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/></svg>
+        </div>
+        <div class="imessage-meta">
+          <span class="imessage-name">DentAI Assistant</span>
+          <span class="imessage-sub"><span class="green-dot"></span> iMessage onlayn</span>
         </div>
       </div>
+    </header>
+
+    <!-- Chat Messages Flow -->
+    <div class="imessage-body" id="imessage-body">
+      <div class="imessage-timestamp">Bugun 09:41</div>
+
+      <div class="imessage-bubble-row bot">
+        <div class="imessage-bubble bot">
+          Assalomu alaykum! Men DentCare klinikasining sun'iy intellekt yordamchisiman. Tish og'rig'i, narxlar, shifokorlar va bo'sh vaqtlar bo'yicha savollaringizga mamnuniyat bilan javob beraman.
+        </div>
+      </div>
+
+      <!-- Quick prompts pills -->
+      <div class="imessage-chips" id="imessage-chips">
+        <button class="imessage-chip" onclick="quickAskAI('Tish og\'rig\'iga nima qilish kerak?')">🦷 Tishim og'riyapti</button>
+        <button class="imessage-chip" onclick="quickAskAI('Qabul vaqtlari qachon?')">📅 Qabul vaqtlari</button>
+        <button class="imessage-chip" onclick="quickAskAI('Tish davolash narxi qancha?')">💰 Narxlar qanday?</button>
+        <button class="imessage-chip" onclick="quickAskAI('Breket qo\'yish narxi va muddati')">😁 Breket haqida</button>
+        <button class="imessage-chip" onclick="quickAskAI('Klinika manzili va telefon')">📍 Manzil</button>
+      </div>
     </div>
 
-    <div class="chat-messages" id="chat-msgs">
-      <div class="chat-sys-label">Bugun</div>
-      <div class="chat-row bot-row">
-        <div class="chat-av-sm">🤖</div>
-        <div class="chat-bubble bot-bubble">Assalomu alaykum! 👋<br><br>Men <b>DentAI</b> — tish sog'lig'i bo'yicha sun'iy intellekt yordamchiman.<br><br>Savol bering yoki mavzu tanlang! 🦷</div>
-      </div>
-      <!-- Quick suggestions -->
-      <div class="suggestions-wrap" id="suggestions">
-        <button class="suggestion" onclick="quickChat('Qabul vaqti qanday?')">📅 Qabul vaqti</button>
-        <button class="suggestion" onclick="quickChat('Tish og\'rig\'iga nima qilish kerak?')">🦷 Tish og'rig'i</button>
-        <button class="suggestion" onclick="quickChat('Narxlar qancha?')">💰 Narxlar</button>
-        <button class="suggestion" onclick="quickChat('Implant haqida')">🔩 Implant</button>
-        <button class="suggestion" onclick="quickChat('Breket haqida')">😁 Breket</button>
-        <button class="suggestion" onclick="quickChat('Klinika manzili')">📍 Manzil</button>
-      </div>
-    </div>
-
-    <div class="chat-input-bar">
-      <div class="chat-input-inner">
-        <input id="chat-field" type="text" placeholder="Xabar yozing..." onkeydown="if(event.key==='Enter')sendMsg()"/>
-        <button class="chat-send" onclick="sendMsg()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <!-- iMessage Input Bar -->
+    <div class="imessage-input-bar">
+      <div class="imessage-input-container">
+        <button class="imessage-plus-btn" onclick="openNotifSheet()" aria-label="Qo'shimcha">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        </button>
+        <input id="imessage-input" type="text" placeholder="iMessage..." onkeydown="if(event.key==='Enter')sendChatMessage()"/>
+        <button id="imessage-send-btn" class="imessage-send-btn disabled" onclick="sendChatMessage()" aria-label="Yuborish">
+          <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" transform="rotate(-90 12 12)"/></svg>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- ━━ iOS TAB BAR ━━━━━━━━━━━━━━━━━━━━━━━━ -->
-  <div class="ios-tab-bar">
-    <button class="tab-bar-item active" id="tb-home" onclick="switchTab('home')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-        <path d="M9 21V12h6v9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-      </svg>
-      <span>Bosh</span>
-    </button>
-    <button class="tab-bar-item" id="tb-schedule" onclick="switchTab('schedule')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/>
-        <path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="8" cy="14" r="1.2" fill="currentColor"/>
-        <circle cx="12" cy="14" r="1.2" fill="currentColor"/>
-        <circle cx="16" cy="14" r="1.2" fill="currentColor"/>
-        <circle cx="8" cy="18" r="1.2" fill="currentColor"/>
-        <circle cx="12" cy="18" r="1.2" fill="currentColor"/>
-      </svg>
-      <span>Jadval</span>
-    </button>
-    <button class="tab-bar-item" id="tb-services" onclick="switchTab('services')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      </svg>
-      <span>Xizmatlar</span>
-    </button>
-    <button class="tab-bar-item" id="tb-chat" onclick="switchTab('chat')">
-      <div class="tb-icon-wrap">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- ━━ NATIVE iOS TAB BAR ━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <nav class="ios-tab-bar">
+    <button class="ios-tab-item active" id="tab-btn-home" onclick="switchTab('home')">
+      <div class="tab-icon-wrap">
+        <svg class="tab-svg" viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
         </svg>
-        <div class="tb-badge hidden" id="tb-badge">●</div>
       </div>
-      <span>AI Chat</span>
+      <span class="tab-title">Bosh sahifa</span>
     </button>
-  </div>
+    <button class="ios-tab-item" id="tab-btn-schedule" onclick="switchTab('schedule')">
+      <div class="tab-icon-wrap">
+        <svg class="tab-svg" viewBox="0 0 24 24">
+          <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+        </svg>
+      </div>
+      <span class="tab-title">Jadval</span>
+    </button>
+    <button class="ios-tab-item" id="tab-btn-services" onclick="switchTab('services')">
+      <div class="tab-icon-wrap">
+        <svg class="tab-svg" viewBox="0 0 24 24">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+        </svg>
+      </div>
+      <span class="tab-title">Xizmatlar</span>
+    </button>
+    <button class="ios-tab-item" id="tab-btn-chat" onclick="switchTab('chat')">
+      <div class="tab-icon-wrap">
+        <svg class="tab-svg" viewBox="0 0 24 24">
+          <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+        </svg>
+        <span id="chat-tab-dot" class="ios-tab-badge-dot hidden"></span>
+      </div>
+      <span class="tab-title">DentAI</span>
+    </button>
+  </nav>
 
 </div>
 
-<!-- ══ SHEETS & MODALS ════════════════════════ -->
-
-<!-- Success Sheet -->
-<div id="success-sheet-bg" class="sheet-bg hidden" onclick="closeSuccessSheet()">
-  <div class="ios-sheet" id="success-sheet" onclick="event.stopPropagation()">
-    <div class="sheet-handle"></div>
-    <div class="sheet-success-icon">✅</div>
-    <h3 class="sheet-title">Band qilindi!</h3>
-    <p class="sheet-desc" id="success-desc"></p>
-    <button class="ios-btn-filled full-btn" onclick="closeSuccessSheet()">Yaxshi 👍</button>
-  </div>
-</div>
-
-<!-- Notif Sheet -->
-<div id="notif-sheet-bg" class="sheet-bg hidden" onclick="closeNotifSheet()">
-  <div class="ios-sheet" onclick="event.stopPropagation()">
-    <div class="sheet-handle"></div>
-    <h3 class="sheet-title" style="text-align:left;padding:0">Bildirishnomalar</h3>
-    <div class="notif-list">
-      <div class="notif-item">
-        <div class="notif-dot blue"></div>
-        <div class="notif-body">
-          <span class="notif-title">Eslatma</span>
-          <span class="notif-text">Ertaga soat 10:00 da qabulingiz bor</span>
-          <span class="notif-time">2 soat oldin</span>
+<!-- ══ iOS ACTION SHEET: BILDIRISHNOMALAR ════════════ -->
+<div id="notif-sheet-backdrop" class="ios-sheet-backdrop hidden" onclick="closeNotifSheet()">
+  <div class="ios-sheet-card" onclick="event.stopPropagation()">
+    <div class="sheet-grabber"></div>
+    <div class="sheet-head">
+      <h3 class="sheet-header-title">Bildirishnomalar</h3>
+      <button class="sheet-done-btn" onclick="closeNotifSheet()">Tayyor</button>
+    </div>
+    <div class="ios-inset-group sheet-group">
+      <div class="ios-row">
+        <div class="ios-sf-badge" style="background:#007AFF;">
+          <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
         </div>
+        <div class="ios-row-content">
+          <span class="ios-row-title">Qabul eslatmasi</span>
+          <span class="ios-row-subtitle">Belgilangan vaqtdan 10 daqiqa oldin yetib keling</span>
+        </div>
+        <span class="ios-detail-label">10m</span>
       </div>
-      <div class="notif-sep"></div>
-      <div class="notif-item">
-        <div class="notif-dot green"></div>
-        <div class="notif-body">
-          <span class="notif-title">Aksiya</span>
-          <span class="notif-text">Tish oqartirish — 20% chegirma! Bugunga qadar</span>
-          <span class="notif-time">Bugun</span>
+      <div class="ios-row">
+        <div class="ios-sf-badge" style="background:#34C759;">
+          <svg class="sf-badge-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
-      </div>
-      <div class="notif-sep"></div>
-      <div class="notif-item">
-        <div class="notif-dot orange"></div>
-        <div class="notif-body">
-          <span class="notif-title">Eslatma</span>
-          <span class="notif-text">Har 6 oyda profilaktik tekshiruv o'tkazing</span>
-          <span class="notif-time">3 kun oldin</span>
+        <div class="ios-row-content">
+          <span class="ios-row-title">Bahor aksiyasi</span>
+          <span class="ios-row-subtitle">Air Flow tish tozalash xizmatiga 20% chegirma</span>
         </div>
+        <span class="ios-detail-label">Aksiya</span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
-<div id="ios-toast" class="ios-toast hidden"></div>
+<!-- ══ iOS MODAL SHEET: BRON TASDIQLANDI ════════════ -->
+<div id="booking-sheet-backdrop" class="ios-sheet-backdrop hidden" onclick="closeBookingSheet()">
+  <div class="ios-sheet-card ios-sheet-center" onclick="event.stopPropagation()">
+    <div class="sheet-grabber"></div>
+    <div class="ios-check-animation">
+      <svg class="check-svg" viewBox="0 0 52 52">
+        <circle class="check-circle" cx="26" cy="26" r="25" fill="none"/>
+        <path class="check-tick" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
+    </div>
+    <h3 class="sheet-confirmed-title">Qabul muvaffaqiyatli band qilindi</h3>
+    <div class="ios-inset-group confirmed-summary-group" id="confirmed-summary-box">
+      <!-- Injected by JS -->
+    </div>
+    <button class="ios-primary-btn w-full" onclick="closeBookingSheet()">Ajoyib</button>
+  </div>
+</div>
+
+<!-- ══ iOS DYNAMIC ISLAND / NOTIFICATION BANNER ═════ -->
+<div id="ios-island-banner" class="ios-island-banner hidden">
+  <div class="island-icon-box">✓</div>
+  <div class="island-content">
+    <div class="island-title" id="island-title">Muvaffaqiyatli</div>
+    <div class="island-subtitle" id="island-sub">Amal bajarildi</div>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>
