@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=5.0"/>
+  <link rel="stylesheet" href="style.css?v=6.0"/>
 </head>
 <body>
 
@@ -229,79 +229,191 @@
   </section>
 
   <!-- ══════════════════════════════════════════════
-       TAB 2: JADVAL & BRON QILISH
+       TAB 2: JADVAL & BRON QILISH (AYNAN RASMDAGI DIZAYN)
        ══════════════════════════════════════════════ -->
   <section id="tab-schedule" class="tab-page">
     <div class="page-scroll">
-      <div class="page-header-simple">
-        <h2>Qabul Jadvali</h2>
-        <p>Shifokor va qulay vaqtni belgilang</p>
-      </div>
 
-      <!-- Shifokorni tanlash gorizontal -->
-      <div class="schedule-section-label">1. SHIFOKORNI TANLANG</div>
-      <div class="sched-doc-row" id="doc-picker">
-        <div class="sched-doc-chip active" onclick="pickDoctorCard(this, 'Dr. Jasur Abdullayev')">
-          <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=160&auto=format&fit=crop&q=80" alt="Dr. Jasur"/>
-          <span>Dr. Abdullayev</span>
-        </div>
-        <div class="sched-doc-chip" onclick="pickDoctorCard(this, 'Dr. Zulfiya Karimova')">
-          <img src="https://images.unsplash.com/photo-1594824813581-22928574d3a6?w=160&auto=format&fit=crop&q=80" alt="Dr. Zulfiya"/>
-          <span>Dr. Karimova</span>
-        </div>
-        <div class="sched-doc-chip" onclick="pickDoctorCard(this, 'Dr. Bobur Yusupov')">
-          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=160&auto=format&fit=crop&q=80" alt="Dr. Bobur"/>
-          <span>Dr. Yusupov</span>
+      <!-- 1. Top Navigation Bar: Back arrow & Title -->
+      <div class="schedule-top-nav">
+        <button class="sched-back-btn" onclick="switchTab('home')" aria-label="Orqaga">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div class="sched-title-box">
+          <h2 class="sched-main-title">Qabulga yozilish</h2>
+          <p class="sched-subtitle">Sizga qulay vaqtni tanlang</p>
         </div>
       </div>
 
-      <!-- 14 kunlik kalendar -->
-      <div class="schedule-section-label mt-16">2. KUNNI TANLANG</div>
-      <div class="calendar-scroll-strip" id="booking-cal-strip"></div>
+      <!-- 2. Selected Doctor Summary Card -->
+      <div class="selected-doctor-summary-card" id="sched-doctor-card">
+        <div class="sched-doc-top">
+          <div class="sched-doc-photo-wrap">
+            <img src="https://images.unsplash.com/photo-1594824813581-22928574d3a6?w=400&auto=format&fit=crop&q=80" alt="Zulfiya Karimova" id="sched-doc-img" class="sched-doc-photo"/>
+            <span class="sched-doc-beacon"></span>
+          </div>
+          <div class="sched-doc-info">
+            <div class="sched-doc-header-row">
+              <h3 class="sched-doc-name" id="sched-doc-name">Zulfiya Karimova</h3>
+              <div class="sched-rating-box">
+                <span class="sched-star">★</span>
+                <span class="sched-rating-val" id="sched-doc-rating">4.9</span>
+                <span class="sched-review-count" id="sched-doc-reviews">(128 ta sharh)</span>
+              </div>
+            </div>
+            <div class="sched-role-row">
+              <span class="sched-role-blue" id="sched-doc-role">Jarroh-Implantolog</span>
+              <span class="sched-iti-pill" id="sched-doc-badge">💎 ITI Member</span>
+            </div>
+            <p class="sched-bio-text" id="sched-doc-bio">Nobel Biocare va Osstem implantlari. Og'riqsiz 3D raqamli implantatsiya.</p>
+          </div>
+        </div>
 
-      <!-- Bo'sh soatlar -->
-      <div class="schedule-section-label mt-16">
-        <span>3. BO'SH SOATNI TANLANG</span>
-        <span id="selected-day-text" class="day-hint-label">Bugun</span>
-      </div>
-      <div class="slots-container-card">
-        <div class="slot-group-header">Ertalabki qabullar (09:00 – 12:00)</div>
-        <div class="slots-grid" id="morning-slots"></div>
-        <div class="slot-group-header mt-12">Tushdan keyingi qabullar (14:00 – 18:30)</div>
-        <div class="slots-grid" id="afternoon-slots"></div>
-      </div>
+        <div class="sched-stats-divider"></div>
 
-      <!-- Bemor anketasi -->
-      <div class="schedule-section-label mt-16">4. BEMOR MA'LUMOTLARI</div>
-      <div class="booking-form-card">
-        <div class="form-input-group">
-          <label>Ism va familiya *</label>
-          <input type="text" id="patient-name" placeholder="Masalan: Sardor Aliyev" autocomplete="name"/>
-        </div>
-        <div class="form-input-group">
-          <label>Telefon raqam *</label>
-          <input type="tel" id="patient-phone" placeholder="+998 90 123 45 67" autocomplete="tel"/>
-        </div>
-        <div class="form-input-group">
-          <label>Xizmat turi *</label>
-          <select id="patient-service">
-            <option value="Bepul konsultatsiya va diagnostika">Bepul konsultatsiya va diagnostika (0 so'm)</option>
-            <option value="Tish davolash va plomba">Tish davolash va plomba (70 000 so'mdan)</option>
-            <option value="Air Flow tozalash">Air Flow professional tozalash (120 000 so'm)</option>
-            <option value="Zoom 4 oqartirish">Zoom 4 tish oqartirish (450 000 so'mdan)</option>
-            <option value="Titan implantatsiya">Titan implantatsiya (1 800 000 so'mdan)</option>
-            <option value="Breket o'rnatish">Breket tizimi o'rnatish (2 500 000 so'mdan)</option>
-          </select>
-        </div>
-        <div class="form-input-group">
-          <label>Izoh yoki shikoyat</label>
-          <input type="text" id="patient-note" placeholder="Masalan: pastki tishda og'riq bor"/>
+        <div class="sched-stats-row">
+          <div class="sched-stat-item">
+            <span class="sched-stat-icon">🎖️</span>
+            <span class="sched-stat-text" id="sched-doc-exp">12 yil tajriba</span>
+          </div>
+          <div class="sched-stat-item">
+            <span class="sched-stat-icon">🎓</span>
+            <span class="sched-stat-text" id="sched-doc-patients">2000+ bemor</span>
+          </div>
+          <div class="sched-stat-item">
+            <span class="sched-stat-icon">❤️</span>
+            <span class="sched-stat-text" id="sched-doc-recommend">Bemorlar tavsiyasi 98%</span>
+          </div>
         </div>
       </div>
 
-      <button class="confirm-big-btn" onclick="executeBooking()">
-        <span>Qabulni tasdiqlash</span>
-      </button>
+      <!-- 3. Step 1: Sanani tanlang -->
+      <div class="sched-step-block">
+        <div class="sched-step-header">
+          <div class="sched-step-left">
+            <span class="sched-step-num">1</span>
+            <span class="sched-step-title">Sanani tanlang</span>
+          </div>
+          <div class="sched-month-switch">
+            <button class="month-arrow-btn" onclick="changeSchedWeek(-1)" aria-label="Oldingi">‹</button>
+            <span class="month-title-text" id="sched-month-label">Sentabr 2024</span>
+            <button class="month-arrow-btn" onclick="changeSchedWeek(1)" aria-label="Keyingi">›</button>
+          </div>
+        </div>
+
+        <div class="sched-days-row" id="sched-days-strip">
+          <!-- 7 days strip populated by app.js -->
+        </div>
+      </div>
+
+      <!-- 4. Step 2: Vaqtni tanlang -->
+      <div class="sched-step-block">
+        <div class="sched-step-header">
+          <div class="sched-step-left">
+            <span class="sched-step-num">2</span>
+            <span class="sched-step-title">Vaqtni tanlang</span>
+          </div>
+          <div class="sched-online-beacon-text">
+            <span class="green-beacon-dot"></span>
+            <span>Bugun bo'sh vaqtlar</span>
+          </div>
+        </div>
+
+        <div class="sched-time-grid" id="sched-time-slots">
+          <!-- 20 slots: 08:00 to 17:30 populated by app.js -->
+        </div>
+      </div>
+
+      <!-- 5. Step 3: Xizmatni tanlang -->
+      <div class="sched-step-block">
+        <div class="sched-step-header">
+          <div class="sched-step-left">
+            <span class="sched-step-num">3</span>
+            <span class="sched-step-title">Xizmatni tanlang</span>
+          </div>
+          <button class="sched-all-services-link" onclick="switchTab('services')">
+            Barcha xizmatlar ›
+          </button>
+        </div>
+
+        <div class="sched-service-radios-list" id="sched-service-radios">
+          <!-- Service 1: Professional tozalash (active) -->
+          <div class="sched-service-card active" onclick="selectServiceOption(this, 'Professional tozalash', '350 000 so\'m')">
+            <div class="service-squircle-icon">
+              <svg viewBox="0 0 48 48" class="service-tooth-svg">
+                <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#0284C7"/>
+              </svg>
+            </div>
+            <div class="service-card-info">
+              <h4 class="service-item-title">Professional tozalash</h4>
+              <p class="service-item-sub">Tish toshlarini olib tashlash va polirovka</p>
+              <span class="service-item-duration">⏱ 30 daqiqa</span>
+            </div>
+            <div class="service-card-right">
+              <div class="sched-radio-indicator">
+                <div class="sched-radio-inner-dot"></div>
+              </div>
+              <span class="service-item-price">350 000 so'm</span>
+            </div>
+          </div>
+
+          <!-- Service 2: Plomba (karies) -->
+          <div class="sched-service-card" onclick="selectServiceOption(this, 'Plomba (karies)', '450 000 so\'m')">
+            <div class="service-squircle-icon">
+              <svg viewBox="0 0 48 48" class="service-tooth-svg">
+                <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#0284C7"/>
+              </svg>
+            </div>
+            <div class="service-card-info">
+              <h4 class="service-item-title">Plomba (karies)</h4>
+              <p class="service-item-sub">Kariesni davolash va plomba</p>
+              <span class="service-item-duration">⏱ 45 daqiqa</span>
+            </div>
+            <div class="service-card-right">
+              <div class="sched-radio-indicator">
+                <div class="sched-radio-inner-dot"></div>
+              </div>
+              <span class="service-item-price">450 000 so'm</span>
+            </div>
+          </div>
+
+          <!-- Service 3: Implantatsiya konsultatsiya -->
+          <div class="sched-service-card" onclick="selectServiceOption(this, 'Implantatsiya konsultatsiya', 'Bepul')">
+            <div class="service-squircle-icon">
+              <svg viewBox="0 0 24 24" class="service-tooth-svg">
+                <path d="M12 2C8 2 6 5 6 8c0 3 2 5 3 6v1h6v-1c1-1 3-3 3-6 0-3-2-6-6-6zm-1 14h2v2h-2v-2zm-1 3h4v2h-4v-2zm1 3h2v1h-2v-1z" fill="#0284C7"/>
+              </svg>
+            </div>
+            <div class="service-card-info">
+              <h4 class="service-item-title">Implantatsiya konsultatsiya</h4>
+              <p class="service-item-sub">Ko'rik va reja tuzish</p>
+              <span class="service-item-duration">⏱ 30 daqiqa</span>
+            </div>
+            <div class="service-card-right">
+              <div class="sched-radio-indicator">
+                <div class="sched-radio-inner-dot"></div>
+              </div>
+              <span class="service-item-price">Bepul</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Sticky Floating Summary Action Bar (Rasmning pastki qismidagi ko'k tugma va ma'lumot) -->
+      <div class="sched-floating-action-bar">
+        <div class="sched-summary-left">
+          <div class="sched-summary-cal-icon">
+            <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+          </div>
+          <div class="sched-summary-text-box">
+            <div class="sched-summary-datetime" id="sched-summary-datetime">19 sentabr, 10:30</div>
+            <div class="sched-summary-meta" id="sched-summary-meta">Zulfiya Karimova · Professional tozalash</div>
+          </div>
+        </div>
+        <button class="sched-book-submit-btn" onclick="onScheduleBookClick()">
+          Qabulga yozilish
+        </button>
+      </div>
 
       <div class="bottom-scroll-spacer"></div>
     </div>
@@ -400,6 +512,36 @@
 </div>
 
 <!-- ══════════════════════════════════════════════
+     BEMOR MA'LUMOTLARI KUCHLI SHEET MODAL
+     ══════════════════════════════════════════════ -->
+<div id="patient-input-sheet" class="modal-overlay hidden" onclick="closePatientSheet()">
+  <div class="modal-sheet-window" onclick="event.stopPropagation()">
+    <div class="sheet-drag-handle"></div>
+    <h3 class="modal-success-heading">Qabulni tasdiqlash</h3>
+    <p class="modal-success-sub">Klinikamiz mutaxassislari siz bilan bog'lanishi uchun ma'lumotlaringizni kiriting:</p>
+    
+    <div class="booking-form-card" style="margin-bottom: 14px; text-align: left;">
+      <div class="form-input-group">
+        <label>Ism va familiyangiz *</label>
+        <input type="text" id="patient-name" placeholder="Masalan: Sardor Aliyev" autocomplete="name"/>
+      </div>
+      <div class="form-input-group">
+        <label>Telefon raqamingiz *</label>
+        <input type="tel" id="patient-phone" placeholder="+998 90 123 45 67" autocomplete="tel"/>
+      </div>
+      <div class="form-input-group">
+        <label>Izoh yoki shikoyat (ixtiyoriy)</label>
+        <input type="text" id="patient-note" placeholder="Masalan: ertalab qo'ng'iroq qiling"/>
+      </div>
+    </div>
+
+    <button class="confirm-big-btn" onclick="executeBookingFinal()">
+      Tasdiqlash va Yuborish
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
      CONFIRMATION BOTTOM SHEET MODAL
      ══════════════════════════════════════════════ -->
 <div id="booking-modal-overlay" class="modal-overlay hidden" onclick="closeBookingModal()">
@@ -418,6 +560,6 @@
   <span id="toast-text">Xabar</span>
 </div>
 
-<script src="app.js?v=5.0"></script>
+<script src="app.js?v=6.0"></script>
 </body>
 </html>

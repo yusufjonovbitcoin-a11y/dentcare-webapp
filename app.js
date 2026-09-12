@@ -140,25 +140,10 @@ function viewStory(storyType) {
   }
 }
 
-// ── Doctor Picker & Action Handlers ──
 function openBookingFor(doctorName) {
-  chosenDoctor = doctorName;
+  renderScheduleDoctor(doctorName);
   switchTab('schedule');
-
-  document.querySelectorAll('.sched-doc-chip, .doc-pick-card').forEach(card => {
-    const namePart = doctorName.split(' ')[1] || doctorName;
-    if (card.textContent.toLowerCase().includes(namePart.toLowerCase())) {
-      card.classList.add('active');
-    } else {
-      card.classList.remove('active');
-    }
-  });
-
-  const noteField = document.getElementById('patient-note');
-  if (noteField) {
-    noteField.value = `Shifokor: ${doctorName}`;
-  }
-  showToast(`📅 ${doctorName} qabuliga yo'naltirildi`);
+  showToast(`📅 ${chosenDoctor} qabuliga yo'naltirildi`);
 }
 
 function selectDoctorQuick(doctorName, doctorSpec) {
@@ -166,9 +151,7 @@ function selectDoctorQuick(doctorName, doctorSpec) {
 }
 
 function pickDoctorCard(cardElement, doctorName) {
-  document.querySelectorAll('.sched-doc-chip, .doc-pick-card').forEach(c => c.classList.remove('active'));
-  cardElement.classList.add('active');
-  chosenDoctor = doctorName;
+  renderScheduleDoctor(doctorName);
   triggerHaptic('selection');
 }
 
@@ -208,116 +191,223 @@ function bookCategory(categoryName) {
   }
 }
 
-// ── Calendar Strip Builder ──
-function buildCalendarStrip() {
-  const container = document.getElementById('booking-cal-strip');
+// ── Doctor Profiles Data (Matching Screenshot) ──
+const DOCTOR_PROFILES = {
+  'Zulfiya Karimova': {
+    name: 'Zulfiya Karimova',
+    role: 'Jarroh-Implantolog',
+    badge: '💎 ITI Member',
+    bio: "Nobel Biocare va Osstem implantlari. Og'riqsiz 3D raqamli implantatsiya.",
+    photo: 'https://images.unsplash.com/photo-1594824813581-22928574d3a6?w=400&auto=format&fit=crop&q=80',
+    rating: '4.9',
+    reviews: '(128 ta sharh)',
+    exp: '12 yil tajriba',
+    patients: '2000+ bemor',
+    recommend: 'Bemorlar tavsiyasi 98%'
+  },
+  'Dr. Bobur Yusupov': {
+    name: 'Dr. Bobur Yusupov',
+    role: 'Estetik Terapevt · Mikroskopiya',
+    badge: '⭐ Top Doctor',
+    bio: 'Tishlarni badiiy restavratsiya qilish va nozik kanallarni tozalash.',
+    photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop&q=80',
+    rating: '4.9',
+    reviews: '(95 ta sharh)',
+    exp: '10 yil tajriba',
+    patients: '1800+ bemor',
+    recommend: 'Bemorlar tavsiyasi 99%'
+  },
+  'Dr. Jasur Abdullayev': {
+    name: 'Dr. Jasur Abdullayev',
+    role: 'Bosh Ortodontist · Damon Master',
+    badge: '💎 Damon Master',
+    bio: "Breketlar, alignerlar va to'g'ri tishlash bo'yicha 2000+ muvaffaqiyatli amaliyot.",
+    photo: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&auto=format&fit=crop&q=80',
+    rating: '4.9',
+    reviews: '(164 ta sharh)',
+    exp: '15 yil tajriba',
+    patients: '2500+ bemor',
+    recommend: 'Bemorlar tavsiyasi 98%'
+  }
+};
+
+let chosenDayStr = '19 sentabr';
+let chosenDayIndex = 3; // Pay 19 (default in screenshot)
+let chosenTimeSlot = '10:30'; // (default in screenshot)
+let chosenService = 'Professional tozalash'; // (default in screenshot)
+let chosenPrice = "350 000 so'm";
+let schedWeekOffset = 0;
+
+function renderScheduleDoctor(docName) {
+  let doc = DOCTOR_PROFILES[docName];
+  if (!doc) {
+    for (let key in DOCTOR_PROFILES) {
+      if (docName.includes(key) || key.includes(docName)) {
+        doc = DOCTOR_PROFILES[key];
+        break;
+      }
+    }
+  }
+  if (!doc) doc = DOCTOR_PROFILES['Zulfiya Karimova'];
+
+  chosenDoctor = doc.name;
+
+  const imgEl = document.getElementById('sched-doc-img');
+  const nameEl = document.getElementById('sched-doc-name');
+  const roleEl = document.getElementById('sched-doc-role');
+  const badgeEl = document.getElementById('sched-doc-badge');
+  const bioEl = document.getElementById('sched-doc-bio');
+  const ratingEl = document.getElementById('sched-doc-rating');
+  const reviewsEl = document.getElementById('sched-doc-reviews');
+  const expEl = document.getElementById('sched-doc-exp');
+  const patientsEl = document.getElementById('sched-doc-patients');
+  const recEl = document.getElementById('sched-doc-recommend');
+
+  if (imgEl) imgEl.src = doc.photo;
+  if (nameEl) nameEl.textContent = doc.name;
+  if (roleEl) roleEl.textContent = doc.role;
+  if (badgeEl) badgeEl.textContent = doc.badge;
+  if (bioEl) bioEl.textContent = doc.bio;
+  if (ratingEl) ratingEl.textContent = doc.rating;
+  if (reviewsEl) reviewsEl.textContent = doc.reviews;
+  if (expEl) expEl.textContent = doc.exp;
+  if (patientsEl) patientsEl.textContent = doc.patients;
+  if (recEl) recEl.textContent = doc.recommend;
+
+  updateScheduleSummary();
+}
+
+// 7-day strip generator (Dush 16 to Yak 22, Pay 19 active as in screenshot)
+const BASE_DAYS_DATA = [
+  { name: 'Dush', num: 16 },
+  { name: 'Sesh', num: 17 },
+  { name: 'Chor', num: 18 },
+  { name: 'Pay',  num: 19 },
+  { name: 'Jum',  num: 20 },
+  { name: 'Shan', num: 21 },
+  { name: 'Yak',  num: 22 }
+];
+
+function renderScheduleDays() {
+  const container = document.getElementById('sched-days-strip');
   if (!container) return;
   container.innerHTML = '';
 
-  const today = new Date();
+  const monthLabel = document.getElementById('sched-month-label');
+  if (monthLabel) {
+    if (schedWeekOffset === 0) {
+      monthLabel.textContent = 'Sentabr 2024';
+    } else if (schedWeekOffset > 0) {
+      monthLabel.textContent = `Oktabr 2024`;
+    } else {
+      monthLabel.textContent = `Avgust 2024`;
+    }
+  }
 
-  for (let i = 0; i < 14; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
+  BASE_DAYS_DATA.forEach((d, idx) => {
+    const card = document.createElement('div');
+    const dayNum = d.num + (schedWeekOffset * 7);
+    const isActive = (idx === chosenDayIndex);
 
-    const isSunday = d.getDay() === 0;
-    const isSelected = i === 0;
-
-    const pill = document.createElement('div');
-    pill.className = `calendar-day-pill ${isSelected ? 'selected' : ''} ${isSunday ? 'disabled' : ''} interactive-spring`;
-
-    pill.innerHTML = `
-      <span class="cal-day-name">${WEEKDAYS[d.getDay()]}</span>
-      <span class="cal-day-number">${d.getDate()}</span>
-      <span class="cal-status-dot"></span>
+    card.className = `sched-day-card ${isActive ? 'active' : ''}`;
+    card.innerHTML = `
+      <span class="sched-day-name">${d.name}</span>
+      <span class="sched-day-num">${dayNum}</span>
+      <span class="sched-day-dot"></span>
     `;
 
-    if (!isSunday) {
-      pill.onclick = () => onDayPicked(d, pill);
-    }
+    card.onclick = () => {
+      document.querySelectorAll('.sched-day-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      chosenDayIndex = idx;
+      chosenDayStr = `${dayNum} sentabr`;
+      updateScheduleSummary();
+      triggerHaptic('selection');
+    };
 
-    container.appendChild(pill);
-
-    if (isSelected) {
-      chosenDateObj = d;
-      updateSelectedDayHint(d);
-    }
-  }
-
-  buildTimeSlots();
-}
-
-function onDayPicked(date, pillEl) {
-  document.querySelectorAll('.calendar-day-pill').forEach(p => p.classList.remove('selected'));
-  pillEl.classList.add('selected');
-  chosenDateObj = date;
-  chosenTimeSlot = null;
-
-  updateSelectedDayHint(date);
-  buildTimeSlots();
-  triggerHaptic('selection');
-}
-
-function updateSelectedDayHint(date) {
-  const hint = document.getElementById('selected-day-text');
-  if (!hint) return;
-  const isToday = new Date().toDateString() === date.toDateString();
-  if (isToday) {
-    hint.textContent = `Bugun, ${date.getDate()}-${MONTHS[date.getMonth()]}`;
-  } else {
-    hint.textContent = `${WEEKDAYS[date.getDay()]}, ${date.getDate()}-${MONTHS[date.getMonth()]}`;
-  }
-}
-
-// ── Time Slots (Morning & Afternoon) ──
-function buildTimeSlots() {
-  const morningBox = document.getElementById('morning-slots');
-  const afternoonBox = document.getElementById('afternoon-slots');
-  if (!morningBox || !afternoonBox) return;
-
-  morningBox.innerHTML = '';
-  afternoonBox.innerHTML = '';
-
-  const morningTimes = ['09:00', '09:45', '10:30', '11:15', '12:00'];
-  const afternoonTimes = ['14:00', '14:45', '15:30', '16:15', '17:00', '17:45', '18:30'];
-  const busySlotsList = ['10:30', '14:45', '16:15'];
-
-  morningTimes.forEach(time => {
-    const isBusy = busySlotsList.includes(time);
-    const chip = document.createElement('div');
-    chip.className = `slot-chip ${isBusy ? 'busy' : ''} interactive-spring`;
-    chip.textContent = time;
-    if (!isBusy) {
-      chip.onclick = () => selectSlot(chip, time);
-    }
-    morningBox.appendChild(chip);
-  });
-
-  afternoonTimes.forEach(time => {
-    const isBusy = busySlotsList.includes(time);
-    const chip = document.createElement('div');
-    chip.className = `slot-chip ${isBusy ? 'busy' : ''} interactive-spring`;
-    chip.textContent = time;
-    if (!isBusy) {
-      chip.onclick = () => selectSlot(chip, time);
-    }
-    afternoonBox.appendChild(chip);
+    container.appendChild(card);
   });
 }
 
-function selectSlot(chipEl, time) {
-  document.querySelectorAll('.slot-chip').forEach(c => c.classList.remove('selected'));
-  chipEl.classList.add('selected');
-  chosenTimeSlot = time;
+function changeSchedWeek(dir) {
+  schedWeekOffset += dir;
+  renderScheduleDays();
   triggerHaptic('light');
 }
 
-// ── Booking Confirmation ──
-function executeBooking() {
+// 20 Time Slots generator (08:00 to 17:30, 10:30 active as in screenshot)
+const ALL_TIME_SLOTS = [
+  '08:00', '08:30', '09:00', '09:30',
+  '10:00', '10:30', '11:00', '11:30',
+  '12:00', '12:30', '13:00', '13:30',
+  '14:00', '14:30', '15:00', '15:30',
+  '16:00', '16:30', '17:00', '17:30'
+];
+
+function renderScheduleTimeSlots() {
+  const container = document.getElementById('sched-time-slots');
+  if (!container) return;
+  container.innerHTML = '';
+
+  ALL_TIME_SLOTS.forEach(time => {
+    const chip = document.createElement('div');
+    const isActive = (time === chosenTimeSlot);
+    chip.className = `sched-time-chip ${isActive ? 'active' : ''}`;
+    chip.textContent = time;
+
+    chip.onclick = () => {
+      document.querySelectorAll('.sched-time-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      chosenTimeSlot = time;
+      updateScheduleSummary();
+      triggerHaptic('light');
+    };
+
+    container.appendChild(chip);
+  });
+}
+
+// Step 3 Service Option Selection
+function selectServiceOption(cardEl, serviceName, price) {
+  document.querySelectorAll('.sched-service-card').forEach(c => c.classList.remove('active'));
+  cardEl.classList.add('active');
+  chosenService = serviceName;
+  chosenPrice = price;
+  updateScheduleSummary();
+  triggerHaptic('selection');
+}
+
+// Bottom Summary Bar Update
+function updateScheduleSummary() {
+  const dtEl = document.getElementById('sched-summary-datetime');
+  const metaEl = document.getElementById('sched-summary-meta');
+  if (dtEl) dtEl.textContent = `${chosenDayStr}, ${chosenTimeSlot}`;
+  if (metaEl) metaEl.textContent = `${chosenDoctor} · ${chosenService}`;
+}
+
+// Booking submission handlers
+function onScheduleBookClick() {
   const name = document.getElementById('patient-name')?.value.trim();
   const phone = document.getElementById('patient-phone')?.value.trim();
-  const service = document.getElementById('patient-service')?.value;
-  const note = document.getElementById('patient-note')?.value.trim() || 'Izohsiz';
+
+  // If name or phone is empty, open bottom modal to collect info
+  if (!name || !phone) {
+    document.getElementById('patient-input-sheet')?.classList.remove('hidden');
+    triggerHaptic('light');
+    return;
+  }
+
+  executeBookingFinal();
+}
+
+function closePatientSheet() {
+  document.getElementById('patient-input-sheet')?.classList.add('hidden');
+}
+
+function executeBookingFinal() {
+  const name = document.getElementById('patient-name')?.value.trim();
+  const phone = document.getElementById('patient-phone')?.value.trim();
+  const note = document.getElementById('patient-note')?.value.trim() || "Tezroq bog'lanish";
 
   if (!name) {
     showToast('⚠️ Iltimos, ismingizni kiriting');
@@ -325,31 +415,26 @@ function executeBooking() {
     return;
   }
   if (!phone || phone.length < 9) {
-    showToast('⚠️ Telefon raqamni to\'liq kiriting');
-    triggerHaptic('warning');
-    return;
-  }
-  if (!chosenTimeSlot) {
-    showToast('⚠️ Qabul soatini tanlang');
+    showToast("⚠️ Iltimos, to'liq telefon raqamingizni kiriting");
     triggerHaptic('warning');
     return;
   }
 
-  const d = chosenDateObj || new Date();
-  const dateStr = `${d.getDate()}-${MONTHS[d.getMonth()]}, ${WEEKDAYS[d.getDay()]}`;
+  closePatientSheet();
 
   const payload = {
     action: 'book',
     doctor: chosenDoctor,
+    service: chosenService,
+    price: chosenPrice,
+    date: chosenDayStr,
+    time: chosenTimeSlot,
     name,
     phone,
-    service,
-    date: dateStr,
-    time: chosenTimeSlot,
     note
   };
 
-  // Telegramga uzatish
+  // Telegram WebApp orqali botga jo'natish
   if (tg) {
     try {
       tg.sendData(JSON.stringify(payload));
@@ -358,7 +443,7 @@ function executeBooking() {
     }
   }
 
-  // Receipt modal
+  // Populyatsiya cheki
   const receiptBox = document.getElementById('booking-receipt-details');
   if (receiptBox) {
     receiptBox.innerHTML = `
@@ -367,16 +452,16 @@ function executeBooking() {
         <span class="receipt-val">${chosenDoctor}</span>
       </div>
       <div class="receipt-row">
-        <span class="receipt-key">Sana & Vaqt:</span>
-        <span class="receipt-val">${dateStr} · ${chosenTimeSlot}</span>
+        <span class="receipt-key">Vaqt:</span>
+        <span class="receipt-val">${chosenDayStr}, ${chosenTimeSlot}</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-key">Xizmat:</span>
+        <span class="receipt-val">${chosenService} (${chosenPrice})</span>
       </div>
       <div class="receipt-row">
         <span class="receipt-key">Bemor:</span>
         <span class="receipt-val">${name}</span>
-      </div>
-      <div class="receipt-row">
-        <span class="receipt-key">Xizmat:</span>
-        <span class="receipt-val">${service}</span>
       </div>
       <div class="receipt-row">
         <span class="receipt-key">Telefon:</span>
@@ -387,13 +472,10 @@ function executeBooking() {
 
   document.getElementById('booking-modal-overlay')?.classList.remove('hidden');
   triggerHaptic('success');
+}
 
-  // Formani tozalash
-  document.getElementById('patient-name').value = '';
-  document.getElementById('patient-phone').value = '';
-  document.getElementById('patient-note').value = '';
-  document.querySelectorAll('.slot-chip').forEach(c => c.classList.remove('selected'));
-  chosenTimeSlot = null;
+function executeBooking() {
+  executeBookingFinal();
 }
 
 function closeBookingModal() {
@@ -662,7 +744,12 @@ window.toggleFavorite = toggleFavorite;
 window.handleGlobalSearch = handleGlobalSearch;
 window.bookCategory = bookCategory;
 window.executeBooking = executeBooking;
+window.executeBookingFinal = executeBookingFinal;
 window.closeBookingModal = closeBookingModal;
+window.closePatientSheet = closePatientSheet;
+window.onScheduleBookClick = onScheduleBookClick;
+window.selectServiceOption = selectServiceOption;
+window.changeSchedWeek = changeSchedWeek;
 window.bookServiceItem = bookServiceItem;
 window.filterServicesCatalog = filterServicesCatalog;
 window.handleChatSend = handleChatSend;
@@ -681,9 +768,18 @@ function initApp() {
     if (tg?.initDataUnsafe?.user?.first_name) {
       const pName = document.getElementById('home-patient-name');
       if (pName) pName.textContent = tg.initDataUnsafe.user.first_name;
+
+      const pInputName = document.getElementById('patient-name');
+      if (pInputName && !pInputName.value) {
+        const full = [tg.initDataUnsafe.user.first_name, tg.initDataUnsafe.user.last_name].filter(Boolean).join(' ');
+        pInputName.value = full;
+      }
     }
 
-    buildCalendarStrip();
+    renderScheduleDoctor('Zulfiya Karimova');
+    renderScheduleDays();
+    renderScheduleTimeSlots();
+    updateScheduleSummary();
     renderServicesCatalog(DENTAL_SERVICES);
 
     const chatInput = document.getElementById('chat-text-input');
