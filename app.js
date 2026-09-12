@@ -379,59 +379,33 @@ function renderScheduleTimeSlots() {
   container.innerHTML = '';
 
   const bookedSlots = getBookedSlotsForDay(chosenDoctor, chosenDayIndex);
-  const freeCount = ALL_TIME_SLOTS.length - bookedSlots.size;
+  // Faqat bo'sh vaqtlar ko'rinadi - band vaqtlar mutlaqo chiqarilmaydi
+  const availableSlots = ALL_TIME_SLOTS.filter(time => !bookedSlots.has(time));
 
   // Dynamic header count: e.g. "Bugun 14 ta bo'sh vaqt"
   const freeCountEl = document.getElementById('sched-free-count');
   if (freeCountEl) {
     const isToday = (chosenDayIndex === 3 && schedWeekOffset === 0);
-    freeCountEl.textContent = `${isToday ? 'Bugun' : chosenDayStr}: ${freeCount} ta bo'sh vaqt`;
+    freeCountEl.textContent = `${isToday ? 'Bugun' : chosenDayStr}: ${availableSlots.length} ta bo'sh vaqt`;
   }
 
-  // If currently chosen slot happens to be booked on this day, auto-select first free slot
-  if (bookedSlots.has(chosenTimeSlot)) {
-    const firstFree = ALL_TIME_SLOTS.find(t => !bookedSlots.has(t));
-    if (firstFree) {
-      chosenTimeSlot = firstFree;
+  // Agar hozirgi tanlangan vaqt bu kunda mavjud bo'lmasa, birinchi bo'sh vaqtni tanlaymiz
+  if (!availableSlots.includes(chosenTimeSlot)) {
+    if (availableSlots.length > 0) {
+      chosenTimeSlot = availableSlots[0];
       updateScheduleSummary();
     }
   }
 
-  ALL_TIME_SLOTS.forEach(time => {
-    const isBooked = bookedSlots.has(time);
-    const isActive = (!isBooked && time === chosenTimeSlot);
-
+  availableSlots.forEach(time => {
+    const isActive = (time === chosenTimeSlot);
     const chip = document.createElement('div');
-    chip.className = `sched-time-chip ${isBooked ? 'booked' : 'free'} ${isActive ? 'active' : ''}`;
-    
-    let statusLabel = "Bo'sh";
-    if (isBooked) statusLabel = 'Band';
-    else if (isActive) statusLabel = 'Tanlandi';
-
-    chip.innerHTML = `
-      <span class="chip-time">${time}</span>
-      <span class="chip-status">${statusLabel}</span>
-    `;
+    chip.className = `sched-time-chip ${isActive ? 'active' : ''}`;
+    chip.textContent = time;
 
     chip.onclick = () => {
-      if (isBooked) {
-        triggerHaptic('warning');
-        showToast(`⚠️ Soat ${time} allaqachon band qilingan. Iltimos, yashil rangdagi bo'sh vaqtlardan birini tanlang.`);
-        return;
-      }
-
-      document.querySelectorAll('.sched-time-chip').forEach(c => {
-        c.classList.remove('active');
-        if (!c.classList.contains('booked')) {
-          const st = c.querySelector('.chip-status');
-          if (st) st.textContent = "Bo'sh";
-        }
-      });
-
+      document.querySelectorAll('.sched-time-chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
-      const st = chip.querySelector('.chip-status');
-      if (st) st.textContent = 'Tanlandi';
-
       chosenTimeSlot = time;
       updateScheduleSummary();
       triggerHaptic('light');
