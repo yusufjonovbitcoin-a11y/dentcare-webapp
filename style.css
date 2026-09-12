@@ -83,7 +83,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   overflow: hidden;
-  position: fixed;
 }
 
 button {
@@ -1478,6 +1477,11 @@ input, select, textarea {
    ═══════════════════════════════════════════════════════════════════ */
 .chat-scene-mode {
   background: transparent;
+  height: calc(100% - var(--dock-height) - var(--safe-bottom)) !important;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
 .chat-header-pro {
@@ -1698,7 +1702,7 @@ input, select, textarea {
   backdrop-filter: blur(28px) saturate(190%);
   -webkit-backdrop-filter: blur(28px) saturate(190%);
   border-top: 1px solid var(--border-clean);
-  padding: 8px 12px calc(8px + var(--safe-bottom));
+  padding: 8px 12px 10px;
   flex-shrink: 0;
   z-index: 50;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
