@@ -573,75 +573,61 @@ function getBotReply(userText) {
   return `Tushundim. Tishingiz holati bo'yicha aniq tashxis va tavsiya berish uchun klinikamiz shifokori ko'rigidan o'tishingizni maslahat beramiz.\n\n"Jadval" bo'limidan bepul ko'rikka yozilishingiz yoki to'g'ridan-to'g'ri +998 (71) 123-45-67 raqamiga qo'ng'iroq qilishingiz mumkin.`;
 }
 
-function onChatInputChanged(textarea) {
-  // Auto-resize textarea up to 120px
-  textarea.style.height = 'auto';
-  textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
-
-  const hasText = textarea.value.trim().length > 0;
-  const voiceBtn = document.getElementById('chat-voice-btn');
-  const sendBtn = document.getElementById('chat-send-btn');
-
-  if (hasText) {
-    voiceBtn?.classList.add('hidden');
-    sendBtn?.classList.remove('hidden');
-  } else {
-    voiceBtn?.classList.remove('hidden');
-    sendBtn?.classList.add('hidden');
+function onChatInputChanged(input) {
+  const hasText = input.value.trim().length > 0;
+  const micSvg = document.getElementById('chat-mic-svg');
+  const sendSvg = document.getElementById('chat-send-svg');
+  if (micSvg && sendSvg) {
+    if (hasText) {
+      micSvg.classList.add('hidden');
+      sendSvg.classList.remove('hidden');
+    } else {
+      micSvg.classList.remove('hidden');
+      sendSvg.classList.add('hidden');
+    }
   }
 }
 
-function toggleQuickChips() {
-  const chips = document.getElementById('chat-quick-chips');
-  if (!chips) return;
-  chips.classList.toggle('hidden');
-  triggerHaptic('light');
+function focusChatWithPrompt(text) {
+  const input = document.getElementById('chat-text-input');
+  if (input) {
+    input.value = text;
+    onChatInputChanged(input);
+    input.focus();
+  }
 }
 
-function simulateVoiceRecord() {
-  const voiceBtn = document.getElementById('chat-voice-btn');
-  if (!voiceBtn) return;
-
-  voiceBtn.classList.add('recording');
-  showToast('🎙️ Ovoz tinglanmoqda...');
-  triggerHaptic('warning');
-
-  setTimeout(() => {
-    voiceBtn.classList.remove('recording');
-    const input = document.getElementById('chat-text-input');
-    if (input) {
-      input.value = "Tish og'rig'iga nima qilish kerak?";
-      onChatInputChanged(input);
-      setTimeout(() => {
-        handleChatSend();
-      }, 400);
-    }
-  }, 1600);
+function openChatQuickMenu() {
+  showToast('📎 Rasm yoki rentgen tasvirini biriktirish');
+  triggerHaptic('light');
 }
 
 function handleChatSend() {
   const input = document.getElementById('chat-text-input');
   const text = input?.value.trim();
-  if (!text) return;
+  if (!text) {
+    // If empty and mic is clicked:
+    showToast('🎙️ Ovoz orqali savol yozib olinmoqda...');
+    triggerHaptic('warning');
+    return;
+  }
 
   appendChatMessage(text, 'user');
   input.value = '';
-  input.style.height = 'auto';
   onChatInputChanged(input);
   triggerHaptic('light');
-
-  document.getElementById('chat-quick-chips')?.classList.add('hidden');
+  scrollChatToEnd();
 
   const typingRow = showChatTyping();
   scrollChatToEnd();
 
   setTimeout(() => {
-    typingRow.remove();
+    typingRow?.remove();
     const reply = getBotReply(text);
     appendChatMessage(reply, 'bot');
     scrollChatToEnd();
     triggerHaptic('light');
-  }, 650 + Math.random() * 450);
+  }, 600);
 }
 
 function sendQuickPrompt(promptText) {
@@ -657,32 +643,59 @@ function appendChatMessage(htmlText, type) {
   const chatBox = document.getElementById('chat-messages-box');
   if (!chatBox) return;
 
+  const now = new Date();
+  const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
   const row = document.createElement('div');
-  row.className = `chat-msg-row ${type} animate-pop-in`;
+  row.className = `chat-message-row ${type === 'bot' ? 'bot-row' : 'user-row'}`;
 
-  const card = document.createElement('div');
-  card.className = `${type}-msg-card ${type === 'bot' ? 'glass-card' : ''}`;
-  card.style.whiteSpace = 'pre-line';
-  card.innerHTML = htmlText;
+  if (type === 'bot') {
+    row.innerHTML = `
+      <div class="chat-avatar-round">
+        <svg viewBox="0 0 48 48" class="bubble-tooth-svg">
+          <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#FFFFFF"/>
+        </svg>
+      </div>
+      <div class="chat-bubble-col">
+        <div class="chat-bubble bot-bubble">
+          <div class="chat-bubble-text">${htmlText}</div>
+          <div class="chat-bubble-time">${timeStr}</div>
+        </div>
+      </div>
+    `;
+  } else {
+    row.innerHTML = `
+      <div class="chat-bubble user-bubble">
+        <div class="chat-bubble-text">${htmlText}</div>
+        <div class="chat-bubble-time user-time">
+          <span>${timeStr}</span>
+          <span class="double-check-blue">✓✓</span>
+        </div>
+      </div>
+    `;
+  }
 
-  row.appendChild(card);
   chatBox.appendChild(row);
 }
 
 function showChatTyping() {
   const chatBox = document.getElementById('chat-messages-box');
   const row = document.createElement('div');
-  row.className = 'chat-msg-row bot';
+  row.className = 'chat-message-row bot-row';
 
-  const card = document.createElement('div');
-  card.className = 'bot-msg-card glass-card typing-dots-box';
-  card.innerHTML = `
-    <span class="typing-dot-circle"></span>
-    <span class="typing-dot-circle"></span>
-    <span class="typing-dot-circle"></span>
+  row.innerHTML = `
+    <div class="chat-avatar-round">
+      <svg viewBox="0 0 48 48" class="bubble-tooth-svg">
+        <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#FFFFFF"/>
+      </svg>
+    </div>
+    <div class="chat-bubble-col">
+      <div class="chat-bubble bot-bubble" style="display:inline-flex; align-items:center; gap:4px; padding:10px 14px;">
+        <span style="font-size:12px; color:var(--text-muted);">DentAI javob tayyorlamoqda...</span>
+      </div>
+    </div>
   `;
 
-  row.appendChild(card);
   chatBox.appendChild(row);
   return row;
 }
@@ -691,18 +704,6 @@ function scrollChatToEnd() {
   const box = document.getElementById('chat-messages-box');
   if (box) {
     box.scrollTop = box.scrollHeight;
-  }
-}
-
-function updateChatSendButton() {
-  const input = document.getElementById('chat-text-input');
-  const btn = document.getElementById('chat-send-btn');
-  if (!input || !btn) return;
-
-  if (input.value.trim().length > 0) {
-    btn.classList.remove('disabled');
-  } else {
-    btn.classList.add('disabled');
   }
 }
 
@@ -759,6 +760,8 @@ window.toggleQuickChips = toggleQuickChips;
 window.simulateVoiceRecord = simulateVoiceRecord;
 window.openNotifications = openNotifications;
 window.openGoogleMap = openGoogleMap;
+window.focusChatWithPrompt = focusChatWithPrompt;
+window.openChatQuickMenu = openChatQuickMenu;
 window.callClinicPhone = callClinicPhone;
 window.viewStory = viewStory;
 
@@ -781,11 +784,6 @@ function initApp() {
     renderScheduleTimeSlots();
     updateScheduleSummary();
     renderServicesCatalog(DENTAL_SERVICES);
-
-    const chatInput = document.getElementById('chat-text-input');
-    if (chatInput) {
-      chatInput.addEventListener('input', updateChatSendButton);
-    }
   } catch (e) {
     console.error('App init error:', e);
   }

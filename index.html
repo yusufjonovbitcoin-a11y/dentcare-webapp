@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=6.0"/>
+  <link rel="stylesheet" href="style.css?v=7.0"/>
 </head>
 <body>
 
@@ -442,43 +442,198 @@
   </section>
 
   <!-- ══════════════════════════════════════════════
-       TAB 4: DENTAI CHAT (SMART MEDICAL CHATBOT)
+       TAB 4: DENTAI CHAT (AYNAN RASMDAGI DIZAYN)
        ══════════════════════════════════════════════ -->
   <section id="tab-chat" class="tab-page chat-full-page">
-    <div class="chat-top-bar">
-      <div class="chat-doctor-profile">
-        <div class="chat-avatar-circle">🤖</div>
-        <div class="chat-title-box">
-          <h3 class="chat-name">DentAI Tibbiy Assistent</h3>
-          <span class="chat-online-text">🟢 Onlayn · Sun'iy intellekt</span>
+
+    <!-- 1. Top Header Bar: Back arrow, App Squircle with green dot, Title, Menu -->
+    <div class="chat-top-header">
+      <button class="chat-header-back-btn" onclick="switchTab('home')" aria-label="Orqaga">
+        <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+
+      <div class="chat-header-avatar-squircle">
+        <svg viewBox="0 0 48 48" class="chat-avatar-tooth">
+          <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#FFFFFF"/>
+        </svg>
+        <span class="chat-header-green-dot"></span>
+      </div>
+
+      <div class="chat-header-titles">
+        <h3 class="chat-header-name">DentAI</h3>
+        <div class="chat-header-status-row">
+          <span class="chat-header-role">AI yordamchisi</span>
+          <span class="chat-header-sep">●</span>
+          <span class="chat-header-online">Online</span>
         </div>
       </div>
+
+      <button class="chat-header-menu-btn" onclick="openNotifications()" aria-label="Menyu">
+        <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      </button>
     </div>
 
+    <!-- 2. Blue Info Alert Banner -->
+    <div class="chat-info-alert-banner" id="chat-alert-banner">
+      <div class="chat-alert-sparkle">✨</div>
+      <p class="chat-alert-text">DentAI sizga shifokor tanlash, xizmatlar haqida ma'lumot olish va qabulga yozilish bo'yicha yordam beradi.</p>
+      <button class="chat-alert-close-btn" onclick="document.getElementById('chat-alert-banner').style.display='none'" aria-label="Yopish">✕</button>
+    </div>
+
+    <!-- 3. Scrollable Message Container -->
     <div class="chat-body-messages" id="chat-messages-box">
-      <div class="chat-date-pill">Bugun</div>
 
-      <div class="chat-message-bubble bot">
-        Assalomu alaykum! Men <b>DentCare</b> klinikasining sun'iy intellekt assistentiman. 🦷<br><br>
-        Tish og'rig'i, davolash narxlari, shifokorlar malakasi yoki bo'sh vaqtlar bo'yicha qanday savollaringiz bor?
+      <!-- Message 1: Bot Welcome -->
+      <div class="chat-message-row bot-row">
+        <div class="chat-avatar-round">
+          <svg viewBox="0 0 48 48" class="bubble-tooth-svg">
+            <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <div class="chat-bubble-col">
+          <div class="chat-bubble bot-bubble">
+            <div class="chat-bubble-text">
+              Salom! 👋<br>
+              Men DentAI — sizning shaxsiy dental yordamchingiz. Qanday yordam bera olaman?
+            </div>
+            <div class="chat-bubble-time">12:55</div>
+          </div>
+
+          <!-- 4 Action Quick Cards (2x2 Grid) -->
+          <div class="chat-actions-grid">
+            <div class="chat-action-card" onclick="switchTab('schedule')">
+              <div class="chat-action-icon blue-cal">
+                <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+              </div>
+              <div class="chat-action-texts">
+                <h4 class="chat-action-title">Qabulga yozilish</h4>
+                <p class="chat-action-sub">Shifokor va vaqt tanlash</p>
+              </div>
+            </div>
+
+            <div class="chat-action-card" onclick="switchTab('services')">
+              <div class="chat-action-icon blue-tooth">
+                <svg viewBox="0 0 48 48"><path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z"/></svg>
+              </div>
+              <div class="chat-action-texts">
+                <h4 class="chat-action-title">Xizmatlar</h4>
+                <p class="chat-action-sub">Davolash turlari</p>
+              </div>
+            </div>
+
+            <div class="chat-action-card" onclick="switchTab('home')">
+              <div class="chat-action-icon blue-doctor">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+              </div>
+              <div class="chat-action-texts">
+                <h4 class="chat-action-title">Shifokorlar</h4>
+                <p class="chat-action-sub">Mutaxassislarni ko'rish</p>
+              </div>
+            </div>
+
+            <div class="chat-action-card" onclick="focusChatWithPrompt('Tish parvarishi haqida savolim bor edi')">
+              <div class="chat-action-icon blue-msg">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+              </div>
+              <div class="chat-action-texts">
+                <h4 class="chat-action-title">Savol berish</h4>
+                <p class="chat-action-sub">Istalgan savolingiz</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="chat-chips-row" id="chat-quick-chips">
-        <button class="chat-quick-chip" onclick="sendQuickPrompt('Tishim qattiq og\'riyapti, nima qilishim kerak?')">🦷 Tishim og'riyapti</button>
-        <button class="chat-quick-chip" onclick="sendQuickPrompt('Qabul vaqtlari qanday?')">📅 Qabul vaqtlari</button>
-        <button class="chat-quick-chip" onclick="sendQuickPrompt('Implantatsiya qancha turadi?')">🔩 Implant narxi</button>
-        <button class="chat-quick-chip" onclick="sendQuickPrompt('Breket qo\'yish narxi va muddati qancha?')">😁 Breketlar haqida</button>
+      <!-- Message 2: User Query -->
+      <div class="chat-message-row user-row">
+        <div class="chat-bubble user-bubble">
+          <div class="chat-bubble-text">
+            Kariesni davolash haqida ma'lumot bering
+          </div>
+          <div class="chat-bubble-time user-time">
+            <span>12:56</span>
+            <span class="double-check-blue">✓✓</span>
+          </div>
+        </div>
       </div>
+
+      <!-- Message 3: Bot Detailed Reply with Mini Service Card -->
+      <div class="chat-message-row bot-row">
+        <div class="chat-avatar-round">
+          <svg viewBox="0 0 48 48" class="bubble-tooth-svg">
+            <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#FFFFFF"/>
+          </svg>
+        </div>
+        <div class="chat-bubble-col">
+          <div class="chat-bubble bot-bubble">
+            <div class="chat-bubble-text">
+              Albatta! Karies — tishning qattiq to'qimasida paydo bo'ladigan zararlanish bo'lib, o'z vaqtida davolanmasa chuqurlashib boradi.<br><br>
+              Davolash jarayoni odatda quyidagicha o'tadi:<br>
+              <div class="numbered-step-item"><span class="step-badge-blue">1</span> Karies to'qimalarini tozalash</div>
+              <div class="numbered-step-item"><span class="step-badge-blue">2</span> Zararlangan qismni davolash</div>
+              <div class="numbered-step-item"><span class="step-badge-blue">3</span> Plomba qo'yish</div>
+              <div class="numbered-step-item"><span class="step-badge-blue">4</span> Tish shaklini tiklash va polirovka</div>
+              <div class="treatment-time-row">
+                <svg viewBox="0 0 24 24" class="time-clock-icon"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                <span>Davolash vaqti: 30–60 daqiqa</span>
+              </div>
+            </div>
+
+            <!-- Embedded Service Card -->
+            <div class="bubble-embedded-service-card" onclick="bookServiceItem('Plomba (karies)')">
+              <div class="service-thumb-box">
+                <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=160&auto=format&fit=crop&q=80" alt="Plomba" class="service-thumb-img"/>
+              </div>
+              <div class="service-thumb-info">
+                <h5 class="service-thumb-title">Plomba (karies)</h5>
+                <p class="service-thumb-sub">Kariesni davolash va plomba</p>
+                <span class="service-thumb-time">⏱ 30–60 daqiqa</span>
+              </div>
+              <div class="service-thumb-right">
+                <span class="service-thumb-price">450 000 so'm</span>
+                <span class="service-thumb-chevron">›</span>
+              </div>
+            </div>
+
+            <div class="chat-bubble-time">12:56</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Chat Xabar Yozish Paneli -->
-    <div class="chat-input-bar-container">
-      <div class="chat-input-wrapper">
+    <!-- 4. Quick Suggestion Pills Bar (Above Input Toolbar) -->
+    <div class="chat-quick-suggestions-bar">
+      <button class="chat-suggest-pill" onclick="switchTab('schedule')">
+        <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+        <span>Qabulga yozilish</span>
+      </button>
+      <button class="chat-suggest-pill" onclick="sendQuickPrompt('Narxlar haqida ma\'lumot bering')">
+        <svg viewBox="0 0 24 24"><path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/></svg>
+        <span>Narxlari</span>
+      </button>
+      <button class="chat-suggest-pill" onclick="sendQuickPrompt('Tish parvarishi bo\'yicha tavsiyalar bering')">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        <span>Yana savollarim bor</span>
+      </button>
+    </div>
+
+    <!-- 5. Bottom Input Toolbar (Round + button, White Input Pill, Round Blue Send/Mic) -->
+    <div class="chat-bottom-input-bar">
+      <button class="chat-input-plus-btn" onclick="openChatQuickMenu()" aria-label="Amallar">
+        +
+      </button>
+      <div class="chat-input-pill-field">
         <input type="text" id="chat-text-input" placeholder="Xabar yozing..." oninput="onChatInputChanged(this)" onkeydown="if(event.key==='Enter')handleChatSend()"/>
-        <button id="chat-send-btn" class="chat-send-action-btn" onclick="handleChatSend()" aria-label="Yuborish">
-          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-        </button>
       </div>
+      <button id="chat-send-btn" class="chat-input-action-btn" onclick="handleChatSend()" aria-label="Yuborish">
+        <svg viewBox="0 0 24 24" id="chat-mic-svg" class="chat-mic-icon">
+          <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5-3c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+        </svg>
+        <svg viewBox="0 0 24 24" id="chat-send-svg" class="chat-send-icon hidden">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
     </div>
   </section>
 
@@ -560,6 +715,6 @@
   <span id="toast-text">Xabar</span>
 </div>
 
-<script src="app.js?v=6.0"></script>
+<script src="app.js?v=7.0"></script>
 </body>
 </html>
