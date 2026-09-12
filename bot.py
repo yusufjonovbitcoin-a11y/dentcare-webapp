@@ -1,20 +1,30 @@
 #!/usr/bin/env python3
 """
-DentCare Telegram Bot — tish shifoxonasi uchun WebApp boti
-Talab: pip install python-telegram-bot
+DentCare Telegram Bot — Tish klinikasi uchun avtomatlashtirilgan WebApp boti
+Har bir bron qilingan qabul administratorga avtomatik tarzda barcha ma'lumotlar bilan yetib boradi.
 """
 
 import json
 import logging
 from telegram import Update, WebAppInfo, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    MessageHandler,
+    CallbackQueryHandler,
+    filters,
+    ContextTypes
+)
 
 # ============================================================
-#  SOZLAMALAR — BU YERDA O'ZGARTIRING
+#  SOZLAMALAR
 # ============================================================
-BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"          # @BotFather dan olingan token
-WEBAPP_URL = "https://your-domain.com"     # WebApp URL (HTTPS bo'lishi shart)
-ADMIN_CHAT_ID = 123456789                  # Admin Telegram ID (qabul bildirishnomasi uchun)
+BOT_TOKEN = "7726488316:AAFl1Vw_YOUR_TOKEN_HERE"  # @BotFather dan olingan bot tokeni
+WEBAPP_URL = "https://yusufjonovbitcoin-a11y.github.io/dentcare-webapp/"
+
+# Administrator Telegram ID si (Shaxsiy ID yoki guruh ID si)
+# O'z ID ingizni bilish uchun Telegramda @userinfobot ga /start bosing
+ADMIN_CHAT_ID = 0  # Bu yerga admin ID raqami yoziladi (masalan: 123456789)
 # ============================================================
 
 logging.basicConfig(
@@ -25,135 +35,131 @@ logger = logging.getLogger(__name__)
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Bot ishga tushganda /start komandasi"""
+    """Foydalanuvchi /start bosganda ochiladigan menyu"""
     user = update.effective_user
-    name = user.first_name or "Mehmon"
+    name = user.first_name or "Hurmatli bemor"
 
     keyboard = [
         [
             InlineKeyboardButton(
-                text="🦷 DentCare WebApp ni ochish",
+                text="🦷 DentCare Klinikasini Ochish",
                 web_app=WebAppInfo(url=WEBAPP_URL)
             )
         ],
         [
             InlineKeyboardButton("📞 Qo'ng'iroq qilish", url="tel:+998711234567"),
-            InlineKeyboardButton("📍 Manzil", url="https://maps.google.com")
+            InlineKeyboardButton("📍 Klinika manzili", url="https://maps.google.com/?q=Toshkent+Chilonzor+14")
         ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     await update.message.reply_text(
-        f"Assalomu alaykum, {name}! 👋\n\n"
-        "🦷 *DentCare Tish Shifoxonasiga xush kelibsiz!*\n\n"
-        "Bizning webappni ochib, quyidagilarni qilishingiz mumkin:\n"
-        "• 📅 Qabul uchun vaqt band qilish\n"
-        "• 🛠️ Xizmatlar va narxlar bilan tanishish\n"
-        "• 🤖 AI yordamchidan maslahat olish\n"
-        "• ⏰ Ish vaqtlari bilan tanishish\n\n"
-        "Pastdagi tugmani bosing 👇",
+        f"Assalomu alaykum, *{name}*! 👋\n\n"
+        "🦷 *DentCare zamonaviy stomatologiya klinikasiga xush kelibsiz!*\n\n"
+        "Bizning ilova orqali:\n"
+        "• 📅 Shifokorlar qabuliga qulay vaqtni band qiling\n"
+        "• 🛠️ Xizmatlar va narxlar bilan tanishing\n"
+        "• 🤖 DentAI bilan tish parvarishi bo'yicha maslahat oling\n\n"
+        "Ilovani ochish uchun quyidagi tugmani bosing 👇",
         parse_mode="Markdown",
         reply_markup=reply_markup
     )
 
 
 async def handle_webapp_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """WebApp dan kelgan ma'lumotlarni qayta ishlash"""
+    """WebApp dan kelgan bron ma'lumotlarini qabul qilish va adminga uzatish"""
     try:
-        data = json.loads(update.message.web_app_data.data)
+        raw_data = update.message.web_app_data.data
+        data = json.loads(raw_data)
         user = update.effective_user
 
         if data.get("action") == "book":
-            name = data.get("name", "—")
-            phone = data.get("phone", "—")
-            service = data.get("service", "—")
-            time = data.get("time", "—")
-            note = data.get("note", "")
+            doctor = data.get("doctor", "Navbatchi shifokor")
+            name = data.get("name", user.first_name or "Noma'lum")
+            phone = data.get("phone", "Ko'rsatilmadi")
+            service = data.get("service", "Umumiy ko'rik")
+            date = data.get("date", "Bugun")
+            time = data.get("time", "Kelishilgan holda")
+            note = data.get("note", "Izohsiz")
 
-            # Foydalanuvchiga tasdiqlash xabari
-            await update.message.reply_text(
-                f"✅ *Qabul muvaffaqiyatli band qilindi!*\n\n"
-                f"👤 Ism: {name}\n"
-                f"📞 Telefon: {phone}\n"
-                f"🛠️ Xizmat: {service}\n"
-                f"⏰ Vaqt: {time}\n"
-                f"📝 Izoh: {note if note else '—'}\n\n"
-                f"📍 Manzil: Toshkent, Chilonzor t., 14-uy\n"
-                f"📞 Savollar uchun: +998 71 123-45-67\n\n"
-                f"Tez orada murojaat qilamiz! 😊",
-                parse_mode="Markdown"
+            # 1. BEMORGA TASDIQLASH KVITANSIYASI
+            user_confirm_text = (
+                "🎉 *QABULINGIZ MUVAFFAQIYATLI BAND QILINDI!*\n\n"
+                f"👨‍⚕️ *Shifokor:* {doctor}\n"
+                f"📅 *Sana va Vaqt:* {date} · {time}\n"
+                f"🛠️ *Xizmat:* {service}\n"
+                f"👤 *Bemor:* {name}\n"
+                f"📞 *Telefon:* {phone}\n\n"
+                "📍 *Manzil:* Toshkent sh., Chilonzor t., 14-uy (Mirzo Ulug'bek metrosi)\n"
+                "📞 *Ma'lumot uchun:* +998 (71) 123-45-67\n\n"
+                "_Klinikamiz ma'muriyati tez orada siz bilan bog'lanib, qabulni tasdiqlaydi!_"
+            )
+            await update.message.reply_text(user_confirm_text, parse_mode="Markdown")
+
+            # 2. ADMINISTRATORGA AVTOMATIK BILDORISHNOMA
+            admin_msg = (
+                "🚨 *YANGI BRON BUYURTMASI TUSHDI!*\n"
+                "━━━━━━━━━━━━━━━━━━━━\n"
+                f"👤 *Bemor:* {name}\n"
+                f"📞 *Telefon:* `{phone}`\n"
+                f"👨‍⚕️ *Tanlangan Vrach:* {doctor}\n"
+                f"📅 *Sana & Vaqt:* {date} | {time}\n"
+                f"🛠️ *Xizmat:* {service}\n"
+                f"📝 *Shikoyat/Izoh:* {note}\n"
+                "━━━━━━━━━━━━━━━━━━━━\n"
+                f"📱 *Telegram Profili:* @{user.username or 'yoq'} (ID: `{user.id}`)\n"
             )
 
-            # Adminga xabardor qilish
-            if ADMIN_CHAT_ID:
-                await context.bot.send_message(
-                    chat_id=ADMIN_CHAT_ID,
-                    text=(
-                        f"🔔 *Yangi qabul so'rovi!*\n\n"
-                        f"👤 Foydalanuvchi: {user.first_name} (@{user.username or '—'})\n"
-                        f"📋 Ism: {name}\n"
-                        f"📞 Telefon: {phone}\n"
-                        f"🛠️ Xizmat: {service}\n"
-                        f"⏰ Vaqt: {time}\n"
-                        f"📝 Izoh: {note if note else '—'}"
-                    ),
-                    parse_mode="Markdown"
+            admin_keyboard = [
+                [
+                    InlineKeyboardButton("📞 Qo'ng'iroq qilish", url=f"tel:{phone}"),
+                ]
+            ]
+            if user.username:
+                admin_keyboard[0].append(
+                    InlineKeyboardButton("💬 Telegramdan yozish", url=f"https://t.me/{user.username}")
                 )
 
+            admin_reply_markup = InlineKeyboardMarkup(admin_keyboard)
+
+            target_admin = ADMIN_CHAT_ID if ADMIN_CHAT_ID != 0 else update.effective_chat.id
+
+            await context.bot.send_message(
+                chat_id=target_admin,
+                text=admin_msg,
+                parse_mode="Markdown",
+                reply_markup=admin_reply_markup
+            )
+            logger.info(f"Yangi bron qabul qilindi: {name} -> Admin ({target_admin}) ga yuborildi.")
+
     except Exception as e:
-        logger.error(f"WebApp data error: {e}")
-        await update.message.reply_text("Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.")
+        logger.error(f"WebApp ma'lumotlarini qabul qilishda xatolik: {e}")
+        await update.message.reply_text(
+            "Xatolik yuz berdi. Iltimos, qayta urinib ko'ring yoki to'g'ridan-to'g'ri qo'ng'iroq qiling: +998 71 123-45-67"
+        )
 
 
-async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def my_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Admin o'z ID raqamini bilishi uchun qulay komanda"""
+    chat_id = update.effective_chat.id
     await update.message.reply_text(
-        "📋 *Buyruqlar:*\n\n"
-        "/start — Botni ishga tushirish\n"
-        "/help — Yordam\n"
-        "/info — Klinika haqida ma'lumot\n"
-        "/time — Ish vaqtlari",
-        parse_mode="Markdown"
-    )
-
-
-async def info_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "🏥 *DentCare Tish Shifoxonasi*\n\n"
-        "📍 Toshkent, Chilonzor t., 14-uy\n"
-        "📞 +998 71 123-45-67\n"
-        "⏰ Du–Shan: 09:00 – 19:00\n"
-        "⏰ Shanba: 10:00 – 15:00\n"
-        "❌ Yakshanba: Yopiq\n\n"
-        "👨‍⚕️ 2000+ mamnun bemor\n"
-        "🏆 15+ yil tajriba",
-        parse_mode="Markdown"
-    )
-
-
-async def time_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "⏰ *Ish vaqtlari:*\n\n"
-        "✅ Dushanba: 09:00 – 19:00\n"
-        "✅ Seshanba: 09:00 – 19:00\n"
-        "✅ Chorshanba: 09:00 – 19:00\n"
-        "✅ Payshanba: 09:00 – 19:00\n"
-        "✅ Juma: 09:00 – 18:00\n"
-        "✅ Shanba: 10:00 – 15:00\n"
-        "❌ Yakshanba: Yopiq",
+        f"Sizning Telegram Chat ID raqamingiz: `{chat_id}`\n\n"
+        "Ushbu raqamni `bot.py` faylidagi `ADMIN_CHAT_ID` qatoriga qo'ying.",
         parse_mode="Markdown"
     )
 
 
 def main():
+    if BOT_TOKEN == "7726488316:AAFl1Vw_YOUR_TOKEN_HERE":
+        print("\nDIQQAT: Iltimos, bot.py faylidagi BOT_TOKEN ga @BotFather dan olgan tokeningizni yozing!\n")
+
     app = Application.builder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("help", help_cmd))
-    app.add_handler(CommandHandler("info", info_cmd))
-    app.add_handler(CommandHandler("time", time_cmd))
+    app.add_handler(CommandHandler("myid", my_id))
     app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp_data))
 
-    logger.info("🤖 DentCare boti ishga tushdi!")
+    logger.info("🤖 DentCare boti ishga tushdi va buyurtmalarni kutmoqda...")
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
