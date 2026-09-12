@@ -1,50 +1,52 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Dental Clinic — Pixel-Perfect Luxury WebApp Styling
+   DENTCARE CLINIC — MASTER UNIFIED LUXURY DESIGN SYSTEM
+   Pixel-Perfect Implementation Matching Exact Reference Screenshots
    ═══════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Brand Color Palette */
-  --primary:          #0284C7;
-  --primary-hover:    #0369A1;
-  --primary-light:    #E0F2FE;
-  --primary-dark:     #0C4A6E;
+  /* Brand Palettes */
+  --primary:            #0284C7;
+  --primary-hover:      #0369A1;
+  --primary-light:      #E0F2FE;
+  --primary-dark:       #0C4A6E;
 
-  --accent-green:     #10B981;
-  --accent-green-dark:#059669;
-  --accent-green-bg:  #D1FAE5;
+  --accent-green:       #10B981;
+  --accent-green-dark:  #059669;
+  --accent-green-bg:    #DCFCE7;
+  --accent-green-text:  #065F46;
 
-  --accent-yellow:    #F59E0B;
-  --accent-yellow-bg: #FEF3C7;
-  --accent-yellow-text:#B45309;
+  --accent-yellow:      #F59E0B;
+  --accent-yellow-bg:   #FEF3C7;
+  --accent-yellow-text: #B45309;
 
-  --accent-red:       #EF4444;
-  --accent-red-bg:    #FEE2E2;
+  --accent-red:         #EF4444;
+  --accent-red-bg:      #FEE2E2;
 
   /* Surfaces & Backgrounds */
-  --bg-app:           #F4F6F9;
-  --card-bg:          #FFFFFF;
-  --card-border:      #EEF2F6;
-  --input-bg:         #FFFFFF;
-  --sub-bg:           #F9FAFB;
+  --bg-app:             #F4F6F9;
+  --card-bg:            #FFFFFF;
+  --card-border:        #EEF2F6;
+  --input-bg:           #FFFFFF;
+  --sub-bg:             #F9FAFB;
 
   /* Typography Colors */
-  --text-title:       #111827;
-  --text-body:        #374151;
-  --text-muted:       #6B7280;
-  --text-subtle:      #9CA3AF;
+  --text-title:         #111827;
+  --text-body:          #374151;
+  --text-muted:         #6B7280;
+  --text-subtle:        #9CA3AF;
 
   /* Shadows & Depth */
-  --shadow-card:      0 2px 8px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-float:     0 4px 14px rgba(2, 132, 199, 0.28);
-  --shadow-dock:      0 -2px 10px rgba(0, 0, 0, 0.03);
+  --shadow-card:        0 2px 8px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-float:       0 4px 14px rgba(2, 132, 199, 0.28);
+  --shadow-dock:        0 -2px 10px rgba(0, 0, 0, 0.03);
 
   /* Dimensions & Radii */
-  --radius-card:      20px;
-  --radius-inner:     14px;
-  --radius-pill:      9999px;
-  --tab-bar-height:   64px;
+  --radius-card:        20px;
+  --radius-inner:       14px;
+  --radius-pill:        9999px;
+  --tab-bar-height:     62px;
 
-  --font-family:      'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
+  --font-family:        'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
 }
 
 /* ── Reset & Fundamentals ── */
@@ -108,7 +110,7 @@ input, select, textarea {
   background: var(--bg-app);
 }
 
-/* ── Tab Pages ── */
+/* ── Tab Pages & Motion ── */
 .tab-page {
   display: none;
   width: 100%;
@@ -137,12 +139,14 @@ input, select, textarea {
 }
 
 .bottom-scroll-spacer {
-  height: 24px;
+  height: 28px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   1. CLINIC HEADER CARD (Exact Replica from Screenshot)
+   TAB 1: ASOSIY SAHIFA (EXACT MATCH SCREENSHOT 1)
    ═══════════════════════════════════════════════════════════════════ */
+
+/* Clinic Header Card */
 .clinic-header-card {
   background: var(--card-bg);
   border-radius: var(--radius-card);
@@ -259,9 +263,7 @@ input, select, textarea {
   border-radius: 50%;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   2. SEARCH & FILTER ROW
-   ═══════════════════════════════════════════════════════════════════ */
+/* Search Row */
 .search-filter-row {
   display: flex;
   gap: 8px;
@@ -333,9 +335,7 @@ input, select, textarea {
   fill: #4B5563;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   3. DOCTOR WHITE CARDS (Exact Replica from Screenshot)
-   ═══════════════════════════════════════════════════════════════════ */
+/* Doctor Cards */
 .doctors-container {
   display: flex;
   flex-direction: column;
@@ -572,9 +572,7 @@ input, select, textarea {
   fill: #FFFFFF;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   4. CLINIC PERKS CARD (3 COLUMNS)
-   ═══════════════════════════════════════════════════════════════════ */
+/* Perks Card */
 .clinic-perks-card {
   background: var(--card-bg);
   border-radius: var(--radius-card);
@@ -640,9 +638,7 @@ input, select, textarea {
   background: var(--card-border);
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   5. LOCATION & PHONE NAVIGATION CARDS
-   ═══════════════════════════════════════════════════════════════════ */
+/* Location & Phone Cards */
 .location-nav-card, .phone-nav-card {
   background: var(--card-bg);
   border-radius: var(--radius-card);
@@ -755,728 +751,9 @@ input, select, textarea {
   color: var(--text-muted);
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   6. BOTTOM TAB BAR (DOCK)
-   ═══════════════════════════════════════════════════════════════════ */
-.bottom-tab-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 480px;
-  margin: 0 auto;
-  height: var(--tab-bar-height);
-  background: #FFFFFF;
-  border-top: 1px solid var(--card-border);
-  box-shadow: var(--shadow-dock);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  z-index: 1000;
-}
-
-.tab-bar-btn {
-  flex: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  color: #6B7280;
-  font-size: 11px;
-  font-weight: 500;
-  transition: color 0.15s;
-}
-
-.tab-bar-btn .tab-icon {
-  width: 22px;
-  height: 22px;
-  fill: #6B7280;
-  transition: fill 0.15s, transform 0.15s;
-}
-
-.tab-bar-btn:active .tab-icon {
-  transform: scale(0.9);
-}
-
-.tab-bar-btn.active {
-  color: var(--primary);
-  font-weight: 700;
-}
-
-.tab-bar-btn.active .tab-icon {
-  fill: var(--primary);
-}
 
 /* ═══════════════════════════════════════════════════════════════════
-   7. SCHEDULE & BOOKING TAB (TAB 2)
-   ═══════════════════════════════════════════════════════════════════ */
-.page-header-simple {
-  margin-bottom: 14px;
-}
-
-.page-header-simple h2 {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--text-title);
-}
-
-.page-header-simple p {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-.schedule-section-label {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.schedule-section-label.mt-16 {
-  margin-top: 16px;
-}
-
-.day-hint-label {
-  font-weight: 600;
-  color: var(--primary);
-}
-
-/* Doctor Chip Picker */
-.sched-doc-row {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 4px;
-}
-
-.sched-doc-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 6px 14px 6px 8px;
-  flex-shrink: 0;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-  transition: all 0.2s;
-}
-
-.sched-doc-chip img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.sched-doc-chip span {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-title);
-}
-
-.sched-doc-chip.active {
-  background: var(--primary-light);
-  border-color: var(--primary);
-}
-
-.sched-doc-chip.active span {
-  color: #0369A1;
-}
-
-/* Horizontal Calendar Strip */
-.calendar-scroll-strip {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 6px;
-}
-
-.calendar-day-pill {
-  min-width: 58px;
-  height: 70px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-  transition: all 0.2s;
-}
-
-.calendar-day-pill .cal-day-name {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.calendar-day-pill .cal-day-number {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-title);
-  margin: 2px 0;
-}
-
-.calendar-day-pill .cal-status-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--accent-green);
-}
-
-.calendar-day-pill.selected {
-  background: var(--primary);
-  border-color: var(--primary);
-}
-
-.calendar-day-pill.selected .cal-day-name,
-.calendar-day-pill.selected .cal-day-number {
-  color: #FFFFFF;
-}
-
-.calendar-day-pill.selected .cal-status-dot {
-  background: #FFFFFF;
-}
-
-.calendar-day-pill.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* Slots Grid */
-.slots-container-card {
-  background: var(--card-bg);
-  border-radius: var(--radius-card);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-card);
-  padding: 14px;
-  margin-bottom: 12px;
-}
-
-.slot-group-header {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-
-.slot-group-header.mt-12 {
-  margin-top: 12px;
-}
-
-.slots-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-
-.slot-chip {
-  height: 36px;
-  background: #F9FAFB;
-  border: 1px solid var(--card-border);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-title);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.slot-chip:active {
-  transform: scale(0.95);
-}
-
-.slot-chip.selected {
-  background: var(--primary);
-  color: #FFFFFF;
-  border-color: var(--primary);
-}
-
-.slot-chip.disabled {
-  opacity: 0.35;
-  background: #E5E7EB;
-  cursor: not-allowed;
-}
-
-/* Booking Form Card */
-.booking-form-card {
-  background: var(--card-bg);
-  border-radius: var(--radius-card);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-card);
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.form-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.form-input-group label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.form-input-group input,
-.form-input-group select {
-  height: 44px;
-  background: #F9FAFB;
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 0 12px;
-  font-size: 13.5px;
-  color: var(--text-title);
-  outline: none;
-  transition: border-color 0.15s;
-}
-
-.form-input-group input:focus,
-.form-input-group select:focus {
-  border-color: var(--primary);
-  background: #FFFFFF;
-}
-
-.confirm-big-btn {
-  width: 100%;
-  height: 48px;
-  border-radius: 24px;
-  background: var(--primary);
-  color: #FFFFFF;
-  font-size: 15px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-float);
-  transition: transform 0.15s, background 0.15s;
-}
-
-.confirm-big-btn:active {
-  transform: scale(0.98);
-  background: var(--primary-hover);
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   8. SERVICES CATALOG (TAB 3)
-   ═══════════════════════════════════════════════════════════════════ */
-.mb-16 {
-  margin-bottom: 14px;
-}
-
-.services-list-col {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.service-catalog-card {
-  background: var(--card-bg);
-  border-radius: var(--radius-card);
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.service-card-image {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  display: block;
-}
-
-.service-card-body {
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.service-top-badge-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.service-category-badge {
-  background: var(--primary-light);
-  color: #0369A1;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 6px;
-}
-
-.service-duration-badge {
-  font-size: 11.5px;
-  color: var(--text-muted);
-}
-
-.service-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-title);
-  margin-top: 2px;
-}
-
-.service-desc {
-  font-size: 12.5px;
-  color: var(--text-muted);
-  line-height: 1.4;
-}
-
-.service-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 6px;
-  padding-top: 10px;
-  border-top: 1px solid var(--card-border);
-}
-
-.service-price-text {
-  font-size: 14.5px;
-  font-weight: 800;
-  color: var(--primary);
-}
-
-.service-book-cta {
-  padding: 8px 16px;
-  background: var(--primary);
-  color: #FFFFFF;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  transition: transform 0.15s;
-}
-
-.service-book-cta:active {
-  transform: scale(0.95);
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   9. DENTAI CHAT TAB (TAB 4)
-   ═══════════════════════════════════════════════════════════════════ */
-.chat-full-page {
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - var(--tab-bar-height) - env(safe-area-inset-bottom, 0px));
-}
-
-.chat-top-bar {
-  background: var(--card-bg);
-  border-bottom: 1px solid var(--card-border);
-  padding: 10px 16px;
-}
-
-.chat-doctor-profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.chat-avatar-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--primary-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.chat-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-title);
-}
-
-.chat-online-text {
-  font-size: 11px;
-  color: var(--accent-green-dark);
-}
-
-.chat-body-messages {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.chat-date-pill {
-  align-self: center;
-  background: #E5E7EB;
-  color: var(--text-muted);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 12px;
-  margin-bottom: 6px;
-}
-
-.chat-message-bubble {
-  max-width: 82%;
-  padding: 12px 14px;
-  font-size: 13.5px;
-  line-height: 1.45;
-  border-radius: 18px;
-  word-wrap: break-word;
-}
-
-.chat-message-bubble.bot {
-  align-self: flex-start;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  color: var(--text-title);
-  border-bottom-left-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-}
-
-.chat-message-bubble.user {
-  align-self: flex-end;
-  background: var(--primary);
-  color: #FFFFFF;
-  border-bottom-right-radius: 4px;
-  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
-}
-
-.chat-chips-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.chat-quick-chip {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--primary);
-  cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-  transition: all 0.15s;
-}
-
-.chat-quick-chip:active {
-  transform: scale(0.95);
-  background: var(--primary-light);
-}
-
-.chat-input-bar-container {
-  background: var(--card-bg);
-  border-top: 1px solid var(--card-border);
-  padding: 8px 12px;
-}
-
-.chat-input-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #F3F4F6;
-  border-radius: 24px;
-  padding: 4px 6px 4px 14px;
-}
-
-.chat-input-wrapper input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  outline: none;
-  font-size: 14px;
-  color: var(--text-title);
-  height: 36px;
-}
-
-.chat-send-action-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.15s;
-}
-
-.chat-send-action-btn:active {
-  transform: scale(0.9);
-}
-
-.chat-send-action-btn svg {
-  width: 18px;
-  height: 18px;
-  fill: #FFFFFF;
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   10. CONFIRMATION BOTTOM SHEET MODAL
-   ═══════════════════════════════════════════════════════════════════ */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 2000;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  animation: modalFade 0.2s ease-out;
-}
-
-@keyframes modalFade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.modal-sheet-window {
-  width: 100%;
-  max-width: 480px;
-  background: #FFFFFF;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
-  padding: 16px 20px 24px;
-  text-align: center;
-  animation: sheetSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes sheetSlideUp {
-  from { transform: translateY(100%); }
-  to   { transform: translateY(0); }
-}
-
-.sheet-drag-handle {
-  width: 40px;
-  height: 4px;
-  border-radius: 2px;
-  background: #E5E7EB;
-  margin: 0 auto 16px;
-}
-
-.success-icon-badge {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--accent-green-bg);
-  color: var(--accent-green-dark);
-  font-size: 28px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 12px;
-}
-
-.modal-success-heading {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-title);
-  margin-bottom: 4px;
-}
-
-.modal-success-sub {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-.booking-receipt-card {
-  background: #F9FAFB;
-  border-radius: 14px;
-  padding: 12px 14px;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 18px;
-  border: 1px solid var(--card-border);
-}
-
-.receipt-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-}
-
-.receipt-key {
-  color: var(--text-muted);
-}
-
-.receipt-val {
-  font-weight: 700;
-  color: var(--text-title);
-}
-
-.modal-primary-btn {
-  width: 100%;
-  height: 46px;
-  background: var(--primary);
-  color: #FFFFFF;
-  border-radius: 23px;
-  font-size: 15px;
-  font-weight: 700;
-  box-shadow: var(--shadow-float);
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   11. TOAST NOTIFICATION
-   ═══════════════════════════════════════════════════════════════════ */
-.toast-banner {
-  position: fixed;
-  top: calc(env(safe-area-inset-top, 0px) + 16px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: #111827;
-  color: #FFFFFF;
-  padding: 10px 18px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-  z-index: 3000;
-  animation: toastDrop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  pointer-events: none;
-}
-
-@keyframes toastDrop {
-  from { transform: translate(-50%, -20px); opacity: 0; }
-  to   { transform: translate(-50%, 0); opacity: 1; }
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   JADVAL / APPOINTMENT BOOKING PAGE (EXACT MATCH FOR USER SCREENSHOT)
+   TAB 2: JADVAL & BRON QILISH (EXACT MATCH SCREENSHOT 2)
    ═══════════════════════════════════════════════════════════════════ */
 .schedule-top-nav {
   display: flex;
@@ -1817,7 +1094,7 @@ input, select, textarea {
   background: #FFFFFF;
 }
 
-/* Step 2: Time Slots Grid (4 columns) */
+/* Step 2: Time Slots Grid */
 .sched-time-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1851,7 +1128,7 @@ input, select, textarea {
   box-shadow: var(--shadow-float);
 }
 
-/* Step 3: Service Cards with Radio Select */
+/* Step 3: Service Selection Cards */
 .sched-service-radios-list {
   display: flex;
   flex-direction: column;
@@ -1967,7 +1244,7 @@ input, select, textarea {
   color: var(--text-title);
 }
 
-/* 6. Sticky Floating Summary Action Bar */
+/* Sticky Floating Summary Action Bar */
 .sched-floating-action-bar {
   background: var(--card-bg);
   border-radius: 18px;
@@ -2048,9 +1325,184 @@ input, select, textarea {
   background: var(--primary-hover);
 }
 
+
 /* ═══════════════════════════════════════════════════════════════════
-   DENTAI CHAT PAGE (EXACT REPLICA FROM USER SCREENSHOT)
+   TAB 3: XIZMATLAR VA NARXLAR (UNIFIED CLEAN DESIGN)
    ═══════════════════════════════════════════════════════════════════ */
+.services-category-pills-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+.svc-cat-chip {
+  padding: 7px 15px;
+  border-radius: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.svc-cat-chip:active {
+  transform: scale(0.95);
+}
+
+.svc-cat-chip.active {
+  background: var(--primary);
+  color: #FFFFFF;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-float);
+}
+
+.services-list-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.service-catalog-white-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.service-cat-card-top {
+  display: flex;
+  gap: 12px;
+}
+
+.service-cat-thumb-wrap {
+  width: 90px;
+  height: 90px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #F3F4F6;
+  flex-shrink: 0;
+}
+
+.service-cat-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.service-cat-info-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.service-top-badges {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.service-category-badge {
+  background: var(--primary-light);
+  color: #0369A1;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.service-duration-badge {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.service-catalog-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-title);
+  line-height: 1.25;
+}
+
+.service-catalog-desc {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+.service-cat-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid var(--card-border);
+}
+
+.service-price-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-label {
+  font-size: 10px;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+}
+
+.service-price-text {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.service-select-book-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: var(--primary);
+  color: #FFFFFF;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-float);
+  transition: transform 0.15s, background 0.15s;
+}
+
+.service-select-book-btn:active {
+  transform: scale(0.96);
+  background: var(--primary-hover);
+}
+
+.service-select-book-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: #FFFFFF;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   TAB 4: DENTAI CHAT (EXACT MATCH SCREENSHOT 3)
+   ═══════════════════════════════════════════════════════════════════ */
+.chat-full-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - var(--tab-bar-height) - env(safe-area-inset-bottom, 0px));
+}
+
 .chat-top-header {
   background: var(--card-bg);
   border-bottom: 1px solid var(--card-border);
@@ -2160,7 +1612,7 @@ input, select, textarea {
   fill: #4B5563;
 }
 
-/* Alert Banner */
+/* Info Alert Banner */
 .chat-info-alert-banner {
   background: #EFF6FF;
   border: 1px solid #DBEAFE;
@@ -2196,6 +1648,16 @@ input, select, textarea {
 }
 
 /* Messages */
+.chat-body-messages {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .chat-message-row {
   display: flex;
   gap: 8px;
@@ -2280,7 +1742,7 @@ input, select, textarea {
   font-weight: 700;
 }
 
-/* 4 Quick Action Cards */
+/* 4 Action Quick Cards (2x2 Grid) */
 .chat-actions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2342,7 +1804,7 @@ input, select, textarea {
   line-height: 1.2;
 }
 
-/* Step badges and timing inside bot message */
+/* Step badges & embedded mini card */
 .numbered-step-item {
   display: flex;
   align-items: center;
@@ -2384,7 +1846,6 @@ input, select, textarea {
   flex-shrink: 0;
 }
 
-/* Embedded Service Card inside bot bubble */
 .bubble-embedded-service-card {
   background: #F9FAFB;
   border: 1px solid var(--card-border);
@@ -2571,4 +2032,257 @@ input, select, textarea {
   width: 20px;
   height: 20px;
   fill: #FFFFFF;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   BOTTOM TAB BAR (DOCK)
+   ═══════════════════════════════════════════════════════════════════ */
+.bottom-tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  height: var(--tab-bar-height);
+  background: #FFFFFF;
+  border-top: 1px solid var(--card-border);
+  box-shadow: var(--shadow-dock);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 1000;
+}
+
+.tab-bar-btn {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #6B7280;
+  font-size: 11px;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.tab-bar-btn .tab-icon {
+  width: 22px;
+  height: 22px;
+  fill: #6B7280;
+  transition: fill 0.15s, transform 0.15s;
+}
+
+.tab-bar-btn:active .tab-icon {
+  transform: scale(0.9);
+}
+
+.tab-bar-btn.active {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.tab-bar-btn.active .tab-icon {
+  fill: var(--primary);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   MODALS & TOAST
+   ═══════════════════════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: modalFade 0.2s ease-out;
+}
+
+@keyframes modalFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-sheet-window {
+  width: 100%;
+  max-width: 480px;
+  background: #FFFFFF;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  padding: 16px 20px 24px;
+  text-align: center;
+  animation: sheetSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sheetSlideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+.sheet-drag-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: #E5E7EB;
+  margin: 0 auto 16px;
+}
+
+.success-icon-badge {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-green-bg);
+  color: var(--accent-green-dark);
+  font-size: 28px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.modal-success-heading {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-title);
+  margin-bottom: 4px;
+}
+
+.modal-success-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.booking-form-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.form-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-input-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.form-input-group input,
+.form-input-group select {
+  height: 44px;
+  background: #F9FAFB;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 0 12px;
+  font-size: 13.5px;
+  color: var(--text-title);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-input-group input:focus,
+.form-input-group select:focus {
+  border-color: var(--primary);
+  background: #FFFFFF;
+}
+
+.confirm-big-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: 24px;
+  background: var(--primary);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-float);
+  transition: transform 0.15s, background 0.15s;
+}
+
+.confirm-big-btn:active {
+  transform: scale(0.98);
+  background: var(--primary-hover);
+}
+
+.booking-receipt-card {
+  background: #F9FAFB;
+  border-radius: 14px;
+  padding: 12px 14px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+  border: 1px solid var(--card-border);
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.receipt-key {
+  color: var(--text-muted);
+}
+
+.receipt-val {
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.modal-primary-btn {
+  width: 100%;
+  height: 46px;
+  background: var(--primary);
+  color: #FFFFFF;
+  border-radius: 23px;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: var(--shadow-float);
+}
+
+/* Toast */
+.toast-banner {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  color: #FFFFFF;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  z-index: 3000;
+  animation: toastDrop 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes toastDrop {
+  from { transform: translate(-50%, -20px); opacity: 0; }
+  to   { transform: translate(-50%, 0); opacity: 1; }
 }

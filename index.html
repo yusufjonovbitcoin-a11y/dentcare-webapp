@@ -420,22 +420,42 @@
   </section>
 
   <!-- ══════════════════════════════════════════════
-       TAB 3: XIZMATLAR RO'YXATI
+       TAB 3: XIZMATLAR RO'YXATI (YAGONA PROFESSIONAL DIZAYN)
        ══════════════════════════════════════════════ -->
   <section id="tab-services" class="tab-page">
     <div class="page-scroll">
-      <div class="page-header-simple">
-        <h2>Xizmatlar & Narxlar</h2>
-        <p>Barcha stomatologik yo'nalishlar</p>
+      
+      <!-- Top Navigation Bar -->
+      <div class="schedule-top-nav">
+        <button class="sched-back-btn" onclick="switchTab('home')" aria-label="Orqaga">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <div class="sched-title-box">
+          <h2 class="sched-main-title">Xizmatlar va narxlar</h2>
+          <p class="sched-subtitle">Barcha stomatologik yo'nalishlar</p>
+        </div>
       </div>
 
-      <div class="search-filter-row mb-16">
+      <!-- Search Input Box -->
+      <div class="search-filter-row" style="margin-bottom: 10px;">
         <div class="search-input-box full-width">
           <svg viewBox="0 0 24 24" class="search-lens-icon"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
           <input type="text" id="services-search-input" placeholder="Xizmat nomi bo'yicha qidiruv..." oninput="filterServicesCatalog(this.value)"/>
         </div>
       </div>
 
+      <!-- Category Filter Pills -->
+      <div class="services-category-pills-row" id="services-cat-pills">
+        <button class="svc-cat-chip active" onclick="filterServicesByCategory('Barchasi', this)">Barchasi</button>
+        <button class="svc-cat-chip" onclick="filterServicesByCategory('Terapiya', this)">Terapiya</button>
+        <button class="svc-cat-chip" onclick="filterServicesByCategory('Profilaktika', this)">Profilaktika</button>
+        <button class="svc-cat-chip" onclick="filterServicesByCategory('Estetika', this)">Estetika</button>
+        <button class="svc-cat-chip" onclick="filterServicesByCategory('Jarrohlik', this)">Jarrohlik</button>
+        <button class="svc-cat-chip" onclick="filterServicesByCategory('Ortodontiya', this)">Ortodontiya</button>
+        <button class="svc-cat-chip" onclick="filterServicesByCategory('Diagnostika', this)">Diagnostika</button>
+      </div>
+
+      <!-- Services List Container -->
       <div class="services-list-col" id="services-catalog-container"></div>
       <div class="bottom-scroll-spacer"></div>
     </div>

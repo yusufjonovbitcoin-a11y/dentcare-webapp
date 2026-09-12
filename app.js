@@ -491,8 +491,8 @@ function renderServicesCatalog(list) {
   if (list.length === 0) {
     container.innerHTML = `
       <div style="text-align:center; padding:40px 20px; color:var(--text-muted);">
-        <p style="font-size:16px; font-weight:700;">Hech narsa topilmadi 🔍</p>
-        <p style="font-size:13px; margin-top:4px;">Boshqa so'z bilan qidirib ko'ring</p>
+        <p style="font-size:16px; font-weight:700; color:var(--text-title);">Hech narsa topilmadi 🔍</p>
+        <p style="font-size:13px; margin-top:4px;">Boshqa xizmat nomi bilan qidirib ko'ring</p>
       </div>
     `;
     return;
@@ -500,20 +500,30 @@ function renderServicesCatalog(list) {
 
   list.forEach(svc => {
     const card = document.createElement('div');
-    card.className = 'service-catalog-card glass-card interactive-spring';
+    card.className = 'service-catalog-white-card';
     card.innerHTML = `
-      <img src="${svc.image}" alt="${svc.title}" class="service-card-image" loading="lazy"/>
-      <div class="service-card-body">
-        <div class="service-top-badge-row">
-          <span class="service-category-badge">${svc.category}</span>
-          <span class="service-duration-badge">⏱ ${svc.duration}</span>
+      <div class="service-cat-card-top">
+        <div class="service-cat-thumb-wrap">
+          <img src="${svc.image}" alt="${svc.title}" class="service-cat-thumb" loading="lazy"/>
         </div>
-        <h4 class="service-title">${svc.title}</h4>
-        <p class="service-desc">${svc.description}</p>
-        <div class="service-card-footer">
+        <div class="service-cat-info-col">
+          <div class="service-top-badges">
+            <span class="service-category-badge">${svc.category}</span>
+            <span class="service-duration-badge">⏱ ${svc.duration}</span>
+          </div>
+          <h4 class="service-catalog-title">${svc.title}</h4>
+          <p class="service-catalog-desc">${svc.description}</p>
+        </div>
+      </div>
+      <div class="service-cat-bottom-row">
+        <div class="service-price-block">
+          <span class="price-label">Narxi:</span>
           <span class="service-price-text">${svc.price}</span>
-          <button class="service-book-cta interactive-spring" onclick="bookServiceItem('${svc.title}')">Yozilish ›</button>
         </div>
+        <button class="service-select-book-btn" onclick="bookServiceItem('${svc.title}')">
+          <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/></svg>
+          <span>Qabulga yozilish</span>
+        </button>
       </div>
     `;
     container.appendChild(card);
@@ -521,25 +531,63 @@ function renderServicesCatalog(list) {
 }
 
 function bookServiceItem(svcTitle) {
-  switchTab('schedule');
-  const sel = document.getElementById('patient-service');
-  if (sel) {
-    for (let opt of sel.options) {
-      if (opt.text.toLowerCase().includes(svcTitle.toLowerCase().slice(0, 5))) {
-        sel.value = opt.value;
-        break;
-      }
-    }
+  chosenService = svcTitle;
+  const match = DENTAL_SERVICES.find(s => s.title.toLowerCase().includes(svcTitle.toLowerCase()) || svcTitle.toLowerCase().includes(s.title.toLowerCase()));
+  if (match) {
+    chosenPrice = match.price;
   }
+
+  switchTab('schedule');
+
+  // Highlight matching radio card in Step 3
+  document.querySelectorAll('.sched-service-card').forEach(card => {
+    if (card.textContent.toLowerCase().includes(svcTitle.toLowerCase().slice(0, 5))) {
+      card.classList.add('active');
+    } else {
+      card.classList.remove('active');
+    }
+  });
+
+  updateScheduleSummary();
+  showToast(`🦷 ${svcTitle} tanlandi`);
+}
+
+function filterServicesByCategory(category, btnEl) {
+  document.querySelectorAll('.svc-cat-chip').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+
+  const query = document.getElementById('services-search-input')?.value.toLowerCase().trim() || '';
+
+  let filtered = DENTAL_SERVICES;
+  if (category && category !== 'Barchasi') {
+    filtered = filtered.filter(s => s.category.toLowerCase() === category.toLowerCase());
+  }
+  if (query) {
+    filtered = filtered.filter(s =>
+      s.title.toLowerCase().includes(query) ||
+      s.description.toLowerCase().includes(query)
+    );
+  }
+  renderServicesCatalog(filtered);
+  triggerHaptic('selection');
 }
 
 function filterServicesCatalog(queryVal) {
-  const query = (queryVal !== undefined ? queryVal : (document.getElementById('services-search-input')?.value || document.getElementById('search-svc-input')?.value || '')).toLowerCase().trim();
-  const filtered = DENTAL_SERVICES.filter(s =>
-    s.title.toLowerCase().includes(query) ||
-    s.category.toLowerCase().includes(query) ||
-    s.description.toLowerCase().includes(query)
-  );
+  const query = (queryVal !== undefined ? queryVal : (document.getElementById('services-search-input')?.value || '')).toLowerCase().trim();
+  const activeChip = document.querySelector('.svc-cat-chip.active');
+  const activeCategory = activeChip ? activeChip.textContent.trim() : 'Barchasi';
+
+  let filtered = DENTAL_SERVICES;
+  if (activeCategory && activeCategory !== 'Barchasi') {
+    filtered = filtered.filter(s => s.category.toLowerCase() === activeCategory.toLowerCase());
+  }
+  if (query) {
+    filtered = filtered.filter(s =>
+      s.title.toLowerCase().includes(query) ||
+      s.category.toLowerCase().includes(query) ||
+      s.description.toLowerCase().includes(query)
+    );
+  }
   renderServicesCatalog(filtered);
 }
 
@@ -753,6 +801,7 @@ window.selectServiceOption = selectServiceOption;
 window.changeSchedWeek = changeSchedWeek;
 window.bookServiceItem = bookServiceItem;
 window.filterServicesCatalog = filterServicesCatalog;
+window.filterServicesByCategory = filterServicesByCategory;
 window.handleChatSend = handleChatSend;
 window.sendQuickPrompt = sendQuickPrompt;
 window.onChatInputChanged = onChatInputChanged;
