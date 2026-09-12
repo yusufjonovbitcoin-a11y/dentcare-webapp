@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════
-//  DentCare — Bulletproof Mobile Controller (app.js)
+//  DentCare — Ultra-Professional Animated Controller (app.js)
 // ═══════════════════════════════════════════════════════════════════
 
 // Safely initialize Telegram WebApp
@@ -13,7 +13,7 @@ try {
     if (tg.setBackgroundColor) tg.setBackgroundColor('#F8FAFC');
   }
 } catch (err) {
-  console.log('Telegram SDK init warning:', err);
+  console.log('Telegram SDK warning:', err);
 }
 
 // ── Application State ──
@@ -83,7 +83,7 @@ const DENTAL_SERVICES = [
   }
 ];
 
-// ── Tab Navigation ──
+// ── Tab Navigation with Spring Transitions ──
 function switchTab(tabId) {
   if (tabId === currentActiveTab) {
     const scrollBox = document.querySelector(`#tab-${tabId} .scroll-area`);
@@ -97,7 +97,7 @@ function switchTab(tabId) {
   if (oldScene) oldScene.classList.remove('active');
   if (oldDockBtn) oldDockBtn.classList.remove('active');
 
-  // Show new tab
+  // Show new tab with animation
   const targetScene = document.getElementById(`tab-${tabId}`);
   const targetDockBtn = document.getElementById(`dock-btn-${tabId}`);
   if (targetScene && targetDockBtn) {
@@ -124,6 +124,20 @@ function triggerHaptic(type) {
     else if (type === 'warning') tg.HapticFeedback.notificationOccurred('warning');
     else tg.HapticFeedback.impactOccurred(type || 'light');
   } catch (e) {}
+}
+
+// ── Stories Viewer Handler ──
+function viewStory(storyType) {
+  triggerHaptic('light');
+  if (storyType === 'before_after') {
+    showToast('✨ 250+ bemorimizning oldin va keyin natijalari');
+  } else if (storyType === 'equipment') {
+    showToast('🔬 Germaniyaning eng so\'nggi 3D tomografi o\'rnatildi');
+  } else if (storyType === 'promo') {
+    showToast('🎁 Bu hafta Air Flow gigiyenasi uchun 20% maxsus aksiya!');
+  } else if (storyType === 'team') {
+    showToast('👨‍⚕️ Oliy toifali 12 nafar xalqaro darajadagi mutaxassislar');
+  }
 }
 
 // ── Doctor Picker Helpers ──
@@ -181,7 +195,7 @@ function buildCalendarStrip() {
     const isSelected = i === 0;
 
     const pill = document.createElement('div');
-    pill.className = `calendar-day-pill ${isSelected ? 'selected' : ''} ${isSunday ? 'disabled' : ''}`;
+    pill.className = `calendar-day-pill ${isSelected ? 'selected' : ''} ${isSunday ? 'disabled' : ''} interactive-spring`;
 
     pill.innerHTML = `
       <span class="cal-day-name">${WEEKDAYS[d.getDay()]}</span>
@@ -242,7 +256,7 @@ function buildTimeSlots() {
   morningTimes.forEach(time => {
     const isBusy = busySlotsList.includes(time);
     const chip = document.createElement('div');
-    chip.className = `slot-chip ${isBusy ? 'busy' : ''}`;
+    chip.className = `slot-chip ${isBusy ? 'busy' : ''} interactive-spring`;
     chip.textContent = time;
     if (!isBusy) {
       chip.onclick = () => selectSlot(chip, time);
@@ -253,7 +267,7 @@ function buildTimeSlots() {
   afternoonTimes.forEach(time => {
     const isBusy = busySlotsList.includes(time);
     const chip = document.createElement('div');
-    chip.className = `slot-chip ${isBusy ? 'busy' : ''}`;
+    chip.className = `slot-chip ${isBusy ? 'busy' : ''} interactive-spring`;
     chip.textContent = time;
     if (!isBusy) {
       chip.onclick = () => selectSlot(chip, time);
@@ -306,7 +320,7 @@ function executeBooking() {
     note
   };
 
-  // Telegramga ma'lumot uzatish
+  // Telegramga uzatish
   if (tg) {
     try {
       tg.sendData(JSON.stringify(payload));
@@ -315,7 +329,7 @@ function executeBooking() {
     }
   }
 
-  // Receipt modalni to'ldirish
+  // Receipt modal
   const receiptBox = document.getElementById('booking-receipt-details');
   if (receiptBox) {
     receiptBox.innerHTML = `
@@ -332,7 +346,7 @@ function executeBooking() {
         <span class="receipt-val">${name}</span>
       </div>
       <div class="receipt-row">
-        <span class="receipt-key">Xizmat turi:</span>
+        <span class="receipt-key">Xizmat:</span>
         <span class="receipt-val">${service}</span>
       </div>
       <div class="receipt-row">
@@ -366,7 +380,7 @@ function renderServicesCatalog(list) {
   if (list.length === 0) {
     container.innerHTML = `
       <div style="text-align:center; padding:40px 20px; color:var(--text-muted);">
-        <p style="font-size:16px; font-weight:600;">Hech narsa topilmadi 🔍</p>
+        <p style="font-size:16px; font-weight:700;">Hech narsa topilmadi 🔍</p>
         <p style="font-size:13px; margin-top:4px;">Boshqa so'z bilan qidirib ko'ring</p>
       </div>
     `;
@@ -375,7 +389,7 @@ function renderServicesCatalog(list) {
 
   list.forEach(svc => {
     const card = document.createElement('div');
-    card.className = 'service-catalog-card';
+    card.className = 'service-catalog-card glass-card interactive-spring';
     card.innerHTML = `
       <img src="${svc.image}" alt="${svc.title}" class="service-card-image" loading="lazy"/>
       <div class="service-card-body">
@@ -387,7 +401,7 @@ function renderServicesCatalog(list) {
         <p class="service-desc">${svc.description}</p>
         <div class="service-card-footer">
           <span class="service-price-text">${svc.price}</span>
-          <button class="service-book-cta" onclick="bookServiceItem('${svc.title}')">Yozilish</button>
+          <button class="service-book-cta interactive-spring" onclick="bookServiceItem('${svc.title}')">Yozilish ›</button>
         </div>
       </div>
     `;
@@ -420,7 +434,7 @@ function filterServicesCatalog() {
 
 // ── DentAI Smart Chat Knowledge Base ──
 const AI_RESPONSES = {
-  'og\'ri|achish|yallig\'|puls': `🦷 <b>Tish og'rig'ida birinchi yordam:</b>\n\n1. Ibuprofen (400 mg) yoki Nimesulid tabletkasi ichishingiz mumkin;\n2. 1 stakan iliq suvga 1 choy qoshiq soda va tuz solib og'izni chayqang;\n3. Og'rigan joyga issiq narsa qo'ymang;\n4. Karies asab tolalariga yetmasligi uchun zudlik bilan qabulga yoziling.\n\nKlinikamiz bugun soat 19:00 gacha ochiq! 📞 +998 (71) 123-45-67`,
+  'og\'ri|achish|yallig\'|puls': `🦷 <b>Tish og'rig'ida birinchi yordam:</b>\n\n1. Ibuprofen (400 mg) yoki Nimesulid tabletkasi ichishingiz mumkin;\n2. 1 stakan iliq suvga 1 choy qoshiq soda va tuz solib og'izni chayqang;\n3. Og'rigan joyga aslo issiq kompress qo'ymang;\n4. Karies asab tolalariga yetmasligi uchun zudlik bilan qabulga yoziling.\n\nKlinikamiz bugun soat 19:00 gacha ochiq! 📞 +998 (71) 123-45-67`,
 
   'vaqt|qabul|soat|jadval|qachon': `📅 <b>DentCare ish jadvali:</b>\n\n• Dushanba – Shanba: 09:00 dan 19:00 gacha;\n• Tushlik tanaffusisiz;\n• Yakshanba: Dam olish kuni.\n\n"Jadval" bo'limida sizga qulay shifokor va vaqtni bemalol tanlashingiz mumkin!`,
 
@@ -445,7 +459,7 @@ function getBotReply(userText) {
       return AI_RESPONSES[key];
     }
   }
-  return `Tushundim. Tishingiz holati bo'yicha aniq tashxis va tavsiya berish uchun shifokorimiz ko'rigidan o'tishingizni maslahat beramiz.\n\n"Jadval" bo'limidan bepul ko'rikka yozilishingiz yoki to'g'ridan-to'g'ri +998 (71) 123-45-67 raqamiga qo'ng'iroq qilishingiz mumkin.`;
+  return `Tushundim. Tishingiz holati bo'yicha aniq tashxis va tavsiya berish uchun klinikamiz shifokori ko'rigidan o'tishingizni maslahat beramiz.\n\n"Jadval" bo'limidan bepul ko'rikka yozilishingiz yoki to'g'ridan-to'g'ri +998 (71) 123-45-67 raqamiga qo'ng'iroq qilishingiz mumkin.`;
 }
 
 function handleChatSend() {
@@ -483,10 +497,10 @@ function appendChatMessage(htmlText, type) {
   if (!chatBox) return;
 
   const row = document.createElement('div');
-  row.className = `chat-msg-row ${type}`;
+  row.className = `chat-msg-row ${type} animate-pop-in`;
 
   const card = document.createElement('div');
-  card.className = `${type}-msg-card`;
+  card.className = `${type}-msg-card ${type === 'bot' ? 'glass-card' : ''}`;
   card.style.whiteSpace = 'pre-line';
   card.innerHTML = htmlText;
 
@@ -500,7 +514,7 @@ function showChatTyping() {
   row.className = 'chat-msg-row bot';
 
   const card = document.createElement('div');
-  card.className = 'bot-msg-card typing-dots-box';
+  card.className = 'bot-msg-card glass-card typing-dots-box';
   card.innerHTML = `
     <span class="typing-dot-circle"></span>
     <span class="typing-dot-circle"></span>
@@ -544,11 +558,11 @@ function showToast(message) {
   clearTimeout(toastTimerInstance);
   toastTimerInstance = setTimeout(() => {
     toast.classList.add('hidden');
-  }, 2600);
+  }, 2800);
 }
 
 function openNotifications() {
-  showToast('🔔 Bugun barcha qabullar o\'z vaqtida amalga oshirilmoqda');
+  showToast('🔔 Bugun klinikamizda barcha shifokorlar qabuli davom etmoqda');
   triggerHaptic('light');
 }
 
@@ -574,6 +588,7 @@ window.sendQuickPrompt = sendQuickPrompt;
 window.openNotifications = openNotifications;
 window.openGoogleMap = openGoogleMap;
 window.callClinicPhone = callClinicPhone;
+window.viewStory = viewStory;
 
 // ── App Init (Immediate & Safe) ──
 function initApp() {
