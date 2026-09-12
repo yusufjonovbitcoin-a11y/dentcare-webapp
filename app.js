@@ -143,6 +143,7 @@ function viewStory(storyType) {
 
 function openBookingFor(doctorName) {
   renderScheduleDoctor(doctorName);
+  resetScheduleSteps();
   switchTab('schedule');
   showToast(`📅 ${chosenDoctor} qabuliga yo'naltirildi`);
 }
@@ -289,6 +290,42 @@ const BASE_DAYS_DATA = [
   { name: 'Yak',  num: 22 }
 ];
 
+// ── Accordion Stepper Controller ──
+function collapseStep(stepNum) {
+  const exp = document.getElementById(`step-${stepNum}-expanded`);
+  const col = document.getElementById(`step-${stepNum}-collapsed`);
+  if (exp) exp.classList.add('hidden');
+  if (col) col.classList.remove('hidden');
+}
+
+function expandStep(stepNum) {
+  const exp = document.getElementById(`step-${stepNum}-expanded`);
+  const col = document.getElementById(`step-${stepNum}-collapsed`);
+  if (exp) exp.classList.remove('hidden');
+  if (col) col.classList.add('hidden');
+
+  const block = document.getElementById(`sched-step-${stepNum}`);
+  if (block) {
+    block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  triggerHaptic('selection');
+}
+
+function resetScheduleSteps() {
+  expandStep(1);
+  collapseStep(2);
+  collapseStep(3);
+
+  const compDate = document.getElementById('compact-date-val');
+  if (compDate) compDate.textContent = `${chosenDayStr} (Pay)`;
+
+  const compTime = document.getElementById('compact-time-val');
+  if (compTime) compTime.textContent = `${chosenTimeSlot} (Vaqt tanlang)`;
+
+  const compSvc = document.getElementById('compact-service-val');
+  if (compSvc) compSvc.textContent = `${chosenService} · ${chosenPrice}`;
+}
+
 function renderScheduleDays() {
   const container = document.getElementById('sched-days-strip');
   if (!container) return;
@@ -322,8 +359,18 @@ function renderScheduleDays() {
       card.classList.add('active');
       chosenDayIndex = idx;
       chosenDayStr = `${dayNum} sentabr`;
+
+      const compDate = document.getElementById('compact-date-val');
+      if (compDate) compDate.textContent = `${dayNum} sentabr (${d.name})`;
+
       updateScheduleSummary();
       triggerHaptic('selection');
+
+      // Auto-collapse Step 1 and expand Step 2
+      setTimeout(() => {
+        collapseStep(1);
+        expandStep(2);
+      }, 180);
     };
 
     container.appendChild(card);
@@ -360,8 +407,27 @@ function renderScheduleTimeSlots() {
       document.querySelectorAll('.sched-time-chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       chosenTimeSlot = time;
+
+      const compTime = document.getElementById('compact-time-val');
+      if (compTime) compTime.textContent = time;
+
+      // Update badge to checkmark and button label to "O'zgartirish"
+      const badge = document.getElementById('step-2-badge');
+      if (badge) {
+        badge.className = 'step-compact-check-badge';
+        badge.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+      }
+      const btnLabel = document.getElementById('step-2-btn-label');
+      if (btnLabel) btnLabel.textContent = "O'zgartirish";
+
       updateScheduleSummary();
       triggerHaptic('light');
+
+      // Auto-collapse Step 2 and expand Step 3
+      setTimeout(() => {
+        collapseStep(2);
+        expandStep(3);
+      }, 180);
     };
 
     container.appendChild(chip);
@@ -374,6 +440,18 @@ function selectServiceOption(cardEl, serviceName, price) {
   cardEl.classList.add('active');
   chosenService = serviceName;
   chosenPrice = price;
+
+  const compSvc = document.getElementById('compact-service-val');
+  if (compSvc) compSvc.textContent = `${serviceName} · ${price}`;
+
+  const badge = document.getElementById('step-3-badge');
+  if (badge) {
+    badge.className = 'step-compact-check-badge';
+    badge.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+  }
+  const btnLabel = document.getElementById('step-3-btn-label');
+  if (btnLabel) btnLabel.textContent = "O'zgartirish";
+
   updateScheduleSummary();
   triggerHaptic('selection');
 }
@@ -814,6 +892,9 @@ window.focusChatWithPrompt = focusChatWithPrompt;
 window.openChatQuickMenu = openChatQuickMenu;
 window.callClinicPhone = callClinicPhone;
 window.viewStory = viewStory;
+window.collapseStep = collapseStep;
+window.expandStep = expandStep;
+window.resetScheduleSteps = resetScheduleSteps;
 
 // ── App Init (Immediate & Safe) ──
 function initApp() {
@@ -834,6 +915,7 @@ function initApp() {
     renderScheduleDoctor('Zulfiya Karimova');
     renderScheduleDays();
     renderScheduleTimeSlots();
+    resetScheduleSteps();
     updateScheduleSummary();
     renderServicesCatalog(DENTAL_SERVICES);
   } catch (e) {

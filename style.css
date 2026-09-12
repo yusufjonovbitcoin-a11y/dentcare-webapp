@@ -950,9 +950,148 @@ input, select, textarea {
   font-size: 11.5px;
 }
 
-/* Step Blocks */
+/* Step Blocks & Accordion Animation */
 .sched-step-block {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
+}
+
+.step-body-expanded {
+  animation: stepFadeDown 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.step-body-collapsed {
+  animation: stepFadeDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes stepFadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-compact-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.step-compact-card:hover {
+  border-color: #BAE6FD;
+  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.08);
+}
+
+.step-compact-card:active {
+  transform: scale(0.985);
+}
+
+.step-compact-left {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex: 1;
+  min-width: 0;
+}
+
+.step-compact-check-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #10B981;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.step-compact-check-badge svg {
+  width: 17px;
+  height: 17px;
+  fill: #FFFFFF;
+}
+
+.step-compact-num-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 13.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-compact-texts {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.step-compact-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.2px;
+}
+
+.step-compact-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-title);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.step-compact-edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #F0F9FF;
+  color: var(--primary);
+  font-size: 11.5px;
+  font-weight: 600;
+  border: 1px solid #BAE6FD;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.step-compact-edit-btn svg {
+  width: 13px;
+  height: 13px;
+  fill: currentColor;
+}
+
+.step-compact-edit-btn:hover {
+  background: var(--primary);
+  color: #FFFFFF;
+  border-color: var(--primary);
+}
+
+.step-compact-edit-btn:active {
+  transform: scale(0.95);
 }
 
 .sched-step-header {

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=7.3"/>
+  <link rel="stylesheet" href="style.css?v=7.4"/>
 </head>
 <body>
 
@@ -288,113 +288,175 @@
       </div>
 
       <!-- 3. Step 1: Sanani tanlang -->
-      <div class="sched-step-block">
-        <div class="sched-step-header">
-          <div class="sched-step-left">
-            <span class="sched-step-num">1</span>
-            <span class="sched-step-title">Sanani tanlang</span>
+      <div class="sched-step-block" id="sched-step-1">
+        <!-- Expanded: 7-Days Strip -->
+        <div class="step-body-expanded" id="step-1-expanded">
+          <div class="sched-step-header">
+            <div class="sched-step-left">
+              <span class="sched-step-num">1</span>
+              <span class="sched-step-title">Sanani tanlang</span>
+            </div>
+            <div class="sched-month-switch">
+              <button class="month-arrow-btn" onclick="changeSchedWeek(-1)" aria-label="Oldingi">‹</button>
+              <span class="month-title-text" id="sched-month-label">Sentabr 2024</span>
+              <button class="month-arrow-btn" onclick="changeSchedWeek(1)" aria-label="Keyingi">›</button>
+            </div>
           </div>
-          <div class="sched-month-switch">
-            <button class="month-arrow-btn" onclick="changeSchedWeek(-1)" aria-label="Oldingi">‹</button>
-            <span class="month-title-text" id="sched-month-label">Sentabr 2024</span>
-            <button class="month-arrow-btn" onclick="changeSchedWeek(1)" aria-label="Keyingi">›</button>
+
+          <div class="sched-days-row" id="sched-days-strip">
+            <!-- 7 days strip populated by app.js -->
           </div>
         </div>
 
-        <div class="sched-days-row" id="sched-days-strip">
-          <!-- 7 days strip populated by app.js -->
+        <!-- Collapsed: Compact Summary Card -->
+        <div class="step-body-collapsed hidden" id="step-1-collapsed" onclick="expandStep(1)">
+          <div class="step-compact-card">
+            <div class="step-compact-left">
+              <div class="step-compact-check-badge">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              </div>
+              <div class="step-compact-texts">
+                <span class="step-compact-title">1. Qabul sanasi</span>
+                <span class="step-compact-val" id="compact-date-val">19 sentabr (Pay)</span>
+              </div>
+            </div>
+            <button class="step-compact-edit-btn" onclick="event.stopPropagation(); expandStep(1);" type="button">
+              <span>O'zgartirish</span>
+              <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- 4. Step 2: Vaqtni tanlang -->
-      <div class="sched-step-block">
-        <div class="sched-step-header">
-          <div class="sched-step-left">
-            <span class="sched-step-num">2</span>
-            <span class="sched-step-title">Vaqtni tanlang</span>
+      <div class="sched-step-block" id="sched-step-2">
+        <!-- Expanded: Time Grid -->
+        <div class="step-body-expanded hidden" id="step-2-expanded">
+          <div class="sched-step-header">
+            <div class="sched-step-left">
+              <span class="sched-step-num">2</span>
+              <span class="sched-step-title">Vaqtni tanlang</span>
+            </div>
+            <div class="sched-online-beacon-text">
+              <span class="green-beacon-dot"></span>
+              <span>Bugun bo'sh vaqtlar</span>
+            </div>
           </div>
-          <div class="sched-online-beacon-text">
-            <span class="green-beacon-dot"></span>
-            <span>Bugun bo'sh vaqtlar</span>
+
+          <div class="sched-time-grid" id="sched-time-slots">
+            <!-- 20 slots: 08:00 to 17:30 populated by app.js -->
           </div>
         </div>
 
-        <div class="sched-time-grid" id="sched-time-slots">
-          <!-- 20 slots: 08:00 to 17:30 populated by app.js -->
+        <!-- Collapsed: Compact Summary Card -->
+        <div class="step-body-collapsed" id="step-2-collapsed" onclick="expandStep(2)">
+          <div class="step-compact-card">
+            <div class="step-compact-left">
+              <div class="step-compact-num-badge" id="step-2-badge">2</div>
+              <div class="step-compact-texts">
+                <span class="step-compact-title">2. Qabul vaqti</span>
+                <span class="step-compact-val" id="compact-time-val">10:30 (Vaqt tanlang)</span>
+              </div>
+            </div>
+            <button class="step-compact-edit-btn" onclick="event.stopPropagation(); expandStep(2);" type="button">
+              <span id="step-2-btn-label">Tanlash</span>
+              <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- 5. Step 3: Xizmatni tanlang -->
-      <div class="sched-step-block">
-        <div class="sched-step-header">
-          <div class="sched-step-left">
-            <span class="sched-step-num">3</span>
-            <span class="sched-step-title">Xizmatni tanlang</span>
+      <div class="sched-step-block" id="sched-step-3">
+        <!-- Expanded: Service List -->
+        <div class="step-body-expanded hidden" id="step-3-expanded">
+          <div class="sched-step-header">
+            <div class="sched-step-left">
+              <span class="sched-step-num">3</span>
+              <span class="sched-step-title">Xizmatni tanlang</span>
+            </div>
+            <button class="sched-all-services-link" onclick="switchTab('services')">
+              Barcha xizmatlar ›
+            </button>
           </div>
-          <button class="sched-all-services-link" onclick="switchTab('services')">
-            Barcha xizmatlar ›
-          </button>
+
+          <div class="sched-service-radios-list" id="sched-service-radios">
+            <!-- Service 1: Professional tozalash (active) -->
+            <div class="sched-service-card active" onclick="selectServiceOption(this, 'Professional tozalash', '350 000 so\'m')">
+              <div class="service-squircle-icon">
+                <svg viewBox="0 0 48 48" class="service-tooth-svg">
+                  <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#0284C7"/>
+                </svg>
+              </div>
+              <div class="service-card-info">
+                <h4 class="service-item-title">Professional tozalash</h4>
+                <p class="service-item-sub">Tish toshlarini olib tashlash va polirovka</p>
+                <span class="service-item-duration">⏱ 30 daqiqa</span>
+              </div>
+              <div class="service-card-right">
+                <div class="sched-radio-indicator">
+                  <div class="sched-radio-inner-dot"></div>
+                </div>
+                <span class="service-item-price">350 000 so'm</span>
+              </div>
+            </div>
+
+            <!-- Service 2: Plomba (karies) -->
+            <div class="sched-service-card" onclick="selectServiceOption(this, 'Plomba (karies)', '450 000 so\'m')">
+              <div class="service-squircle-icon">
+                <svg viewBox="0 0 48 48" class="service-tooth-svg">
+                  <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#0284C7"/>
+                </svg>
+              </div>
+              <div class="service-card-info">
+                <h4 class="service-item-title">Plomba (karies)</h4>
+                <p class="service-item-sub">Kariesni davolash va plomba</p>
+                <span class="service-item-duration">⏱ 45 daqiqa</span>
+              </div>
+              <div class="service-card-right">
+                <div class="sched-radio-indicator">
+                  <div class="sched-radio-inner-dot"></div>
+                </div>
+                <span class="service-item-price">450 000 so'm</span>
+              </div>
+            </div>
+
+            <!-- Service 3: Implantatsiya konsultatsiya -->
+            <div class="sched-service-card" onclick="selectServiceOption(this, 'Implantatsiya konsultatsiya', 'Bepul')">
+              <div class="service-squircle-icon">
+                <svg viewBox="0 0 24 24" class="service-tooth-svg">
+                  <path d="M12 2C8 2 6 5 6 8c0 3 2 5 3 6v1h6v-1c1-1 3-3 3-6 0-3-2-6-6-6zm-1 14h2v2h-2v-2zm-1 3h4v2h-4v-2zm1 3h2v1h-2v-1z" fill="#0284C7"/>
+                </svg>
+              </div>
+              <div class="service-card-info">
+                <h4 class="service-item-title">Implantatsiya konsultatsiya</h4>
+                <p class="service-item-sub">Ko'rik va reja tuzish</p>
+                <span class="service-item-duration">⏱ 30 daqiqa</span>
+              </div>
+              <div class="service-card-right">
+                <div class="sched-radio-indicator">
+                  <div class="sched-radio-inner-dot"></div>
+                </div>
+                <span class="service-item-price">Bepul</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="sched-service-radios-list" id="sched-service-radios">
-          <!-- Service 1: Professional tozalash (active) -->
-          <div class="sched-service-card active" onclick="selectServiceOption(this, 'Professional tozalash', '350 000 so\'m')">
-            <div class="service-squircle-icon">
-              <svg viewBox="0 0 48 48" class="service-tooth-svg">
-                <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#0284C7"/>
-              </svg>
-            </div>
-            <div class="service-card-info">
-              <h4 class="service-item-title">Professional tozalash</h4>
-              <p class="service-item-sub">Tish toshlarini olib tashlash va polirovka</p>
-              <span class="service-item-duration">⏱ 30 daqiqa</span>
-            </div>
-            <div class="service-card-right">
-              <div class="sched-radio-indicator">
-                <div class="sched-radio-inner-dot"></div>
+        <!-- Collapsed: Compact Summary Card -->
+        <div class="step-body-collapsed" id="step-3-collapsed" onclick="expandStep(3)">
+          <div class="step-compact-card">
+            <div class="step-compact-left">
+              <div class="step-compact-num-badge" id="step-3-badge">3</div>
+              <div class="step-compact-texts">
+                <span class="step-compact-title">3. Xizmat turi</span>
+                <span class="step-compact-val" id="compact-service-val">Professional tozalash · 350 000 so'm</span>
               </div>
-              <span class="service-item-price">350 000 so'm</span>
             </div>
-          </div>
-
-          <!-- Service 2: Plomba (karies) -->
-          <div class="sched-service-card" onclick="selectServiceOption(this, 'Plomba (karies)', '450 000 so\'m')">
-            <div class="service-squircle-icon">
-              <svg viewBox="0 0 48 48" class="service-tooth-svg">
-                <path d="M24 4C17.5 4 12 9.5 12 16c0 4.2 2.1 8 5.3 10.4L18 40c.2 2.2 2 4 4.2 4h3.6c2.2 0 4-1.8 4.2-4l.7-13.6C33.9 24 36 20.2 36 16c0-6.5-5.5-12-12-12zm-3 32h-1l-.5-8h2.3l-.8 8zm6 0l-.8-8h2.3l-.5 8h-1z" fill="#0284C7"/>
-              </svg>
-            </div>
-            <div class="service-card-info">
-              <h4 class="service-item-title">Plomba (karies)</h4>
-              <p class="service-item-sub">Kariesni davolash va plomba</p>
-              <span class="service-item-duration">⏱ 45 daqiqa</span>
-            </div>
-            <div class="service-card-right">
-              <div class="sched-radio-indicator">
-                <div class="sched-radio-inner-dot"></div>
-              </div>
-              <span class="service-item-price">450 000 so'm</span>
-            </div>
-          </div>
-
-          <!-- Service 3: Implantatsiya konsultatsiya -->
-          <div class="sched-service-card" onclick="selectServiceOption(this, 'Implantatsiya konsultatsiya', 'Bepul')">
-            <div class="service-squircle-icon">
-              <svg viewBox="0 0 24 24" class="service-tooth-svg">
-                <path d="M12 2C8 2 6 5 6 8c0 3 2 5 3 6v1h6v-1c1-1 3-3 3-6 0-3-2-6-6-6zm-1 14h2v2h-2v-2zm-1 3h4v2h-4v-2zm1 3h2v1h-2v-1z" fill="#0284C7"/>
-              </svg>
-            </div>
-            <div class="service-card-info">
-              <h4 class="service-item-title">Implantatsiya konsultatsiya</h4>
-              <p class="service-item-sub">Ko'rik va reja tuzish</p>
-              <span class="service-item-duration">⏱ 30 daqiqa</span>
-            </div>
-            <div class="service-card-right">
-              <div class="sched-radio-indicator">
-                <div class="sched-radio-inner-dot"></div>
-              </div>
-              <span class="service-item-price">Bepul</span>
-            </div>
+            <button class="step-compact-edit-btn" onclick="event.stopPropagation(); expandStep(3);" type="button">
+              <span id="step-3-btn-label">Tanlash</span>
+              <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -735,6 +797,6 @@
   <span id="toast-text">Xabar</span>
 </div>
 
-<script src="app.js?v=7.3"></script>
+<script src="app.js?v=7.4"></script>
 </body>
 </html>
