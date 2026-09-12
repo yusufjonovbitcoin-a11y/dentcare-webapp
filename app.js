@@ -113,6 +113,11 @@ function switchTab(tabId) {
     const dot = document.getElementById('chat-notification-dot');
     if (dot) dot.classList.add('hidden');
     scrollChatToEnd();
+  } else if (tabId === 'schedule') {
+    renderScheduleDoctor(chosenDoctor || 'Zulfiya Karimova');
+    renderScheduleDays();
+    renderScheduleTimeSlots();
+    updateScheduleSummary();
   }
 }
 
@@ -142,7 +147,11 @@ function viewStory(storyType) {
 }
 
 function openBookingFor(doctorName) {
+  chosenDoctor = doctorName;
   renderScheduleDoctor(doctorName);
+  renderScheduleDays();
+  renderScheduleTimeSlots();
+  updateScheduleSummary();
   switchTab('schedule');
   showToast(`📅 ${chosenDoctor} qabuliga yo'naltirildi`);
 }
