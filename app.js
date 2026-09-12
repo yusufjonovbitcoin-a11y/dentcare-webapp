@@ -20,7 +20,6 @@ try {
 let currentActiveTab = 'home';
 let chosenDoctor = 'Dr. Jasur Abdullayev';
 let chosenDateObj = new Date();
-let chosenTimeSlot = null;
 
 const WEEKDAYS = ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'];
 const MONTHS = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyn', 'Iyl', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'];

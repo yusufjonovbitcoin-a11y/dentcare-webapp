@@ -2053,6 +2053,7 @@ input, select, textarea {
   justify-content: space-around;
   padding-bottom: env(safe-area-inset-bottom, 0px);
   z-index: 1000;
+  pointer-events: auto;
 }
 
 .tab-bar-btn {
@@ -2067,6 +2068,17 @@ input, select, textarea {
   font-size: 11px;
   font-weight: 500;
   transition: color 0.15s;
+  background: transparent;
+  border: none;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.tab-bar-btn * {
+  pointer-events: none;
 }
 
 .tab-bar-btn .tab-icon {
