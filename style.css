@@ -950,155 +950,18 @@ input, select, textarea {
   font-size: 11.5px;
 }
 
-/* Step Blocks & Accordion Animation */
+/* ══════════════════════════════════════════════
+   ONLINE BOOKING RULES & SCHEDULE STYLES (MEDESK / DOCTOLIB STANDARDS)
+   ══════════════════════════════════════════════ */
 .sched-step-block {
-  margin-bottom: 12px;
-}
-
-.step-body-expanded {
-  animation: stepFadeDown 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.step-body-collapsed {
-  animation: stepFadeDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes stepFadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.step-compact-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  padding: 11px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.step-compact-card:hover {
-  border-color: #BAE6FD;
-  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.08);
-}
-
-.step-compact-card:active {
-  transform: scale(0.985);
-}
-
-.step-compact-left {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  flex: 1;
-  min-width: 0;
-}
-
-.step-compact-check-badge {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #10B981;
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
-}
-
-.step-compact-check-badge svg {
-  width: 17px;
-  height: 17px;
-  fill: #FFFFFF;
-}
-
-.step-compact-num-badge {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--primary-light);
-  color: var(--primary);
-  font-weight: 700;
-  font-size: 13.5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.step-compact-texts {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.step-compact-title {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.2px;
-}
-
-.step-compact-val {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-title);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 1px;
-}
-
-.step-compact-edit-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  background: #F0F9FF;
-  color: var(--primary);
-  font-size: 11.5px;
-  font-weight: 600;
-  border: 1px solid #BAE6FD;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  flex-shrink: 0;
-}
-
-.step-compact-edit-btn svg {
-  width: 13px;
-  height: 13px;
-  fill: currentColor;
-}
-
-.step-compact-edit-btn:hover {
-  background: var(--primary);
-  color: #FFFFFF;
-  border-color: var(--primary);
-}
-
-.step-compact-edit-btn:active {
-  transform: scale(0.95);
+  margin-bottom: 16px;
 }
 
 .sched-step-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 }
 
 .sched-step-left {
@@ -1111,8 +974,8 @@ input, select, textarea {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: var(--primary-light);
-  color: var(--primary);
+  background: var(--primary);
+  color: #FFFFFF;
   font-weight: 800;
   font-size: 12px;
   display: flex;
@@ -1122,10 +985,241 @@ input, select, textarea {
 
 .sched-step-title {
   font-size: 14.5px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-title);
 }
 
+/* Doctor Quick Selector */
+.sched-doctor-selector-wrap {
+  margin-bottom: 14px;
+}
+
+.sched-selector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sched-selector-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-title);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sched-room-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0369A1;
+  background: #E0F2FE;
+  padding: 3px 9px;
+  border-radius: 12px;
+}
+
+.sched-doctor-pills-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
+
+.doc-select-pill {
+  flex: 0 0 240px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 16px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.doc-select-pill:hover {
+  border-color: #BAE6FD;
+}
+
+.doc-select-pill.active {
+  background: #F0F9FF;
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.12);
+}
+
+.pill-doc-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #E2E8F0;
+  flex-shrink: 0;
+}
+
+.pill-doc-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pill-doc-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-title);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pill-doc-spec {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.pill-check-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #E2E8F0;
+  color: transparent;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.doc-select-pill.active .pill-check-dot {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+/* Step 1: Services Grid (Online Booking Standard) */
+.sched-services-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.online-service-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: 16px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.online-service-card:hover {
+  border-color: #BAE6FD;
+}
+
+.online-service-card.active {
+  background: #F0F9FF;
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.1);
+}
+
+.svc-icon-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.svc-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.svc-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.svc-title-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-title);
+  line-height: 1.25;
+}
+
+.svc-duration-chip {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #0284C7;
+  background: #E0F2FE;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+
+.svc-card-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  line-height: 1.35;
+}
+
+.svc-card-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.svc-card-price {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-title);
+}
+
+.svc-radio-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #CBD5E1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.online-service-card.active .svc-radio-indicator {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.online-service-card.active .svc-radio-indicator::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FFFFFF;
+}
+
+/* Step 2: Smart Calendar Strip */
 .sched-month-switch {
   display: flex;
   align-items: center;
@@ -1147,31 +1241,6 @@ input, select, textarea {
   color: var(--text-title);
 }
 
-.sched-online-beacon-text {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11.5px;
-  color: var(--accent-green-dark);
-  font-weight: 600;
-}
-
-.green-beacon-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent-green);
-}
-
-.sched-all-services-link {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--primary);
-  background: transparent;
-  cursor: pointer;
-}
-
-/* Step 1: 7-Days Strip */
 .sched-days-row {
   display: flex;
   gap: 6px;
@@ -1184,7 +1253,7 @@ input, select, textarea {
 .sched-day-card {
   flex: 1;
   min-width: 44px;
-  height: 64px;
+  height: 68px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 14px;
@@ -1214,11 +1283,10 @@ input, select, textarea {
   font-weight: 700;
 }
 
-.sched-day-dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: transparent;
+.sched-day-slot-count {
+  font-size: 9px;
+  font-weight: 600;
+  color: #059669;
   margin-top: 1px;
 }
 
@@ -1236,11 +1304,77 @@ input, select, textarea {
   color: #FFFFFF;
 }
 
-.sched-day-card.active .sched-day-dot {
-  background: #FFFFFF;
+.sched-day-card.active .sched-day-slot-count {
+  color: #DCFCE7;
 }
 
-/* Step 2: Time Slots Grid */
+/* Step 3: Slots Legend and Grouped Time Periods */
+.sched-slots-legend {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 12px;
+  background: #F8FAFC;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #E2E8F0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.legend-circle {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.legend-circle.available {
+  background: #10B981;
+}
+
+.legend-circle.occupied {
+  background: #CBD5E1;
+}
+
+.legend-circle.selected {
+  background: var(--primary);
+}
+
+.time-period-section {
+  margin-bottom: 14px;
+}
+
+.period-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.period-icon {
+  font-size: 14px;
+}
+
+.period-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.period-hours {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-left: auto;
+}
+
 .sched-time-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1261,6 +1395,7 @@ input, select, textarea {
   color: var(--text-title);
   cursor: pointer;
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
 }
 
 .sched-time-chip:active {
@@ -1274,120 +1409,482 @@ input, select, textarea {
   box-shadow: var(--shadow-float);
 }
 
-/* Step 3: Service Selection Cards */
-.sched-service-radios-list {
+.sched-time-chip.occupied {
+  background: #F1F5F9;
+  border-color: #E2E8F0;
+  color: #94A3B8;
+  cursor: not-allowed;
+  position: relative;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.sched-time-chip.occupied::after {
+  content: 'Band';
+  position: absolute;
+  bottom: -4px;
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #EF4444;
+  background: #FEE2E2;
+  padding: 0 4px;
+  border-radius: 4px;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+/* Step 4: Inline Patient Form Card */
+.step-secure-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: #059669;
+  background: #D1FAE5;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.sched-patient-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sched-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sched-input-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.required-star {
+  color: #EF4444;
+}
+
+.sched-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 0 12px;
+  height: 44px;
+  transition: all 0.15s;
+}
+
+.sched-input-wrap:focus-within {
+  border-color: var(--primary);
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+}
+
+.sched-input-icon {
+  width: 18px;
+  height: 18px;
+  fill: #94A3B8;
+  flex-shrink: 0;
+}
+
+.sched-text-input {
+  border: none;
+  background: transparent;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-title);
+  width: 100%;
+  outline: none;
+}
+
+.sched-reminder-toggle-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #F1F5F9;
+  cursor: pointer;
+}
+
+.sched-reminder-toggle-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.sched-reminder-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.sched-reminder-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.sched-reminder-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* Step 5: Clinic Booking Policy Card */
+.sched-policy-card {
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.sched-policy-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.sched-policy-icon {
+  width: 18px;
+  height: 18px;
+  fill: #16A34A;
+}
+
+.sched-policy-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #15803D;
+}
+
+.sched-policy-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.sched-service-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-  padding: 12px 14px;
+.sched-policy-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11.5px;
+  color: #166534;
+  line-height: 1.4;
+}
+
+.policy-bullet {
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: -1px;
+}
+
+/* ══════════════════════════════════════════════
+   MEDICAL E-TICKET VOUCHER MODAL
+   ══════════════════════════════════════════════ */
+.ticket-modal-window {
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #FFFFFF;
+  border-radius: 28px 28px 0 0;
+  padding: 16px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+  animation: modalSheetUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ticket-success-head {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.ticket-success-sparkle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #10B981;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  margin-bottom: 8px;
+}
+
+.ticket-success-sparkle svg {
+  width: 26px;
+  height: 26px;
+  fill: #FFFFFF;
+}
+
+.ticket-head-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-title);
+  margin-bottom: 2px;
+}
+
+.ticket-head-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Medical Ticket Card with Perforation */
+.medical-ticket-card {
+  width: 100%;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 20px;
+  padding: 16px;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  margin-bottom: 16px;
+}
+
+.ticket-top-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.ticket-clinic-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ticket-brand-logo {
+  font-size: 16px;
+}
+
+.ticket-brand-name {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #0284C7;
+}
+
+.ticket-status-pill {
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #15803D;
+  background: #DCFCE7;
+  padding: 3px 9px;
+  border-radius: 12px;
+}
+
+.ticket-id-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.ticket-id-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.ticket-id-value {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.ticket-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.ticket-grid-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-grid-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.ticket-item-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.ticket-item-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-title);
+  margin-top: 1px;
+}
+
+.ticket-item-val.highlight {
+  color: var(--primary);
+}
+
+/* Perforation Divider */
+.ticket-perforation-divider {
+  position: relative;
+  height: 24px;
+  margin: 10px -16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cutout-left, .cutout-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+}
+
+.cutout-left {
+  left: -10px;
+}
+
+.cutout-right {
+  right: -10px;
+}
+
+.dashed-line {
+  width: calc(100% - 24px);
+  border-top: 1.5px dashed #CBD5E1;
+}
+
+/* Barcode Section */
+.ticket-barcode-section {
   display: flex;
   align-items: center;
   gap: 12px;
-  cursor: pointer;
-  transition: all 0.15s ease-out;
 }
 
-.sched-service-card:active {
-  transform: scale(0.99);
-}
-
-.sched-service-card.active {
-  background: #F0F9FF;
-  border-color: var(--primary);
-  border-width: 1.5px;
-}
-
-.service-squircle-icon {
-  width: 44px;
-  height: 44px;
+.ticket-qr-box {
+  width: 64px;
+  height: 64px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
   border-radius: 12px;
-  background: var(--primary-light);
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.service-tooth-svg {
-  width: 24px;
-  height: 24px;
+.simulated-qr-svg {
+  width: 100%;
+  height: 100%;
 }
 
-.service-card-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.service-item-title {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--text-title);
-  line-height: 1.25;
-}
-
-.service-item-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 2px;
-  line-height: 1.3;
-}
-
-.service-item-duration {
-  font-size: 11px;
-  color: var(--text-muted);
-  display: inline-block;
-  margin-top: 2px;
-}
-
-.service-card-right {
+.ticket-address-info {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
-  height: 44px;
+  gap: 2px;
+  font-size: 11px;
 }
 
-.sched-radio-indicator {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid #CBD5E1;
+.ticket-addr-line {
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.ticket-addr-sub {
+  color: var(--text-muted);
+}
+
+.ticket-addr-phone {
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+/* Ticket Action Buttons */
+.ticket-actions-row {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ticket-action-btn {
+  flex: 1;
+  height: 42px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
   transition: all 0.15s;
 }
 
-.sched-radio-inner-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--primary);
-  opacity: 0;
-  transform: scale(0.5);
-  transition: all 0.15s;
+.ticket-action-btn.calendar-btn {
+  background: #F0F9FF;
+  color: var(--primary);
+  border: 1px solid #BAE6FD;
 }
 
-.sched-service-card.active .sched-radio-indicator {
-  border-color: var(--primary);
+.ticket-action-btn.calendar-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--primary);
 }
 
-.sched-service-card.active .sched-radio-inner-dot {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.service-item-price {
-  font-size: 13.5px;
-  font-weight: 800;
+.ticket-action-btn.map-btn {
+  background: #F8FAFC;
   color: var(--text-title);
+  border: 1px solid #E2E8F0;
+}
+
+.ticket-action-btn.map-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text-title);
+}
+
+.ticket-close-main-btn {
+  width: 100%;
+  height: 46px;
+  border-radius: 16px;
+  background: var(--primary);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-float);
+  transition: all 0.15s;
+}
+
+.ticket-close-main-btn:active {
+  transform: scale(0.98);
 }
 
 /* Sticky Floating Summary Action Bar */
