@@ -275,6 +275,7 @@ function renderScheduleDoctor(docName) {
   if (patientsEl) patientsEl.textContent = doc.patients;
   if (recEl) recEl.textContent = doc.recommend;
 
+  renderScheduleTimeSlots();
   updateScheduleSummary();
 }
 
@@ -322,6 +323,7 @@ function renderScheduleDays() {
       card.classList.add('active');
       chosenDayIndex = idx;
       chosenDayStr = `${dayNum} sentabr`;
+      renderScheduleTimeSlots();
       updateScheduleSummary();
       triggerHaptic('selection');
     };
@@ -333,6 +335,7 @@ function renderScheduleDays() {
 function changeSchedWeek(dir) {
   schedWeekOffset += dir;
   renderScheduleDays();
+  renderScheduleTimeSlots();
   triggerHaptic('light');
 }
 
@@ -345,20 +348,90 @@ const ALL_TIME_SLOTS = [
   '16:00', '16:30', '17:00', '17:30'
 ];
 
+// Schedule booked slots generator (deterministic & realistic per doctor & day)
+function getBookedSlotsForDay(doctorName, dayIndex) {
+  const docHash = (doctorName || '').split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const booked = new Set();
+  
+  // Predictable pattern: 5-6 slots are booked per day
+  const patterns = [
+    (1 + dayIndex + docHash) % 20,
+    (3 + dayIndex * 2) % 20,
+    (6 + dayIndex + (docHash % 3)) % 20,
+    (11 + dayIndex) % 20,
+    (14 + dayIndex * 3) % 20,
+    (17 + dayIndex) % 20
+  ];
+  
+  patterns.forEach(idx => {
+    const time = ALL_TIME_SLOTS[idx];
+    // Keep 10:30 available on Pay 19 (default)
+    if (dayIndex === 3 && time === '10:30') return;
+    booked.add(time);
+  });
+
+  return booked;
+}
+
 function renderScheduleTimeSlots() {
   const container = document.getElementById('sched-time-slots');
   if (!container) return;
   container.innerHTML = '';
 
+  const bookedSlots = getBookedSlotsForDay(chosenDoctor, chosenDayIndex);
+  const freeCount = ALL_TIME_SLOTS.length - bookedSlots.size;
+
+  // Dynamic header count: e.g. "Bugun 14 ta bo'sh vaqt"
+  const freeCountEl = document.getElementById('sched-free-count');
+  if (freeCountEl) {
+    const isToday = (chosenDayIndex === 3 && schedWeekOffset === 0);
+    freeCountEl.textContent = `${isToday ? 'Bugun' : chosenDayStr}: ${freeCount} ta bo'sh vaqt`;
+  }
+
+  // If currently chosen slot happens to be booked on this day, auto-select first free slot
+  if (bookedSlots.has(chosenTimeSlot)) {
+    const firstFree = ALL_TIME_SLOTS.find(t => !bookedSlots.has(t));
+    if (firstFree) {
+      chosenTimeSlot = firstFree;
+      updateScheduleSummary();
+    }
+  }
+
   ALL_TIME_SLOTS.forEach(time => {
+    const isBooked = bookedSlots.has(time);
+    const isActive = (!isBooked && time === chosenTimeSlot);
+
     const chip = document.createElement('div');
-    const isActive = (time === chosenTimeSlot);
-    chip.className = `sched-time-chip ${isActive ? 'active' : ''}`;
-    chip.textContent = time;
+    chip.className = `sched-time-chip ${isBooked ? 'booked' : 'free'} ${isActive ? 'active' : ''}`;
+    
+    let statusLabel = "Bo'sh";
+    if (isBooked) statusLabel = 'Band';
+    else if (isActive) statusLabel = 'Tanlandi';
+
+    chip.innerHTML = `
+      <span class="chip-time">${time}</span>
+      <span class="chip-status">${statusLabel}</span>
+    `;
 
     chip.onclick = () => {
-      document.querySelectorAll('.sched-time-chip').forEach(c => c.classList.remove('active'));
+      if (isBooked) {
+        triggerHaptic('warning');
+        showToast(`⚠️ Soat ${time} allaqachon band qilingan. Iltimos, yashil rangdagi bo'sh vaqtlardan birini tanlang.`);
+        return;
+      }
+
+      document.querySelectorAll('.sched-time-chip').forEach(c => {
+        c.classList.remove('active');
+        if (!c.classList.contains('booked')) {
+          const st = c.querySelector('.chip-status');
+          if (st) st.textContent = "Bo'sh";
+        }
+      });
+
       chip.classList.add('active');
+      const st = chip.querySelector('.chip-status');
+      if (st) st.textContent = 'Tanlandi';
+
       chosenTimeSlot = time;
       updateScheduleSummary();
       triggerHaptic('light');

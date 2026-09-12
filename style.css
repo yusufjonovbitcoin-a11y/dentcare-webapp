@@ -1101,7 +1101,47 @@ input, select, textarea {
   background: #FFFFFF;
 }
 
-/* Step 2: Time Slots Grid */
+/* Step 2: Time Slots Grid & Legend */
+.sched-time-legend {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: -0.1px;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.legend-dot.free {
+  background: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.legend-dot.booked {
+  background: #94A3B8;
+}
+
+.legend-dot.selected {
+  background: var(--primary);
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25);
+}
+
 .sched-time-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1109,30 +1149,118 @@ input, select, textarea {
 }
 
 .sched-time-chip {
-  height: 38px;
+  height: 42px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 12px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.02);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-title);
+  padding: 3px 2px;
   cursor: pointer;
+  position: relative;
+  user-select: none;
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.sched-time-chip:active {
+.sched-time-chip .chip-time {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--text-title);
+  letter-spacing: -0.2px;
+}
+
+.sched-time-chip .chip-status {
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* Free / Available Slot */
+.sched-time-chip.free {
+  border-color: rgba(16, 185, 129, 0.22);
+}
+
+.sched-time-chip.free .chip-status {
+  color: #10B981;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sched-time-chip.free .chip-status::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #10B981;
+  display: inline-block;
+}
+
+.sched-time-chip.free:hover {
+  border-color: #10B981;
+  background: rgba(16, 185, 129, 0.04);
+}
+
+.sched-time-chip.free:active {
   transform: scale(0.95);
 }
 
+/* Booked / Band Slot */
+.sched-time-chip.booked {
+  background: rgba(148, 163, 184, 0.07);
+  border-color: rgba(148, 163, 184, 0.18);
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.sched-time-chip.booked .chip-time {
+  color: #94A3B8;
+  text-decoration: line-through;
+  text-decoration-color: rgba(239, 68, 68, 0.7);
+}
+
+.sched-time-chip.booked .chip-status {
+  color: #EF4444;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.sched-time-chip.booked:active {
+  animation: chipWobble 0.25s ease;
+}
+
+@keyframes chipWobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* Selected / Active Slot */
 .sched-time-chip.active {
-  background: var(--primary);
-  color: #FFFFFF;
-  border-color: var(--primary);
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
   box-shadow: var(--shadow-float);
+  opacity: 1 !important;
+  transform: scale(1.02);
+}
+
+.sched-time-chip.active .chip-time {
+  color: #FFFFFF !important;
+  font-weight: 700;
+}
+
+.sched-time-chip.active .chip-status {
+  color: #E0F2FE !important;
+  font-weight: 600;
+}
+
+.sched-time-chip.active .chip-status::before {
+  display: none !important;
 }
 
 /* Step 3: Service Selection Cards */
