@@ -192,12 +192,11 @@ function bookCategory(categoryName) {
   }
 }
 
-// ── Doctor Profiles Data (Online Medical Booking Standard) ──
+// ── Doctor Profiles Data (Matching Screenshot) ──
 const DOCTOR_PROFILES = {
   'Zulfiya Karimova': {
-    name: 'Dr. Zulfiya Karimova',
+    name: 'Zulfiya Karimova',
     role: 'Jarroh-Implantolog',
-    cabinet: 'Kabinet № 204',
     badge: '💎 ITI Member',
     bio: "Nobel Biocare va Osstem implantlari. Og'riqsiz 3D raqamli implantatsiya.",
     photo: 'zulfiya_karimova.jpg',
@@ -210,7 +209,6 @@ const DOCTOR_PROFILES = {
   'Dr. Bobur Yusupov': {
     name: 'Dr. Bobur Yusupov',
     role: 'Estetik Terapevt · Mikroskopiya',
-    cabinet: 'Kabinet № 201',
     badge: '⭐ Top Doctor',
     bio: 'Tishlarni badiiy restavratsiya qilish va nozik kanallarni tozalash.',
     photo: 'bobur_yusupov.jpg',
@@ -223,7 +221,6 @@ const DOCTOR_PROFILES = {
   'Dr. Jasur Abdullayev': {
     name: 'Dr. Jasur Abdullayev',
     role: 'Bosh Ortodontist · Damon Master',
-    cabinet: 'Kabinet № 208',
     badge: '💎 Damon Master',
     bio: "Breketlar, alignerlar va to'g'ri tishlash bo'yicha 2000+ muvaffaqiyatli amaliyot.",
     photo: 'jasur_abdullayev.jpg',
@@ -235,123 +232,12 @@ const DOCTOR_PROFILES = {
   }
 };
 
-// ── Online Booking Services (Standardized with Duration & Pricing) ──
-const ONLINE_BOOKING_SERVICES = [
-  {
-    id: 'consult',
-    name: 'Konsultatsiya va 3D diagnostika',
-    duration: '20 daq',
-    durationMin: 20,
-    price: 'Bepul',
-    icon: '🦷',
-    desc: "Shifokor ko'rigi, 3D rentgen tahlili va shaxsiy davolash rejasi"
-  },
-  {
-    id: 'hygiene',
-    name: 'Professional gigiyena va tozalash',
-    duration: '30 daq',
-    durationMin: 30,
-    price: "350 000 so'm",
-    icon: '✨',
-    desc: "Air-Flow va ultratovush orqali tish toshlari va pigmentatsiyani yo'qotish"
-  },
-  {
-    id: 'plomba',
-    name: 'Plomba va badiiy restavratsiya',
-    duration: '45 daq',
-    durationMin: 45,
-    price: "450 000 so'm",
-    icon: '💎',
-    desc: "Estetik nano-kompozit yordamida kariesni davolash va anatomiyani tiklash"
-  },
-  {
-    id: 'implant',
-    name: 'Tish implantatsiyasi konsultatsiya',
-    duration: '40 daq',
-    durationMin: 40,
-    price: 'Bepul',
-    icon: '🔩',
-    desc: "Nobel Biocare / Osstem implantlari bo'yicha 3D jarrohlik konsultatsiyasi"
-  },
-  {
-    id: 'whitening',
-    name: 'Tishlarni oqartirish (Zoom-4)',
-    duration: '60 daq',
-    durationMin: 60,
-    price: "1 200 000 so'm",
-    icon: '⭐',
-    desc: "Philips Zoom-4 nuri ostida emalga zarar bermasdan 6-8 tongacha oqartirish"
-  },
-  {
-    id: 'ortho',
-    name: 'Ortodontik ko\'rik (Breket / Aligner)',
-    duration: '30 daq',
-    durationMin: 30,
-    price: 'Bepul',
-    icon: '📐',
-    desc: "Damon metall/keramik breketlari yoki shaffof alignerlar konsultatsiyasi"
-  }
-];
-
-// ── 7-Day Strip Dataset (Dush 16 to Yak 22) ──
-const BASE_DAYS_DATA = [
-  { name: 'Dush', num: 16, freeCount: 12 },
-  { name: 'Sesh', num: 17, freeCount: 10 },
-  { name: 'Chor', num: 18, freeCount: 9 },
-  { name: 'Pay',  num: 19, freeCount: 14 },
-  { name: 'Jum',  num: 20, freeCount: 11 },
-  { name: 'Shan', num: 21, freeCount: 7 },
-  { name: 'Yak',  num: 22, freeCount: 5 }
-];
-
-// ── Categorized Time Slots with Real Online Booking Occupied/Available Status ──
-const TIME_SLOT_GROUPS = {
-  morning: {
-    containerId: 'sched-time-morning',
-    slots: [
-      { time: '09:00', status: 'occupied' },
-      { time: '09:30', status: 'available' },
-      { time: '10:00', status: 'available' },
-      { time: '10:30', status: 'available' },
-      { time: '11:00', status: 'occupied' },
-      { time: '11:30', status: 'available' }
-    ]
-  },
-  afternoon: {
-    containerId: 'sched-time-afternoon',
-    slots: [
-      { time: '13:00', status: 'available' },
-      { time: '13:30', status: 'available' },
-      { time: '14:00', status: 'occupied' },
-      { time: '14:30', status: 'available' },
-      { time: '15:00', status: 'available' },
-      { time: '15:30', status: 'occupied' },
-      { time: '16:00', status: 'available' },
-      { time: '16:30', status: 'available' },
-      { time: '17:00', status: 'available' }
-    ]
-  },
-  evening: {
-    containerId: 'sched-time-evening',
-    slots: [
-      { time: '18:00', status: 'occupied' },
-      { time: '18:30', status: 'available' },
-      { time: '19:00', status: 'available' },
-      { time: '19:30', status: 'available' }
-    ]
-  }
-};
-
-chosenDoctor = 'Dr. Zulfiya Karimova';
-let chosenCabinet = 'Kabinet № 204';
-let chosenService = 'Professional gigiyena va tozalash';
-let chosenDuration = '30 daq';
-let chosenPrice = "350 000 so'm";
 let chosenDayStr = '19 sentabr';
-let chosenDayIndex = 3; // Pay 19
-let chosenTimeSlot = '10:30';
+let chosenDayIndex = 3; // Pay 19 (default in screenshot)
+let chosenTimeSlot = '10:30'; // (default in screenshot)
+let chosenService = 'Professional tozalash'; // (default in screenshot)
+let chosenPrice = "350 000 so'm";
 let schedWeekOffset = 0;
-let lastBookingTicket = null;
 
 function renderScheduleDoctor(docName) {
   let doc = DOCTOR_PROFILES[docName];
@@ -366,7 +252,6 @@ function renderScheduleDoctor(docName) {
   if (!doc) doc = DOCTOR_PROFILES['Zulfiya Karimova'];
 
   chosenDoctor = doc.name;
-  chosenCabinet = doc.cabinet;
 
   const imgEl = document.getElementById('sched-doc-img');
   const nameEl = document.getElementById('sched-doc-name');
@@ -377,8 +262,7 @@ function renderScheduleDoctor(docName) {
   const reviewsEl = document.getElementById('sched-doc-reviews');
   const expEl = document.getElementById('sched-doc-exp');
   const patientsEl = document.getElementById('sched-doc-patients');
-  const cabEl = document.getElementById('sched-doc-cabinet');
-  const roomBadge = document.getElementById('sched-doctor-room');
+  const recEl = document.getElementById('sched-doc-recommend');
 
   if (imgEl) imgEl.src = doc.photo;
   if (nameEl) nameEl.textContent = doc.name;
@@ -389,67 +273,22 @@ function renderScheduleDoctor(docName) {
   if (reviewsEl) reviewsEl.textContent = doc.reviews;
   if (expEl) expEl.textContent = doc.exp;
   if (patientsEl) patientsEl.textContent = doc.patients;
-  if (cabEl) cabEl.textContent = doc.cabinet;
-  if (roomBadge) roomBadge.textContent = doc.cabinet;
-
-  // Update pills active state
-  document.querySelectorAll('.doc-select-pill').forEach(pill => {
-    if (pill.textContent.includes(doc.name) || pill.innerHTML.includes(doc.photo)) {
-      pill.classList.add('active');
-    } else {
-      pill.classList.remove('active');
-    }
-  });
+  if (recEl) recEl.textContent = doc.recommend;
 
   updateScheduleSummary();
 }
 
-function selectScheduleDoctor(docName, pillEl) {
-  renderScheduleDoctor(docName);
-  triggerHaptic('selection');
-  showToast(`👨‍⚕️ ${chosenDoctor} tanlandi`);
-}
+// 7-day strip generator (Dush 16 to Yak 22, Pay 19 active as in screenshot)
+const BASE_DAYS_DATA = [
+  { name: 'Dush', num: 16 },
+  { name: 'Sesh', num: 17 },
+  { name: 'Chor', num: 18 },
+  { name: 'Pay',  num: 19 },
+  { name: 'Jum',  num: 20 },
+  { name: 'Shan', num: 21 },
+  { name: 'Yak',  num: 22 }
+];
 
-// ── Step 1: Services List Renderer (Online Booking Standard) ──
-function renderOnlineServices() {
-  const container = document.getElementById('sched-services-list');
-  if (!container) return;
-  container.innerHTML = '';
-
-  ONLINE_BOOKING_SERVICES.forEach(svc => {
-    const card = document.createElement('div');
-    const isActive = (svc.name === chosenService);
-    card.className = `online-service-card ${isActive ? 'active' : ''}`;
-    card.innerHTML = `
-      <div class="svc-icon-badge">${svc.icon}</div>
-      <div class="svc-card-content">
-        <div class="svc-title-row">
-          <h4 class="svc-title-name">${svc.name}</h4>
-          <span class="svc-duration-chip">⏱ ${svc.duration}</span>
-        </div>
-        <p class="svc-card-desc">${svc.desc}</p>
-      </div>
-      <div class="svc-card-end">
-        <span class="svc-card-price">${svc.price}</span>
-        <div class="svc-radio-indicator"></div>
-      </div>
-    `;
-
-    card.onclick = () => {
-      document.querySelectorAll('.online-service-card').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      chosenService = svc.name;
-      chosenDuration = svc.duration;
-      chosenPrice = svc.price;
-      updateScheduleSummary();
-      triggerHaptic('selection');
-    };
-
-    container.appendChild(card);
-  });
-}
-
-// ── Step 2: Calendar 7-Day Strip Renderer ──
 function renderScheduleDays() {
   const container = document.getElementById('sched-days-strip');
   if (!container) return;
@@ -475,7 +314,7 @@ function renderScheduleDays() {
     card.innerHTML = `
       <span class="sched-day-name">${d.name}</span>
       <span class="sched-day-num">${dayNum}</span>
-      <span class="sched-day-slot-count">${d.freeCount} bo'sh</span>
+      <span class="sched-day-dot"></span>
     `;
 
     card.onclick = () => {
@@ -483,10 +322,6 @@ function renderScheduleDays() {
       card.classList.add('active');
       chosenDayIndex = idx;
       chosenDayStr = `${dayNum} sentabr`;
-
-      const countEl = document.getElementById('sched-available-slots-count');
-      if (countEl) countEl.textContent = `${d.freeCount} ta bo'sh vaqt mavjud`;
-
       updateScheduleSummary();
       triggerHaptic('selection');
     };
@@ -501,219 +336,143 @@ function changeSchedWeek(dir) {
   triggerHaptic('light');
 }
 
-// ── Step 3: Categorized Time Slots Renderer (Online Booking Occupied & Available) ──
+// 20 Time Slots generator (08:00 to 17:30, 10:30 active as in screenshot)
+const ALL_TIME_SLOTS = [
+  '08:00', '08:30', '09:00', '09:30',
+  '10:00', '10:30', '11:00', '11:30',
+  '12:00', '12:30', '13:00', '13:30',
+  '14:00', '14:30', '15:00', '15:30',
+  '16:00', '16:30', '17:00', '17:30'
+];
+
 function renderScheduleTimeSlots() {
-  for (let groupKey in TIME_SLOT_GROUPS) {
-    const grp = TIME_SLOT_GROUPS[groupKey];
-    const container = document.getElementById(grp.containerId);
-    if (!container) continue;
-    container.innerHTML = '';
+  const container = document.getElementById('sched-time-slots');
+  if (!container) return;
+  container.innerHTML = '';
 
-    grp.slots.forEach(slot => {
-      const chip = document.createElement('div');
-      const isOccupied = (slot.status === 'occupied');
-      const isActive = (!isOccupied && slot.time === chosenTimeSlot);
+  ALL_TIME_SLOTS.forEach(time => {
+    const chip = document.createElement('div');
+    const isActive = (time === chosenTimeSlot);
+    chip.className = `sched-time-chip ${isActive ? 'active' : ''}`;
+    chip.textContent = time;
 
-      chip.className = `sched-time-chip ${isOccupied ? 'occupied' : ''} ${isActive ? 'active' : ''}`;
-      chip.textContent = slot.time;
+    chip.onclick = () => {
+      document.querySelectorAll('.sched-time-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      chosenTimeSlot = time;
+      updateScheduleSummary();
+      triggerHaptic('light');
+    };
 
-      if (isOccupied) {
-        chip.title = "Bu vaqt boshqa bemor tomonidan band qilingan";
-        chip.onclick = () => {
-          showToast(`⚠️ Soat ${slot.time} band qilingan. Iltimos, yashil/bo'sh vaqtlardan tanlang.`);
-          triggerHaptic('warning');
-        };
-      } else {
-        chip.onclick = () => {
-          document.querySelectorAll('.sched-time-chip').forEach(c => c.classList.remove('active'));
-          chip.classList.add('active');
-          chosenTimeSlot = slot.time;
-          updateScheduleSummary();
-          triggerHaptic('light');
-        };
-      }
-
-      container.appendChild(chip);
-    });
-  }
-}
-
-// ── Phone Input Auto-Formatter (+998 (90) 123-45-67) ──
-function setupPhoneMask() {
-  const phoneInput = document.getElementById('sched-input-phone');
-  if (!phoneInput) return;
-
-  phoneInput.addEventListener('input', (e) => {
-    let digits = e.target.value.replace(/\D/g, '');
-    if (!digits.startsWith('998')) {
-      digits = '998' + digits;
-    }
-    digits = digits.substring(0, 12);
-    let res = '+998';
-    if (digits.length > 3) {
-      res += ' (' + digits.substring(3, 5);
-    }
-    if (digits.length >= 5) {
-      res += ') ' + digits.substring(5, 8);
-    }
-    if (digits.length >= 8) {
-      res += '-' + digits.substring(8, 10);
-    }
-    if (digits.length >= 10) {
-      res += '-' + digits.substring(10, 12);
-    }
-    e.target.value = res;
+    container.appendChild(chip);
   });
 }
 
-// ── Bottom Summary Bar Update ──
+// Step 3 Service Option Selection
+function selectServiceOption(cardEl, serviceName, price) {
+  document.querySelectorAll('.sched-service-card').forEach(c => c.classList.remove('active'));
+  cardEl.classList.add('active');
+  chosenService = serviceName;
+  chosenPrice = price;
+  updateScheduleSummary();
+  triggerHaptic('selection');
+}
+
+// Bottom Summary Bar Update
 function updateScheduleSummary() {
   const dtEl = document.getElementById('sched-summary-datetime');
   const metaEl = document.getElementById('sched-summary-meta');
   if (dtEl) dtEl.textContent = `${chosenDayStr}, ${chosenTimeSlot}`;
-  if (metaEl) metaEl.textContent = `${chosenDoctor} · ${chosenService} (${chosenDuration})`;
+  if (metaEl) metaEl.textContent = `${chosenDoctor} · ${chosenService}`;
 }
 
-// ── Online Booking Execution (Validation + E-Ticket + Telegram Admin) ──
-function executeOnlineBooking() {
-  const nameInput = document.getElementById('sched-input-name');
-  const phoneInput = document.getElementById('sched-input-phone');
-  const noteInput = document.getElementById('sched-input-note');
-  const reminderCheck = document.getElementById('sched-reminder-check');
-
-  const name = nameInput ? nameInput.value.trim() : '';
-  const phone = phoneInput ? phoneInput.value.trim() : '';
-  const note = noteInput && noteInput.value.trim() ? noteInput.value.trim() : 'Onlayn bron';
-  const reminder = reminderCheck ? reminderCheck.checked : true;
-
-  if (!name || name.length < 2) {
-    showToast("⚠️ Iltimos, ism va familiyangizni kiriting");
-    nameInput?.focus();
-    triggerHaptic('warning');
-    return;
-  }
-
-  const rawDigits = phone.replace(/\D/g, '');
-  if (!phone || rawDigits.length < 9) {
-    showToast("⚠️ Iltimos, to'liq telefon raqamingizni kiriting");
-    phoneInput?.focus();
-    triggerHaptic('warning');
-    return;
-  }
-
-  // Generate Booking Reference Number
-  const randomId = Math.floor(10000 + Math.random() * 90000);
-  const bookingId = `#DC-${randomId}`;
-
-  lastBookingTicket = {
-    bookingId,
-    patientName: name,
-    patientPhone: phone,
-    doctor: chosenDoctor,
-    cabinet: chosenCabinet,
-    service: chosenService,
-    duration: chosenDuration,
-    price: chosenPrice,
-    date: chosenDayStr,
-    time: chosenTimeSlot,
-    note,
-    reminder: reminder ? "Ha (2 soat oldin)" : "Yo'q",
-    createdAt: new Date().toISOString()
-  };
-
-  // Save to LocalStorage
-  try {
-    localStorage.setItem('dentcare_active_booking', JSON.stringify(lastBookingTicket));
-  } catch (e) {}
-
-  // Populate Medical E-Ticket Modal
-  const ticketIdEl = document.getElementById('ticket-booking-id');
-  const patientEl = document.getElementById('ticket-patient-name');
-  const doctorEl = document.getElementById('ticket-doctor-name');
-  const dtEl = document.getElementById('ticket-datetime');
-  const cabEl = document.getElementById('ticket-cabinet');
-  const svcEl = document.getElementById('ticket-service');
-
-  if (ticketIdEl) ticketIdEl.textContent = bookingId;
-  if (patientEl) patientEl.textContent = name;
-  if (doctorEl) doctorEl.textContent = chosenDoctor;
-  if (dtEl) dtEl.textContent = `${chosenDayStr}, ${chosenTimeSlot}`;
-  if (cabEl) cabEl.textContent = chosenCabinet;
-  if (svcEl) svcEl.textContent = `${chosenService} (${chosenDuration}) · ${chosenPrice}`;
-
-  // Open E-Ticket Modal
-  document.getElementById('booking-ticket-modal')?.classList.remove('hidden');
-  triggerHaptic('success');
-
-  // Telegram Bot Notification Payload
-  const adminText = 
-    `🏥 <b>YANGI ONLAYN QABUL BRONI (DENTCARE)</b>\n\n` +
-    `🔖 <b>Bron kodi:</b> <code>${bookingId}</code>\n` +
-    `👤 <b>Bemor:</b> ${name}\n` +
-    `📞 <b>Telefon:</b> <code>${phone}</code>\n` +
-    `👨‍⚕️ <b>Shifokor:</b> ${chosenDoctor}\n` +
-    `🚪 <b>Kabinet:</b> ${chosenCabinet}\n` +
-    `🦷 <b>Xizmat:</b> ${chosenService} (⏱ ${chosenDuration})\n` +
-    `💰 <b>Narxi:</b> ${chosenPrice}\n` +
-    `📅 <b>Sana:</b> ${chosenDayStr}\n` +
-    `⏰ <b>Vaqt:</b> ${chosenTimeSlot}\n` +
-    `🔔 <b>Eslatma:</b> ${reminder ? "Ha (2 soat oldin)" : "Yo'q"}\n` +
-    `📝 <b>Shikoyat/Izoh:</b> ${note}`;
-
-  // Direct send via Telegram Bot API
-  if (typeof TELEGRAM_BOT_TOKEN !== 'undefined' && typeof TELEGRAM_ADMIN_CHAT_ID !== 'undefined') {
-    fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_ADMIN_CHAT_ID,
-        text: adminText,
-        parse_mode: 'HTML'
-      })
-    }).catch(e => console.log('Telegram send error:', e));
-  }
-
-  // Telegram WebApp sendData
-  if (tg) {
-    try {
-      tg.sendData(JSON.stringify({
-        action: 'online_booking',
-        ...lastBookingTicket
-      }));
-    } catch (e) {}
-  }
-
-  showToast(`✅ Qabul muvaffaqiyatli band qilindi!`);
-}
-
-function closeTicketModal() {
-  document.getElementById('booking-ticket-modal')?.classList.add('hidden');
-}
-
-function addToGoogleCalendar() {
-  if (!lastBookingTicket) return;
-  const title = encodeURIComponent(`DentCare Qabuli: ${lastBookingTicket.service}`);
-  const details = encodeURIComponent(
-    `Bron kodi: ${lastBookingTicket.bookingId}\n` +
-    `Shifokor: ${lastBookingTicket.doctor}\n` +
-    `Kabinet: ${lastBookingTicket.cabinet}\n` +
-    `Bemor: ${lastBookingTicket.patientName}\n` +
-    `Klinika: DentCare, Chilonzor 14, 25-uy\n` +
-    `Tel: +998 71 123-45-67`
-  );
-  const location = encodeURIComponent(`DentCare Dental Clinic, Toshkent, Chilonzor 14`);
-  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}`;
-  window.open(url, '_blank');
-  showToast('📅 Taqvimga yo\'naltirilmoqda...');
-}
-
-// Backward compatibility handlers
+// Booking submission handlers
 function onScheduleBookClick() {
-  executeOnlineBooking();
+  const name = document.getElementById('patient-name')?.value.trim();
+  const phone = document.getElementById('patient-phone')?.value.trim();
+
+  // If name or phone is empty, open bottom modal to collect info
+  if (!name || !phone) {
+    document.getElementById('patient-input-sheet')?.classList.remove('hidden');
+    triggerHaptic('light');
+    return;
+  }
+
+  executeBookingFinal();
+}
+
+function closePatientSheet() {
+  document.getElementById('patient-input-sheet')?.classList.add('hidden');
 }
 
 function executeBookingFinal() {
-  executeOnlineBooking();
+  const name = document.getElementById('patient-name')?.value.trim();
+  const phone = document.getElementById('patient-phone')?.value.trim();
+  const note = document.getElementById('patient-note')?.value.trim() || "Tezroq bog'lanish";
+
+  if (!name) {
+    showToast('⚠️ Iltimos, ismingizni kiriting');
+    triggerHaptic('warning');
+    return;
+  }
+  if (!phone || phone.length < 9) {
+    showToast("⚠️ Iltimos, to'liq telefon raqamingizni kiriting");
+    triggerHaptic('warning');
+    return;
+  }
+
+  closePatientSheet();
+
+  const payload = {
+    action: 'book',
+    doctor: chosenDoctor,
+    service: chosenService,
+    price: chosenPrice,
+    date: chosenDayStr,
+    time: chosenTimeSlot,
+    name,
+    phone,
+    note
+  };
+
+  // Telegram WebApp orqali botga jo'natish
+  if (tg) {
+    try {
+      tg.sendData(JSON.stringify(payload));
+    } catch (e) {
+      console.log('Telegram send error:', e);
+    }
+  }
+
+  // Populyatsiya cheki
+  const receiptBox = document.getElementById('booking-receipt-details');
+  if (receiptBox) {
+    receiptBox.innerHTML = `
+      <div class="receipt-row">
+        <span class="receipt-key">Shifokor:</span>
+        <span class="receipt-val">${chosenDoctor}</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-key">Vaqt:</span>
+        <span class="receipt-val">${chosenDayStr}, ${chosenTimeSlot}</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-key">Xizmat:</span>
+        <span class="receipt-val">${chosenService} (${chosenPrice})</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-key">Bemor:</span>
+        <span class="receipt-val">${name}</span>
+      </div>
+      <div class="receipt-row">
+        <span class="receipt-key">Telefon:</span>
+        <span class="receipt-val">${phone}</span>
+      </div>
+    `;
+  }
+
+  document.getElementById('booking-modal-overlay')?.classList.remove('hidden');
+  triggerHaptic('success');
 }
 
 function executeBooking() {
@@ -1039,6 +798,7 @@ window.executeBookingFinal = executeBookingFinal;
 window.closeBookingModal = closeBookingModal;
 window.closePatientSheet = closePatientSheet;
 window.onScheduleBookClick = onScheduleBookClick;
+window.selectServiceOption = selectServiceOption;
 window.changeSchedWeek = changeSchedWeek;
 window.bookServiceItem = bookServiceItem;
 window.filterServicesCatalog = filterServicesCatalog;
@@ -1054,10 +814,6 @@ window.focusChatWithPrompt = focusChatWithPrompt;
 window.openChatQuickMenu = openChatQuickMenu;
 window.callClinicPhone = callClinicPhone;
 window.viewStory = viewStory;
-window.selectScheduleDoctor = selectScheduleDoctor;
-window.executeOnlineBooking = executeOnlineBooking;
-window.closeTicketModal = closeTicketModal;
-window.addToGoogleCalendar = addToGoogleCalendar;
 
 // ── App Init (Immediate & Safe) ──
 function initApp() {
@@ -1068,7 +824,7 @@ function initApp() {
       const pName = document.getElementById('home-patient-name');
       if (pName) pName.textContent = tg.initDataUnsafe.user.first_name;
 
-      const pInputName = document.getElementById('sched-input-name') || document.getElementById('patient-name');
+      const pInputName = document.getElementById('patient-name');
       if (pInputName && !pInputName.value) {
         const full = [tg.initDataUnsafe.user.first_name, tg.initDataUnsafe.user.last_name].filter(Boolean).join(' ');
         pInputName.value = full;
@@ -1076,10 +832,8 @@ function initApp() {
     }
 
     renderScheduleDoctor('Zulfiya Karimova');
-    renderOnlineServices();
     renderScheduleDays();
     renderScheduleTimeSlots();
-    setupPhoneMask();
     updateScheduleSummary();
     renderServicesCatalog(DENTAL_SERVICES);
   } catch (e) {
