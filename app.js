@@ -462,6 +462,52 @@ function getBotReply(userText) {
   return `Tushundim. Tishingiz holati bo'yicha aniq tashxis va tavsiya berish uchun klinikamiz shifokori ko'rigidan o'tishingizni maslahat beramiz.\n\n"Jadval" bo'limidan bepul ko'rikka yozilishingiz yoki to'g'ridan-to'g'ri +998 (71) 123-45-67 raqamiga qo'ng'iroq qilishingiz mumkin.`;
 }
 
+function onChatInputChanged(textarea) {
+  // Auto-resize textarea up to 120px
+  textarea.style.height = 'auto';
+  textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+
+  const hasText = textarea.value.trim().length > 0;
+  const voiceBtn = document.getElementById('chat-voice-btn');
+  const sendBtn = document.getElementById('chat-send-btn');
+
+  if (hasText) {
+    voiceBtn?.classList.add('hidden');
+    sendBtn?.classList.remove('hidden');
+  } else {
+    voiceBtn?.classList.remove('hidden');
+    sendBtn?.classList.add('hidden');
+  }
+}
+
+function toggleQuickChips() {
+  const chips = document.getElementById('chat-quick-chips');
+  if (!chips) return;
+  chips.classList.toggle('hidden');
+  triggerHaptic('light');
+}
+
+function simulateVoiceRecord() {
+  const voiceBtn = document.getElementById('chat-voice-btn');
+  if (!voiceBtn) return;
+
+  voiceBtn.classList.add('recording');
+  showToast('🎙️ Ovoz tinglanmoqda...');
+  triggerHaptic('warning');
+
+  setTimeout(() => {
+    voiceBtn.classList.remove('recording');
+    const input = document.getElementById('chat-text-input');
+    if (input) {
+      input.value = "Tish og'rig'iga nima qilish kerak?";
+      onChatInputChanged(input);
+      setTimeout(() => {
+        handleChatSend();
+      }, 400);
+    }
+  }, 1600);
+}
+
 function handleChatSend() {
   const input = document.getElementById('chat-text-input');
   const text = input?.value.trim();
@@ -469,7 +515,8 @@ function handleChatSend() {
 
   appendChatMessage(text, 'user');
   input.value = '';
-  updateChatSendButton();
+  input.style.height = 'auto';
+  onChatInputChanged(input);
   triggerHaptic('light');
 
   document.getElementById('chat-quick-chips')?.classList.add('hidden');
@@ -488,7 +535,10 @@ function handleChatSend() {
 
 function sendQuickPrompt(promptText) {
   const input = document.getElementById('chat-text-input');
-  if (input) input.value = promptText;
+  if (input) {
+    input.value = promptText;
+    onChatInputChanged(input);
+  }
   handleChatSend();
 }
 
@@ -585,6 +635,9 @@ window.bookServiceItem = bookServiceItem;
 window.filterServicesCatalog = filterServicesCatalog;
 window.handleChatSend = handleChatSend;
 window.sendQuickPrompt = sendQuickPrompt;
+window.onChatInputChanged = onChatInputChanged;
+window.toggleQuickChips = toggleQuickChips;
+window.simulateVoiceRecord = simulateVoiceRecord;
 window.openNotifications = openNotifications;
 window.openGoogleMap = openGoogleMap;
 window.callClinicPhone = callClinicPhone;
