@@ -86,24 +86,26 @@ const DENTAL_SERVICES = [
 // ── Tab Navigation with Spring Transitions ──
 function switchTab(tabId) {
   if (tabId === currentActiveTab) {
-    const scrollBox = document.querySelector(`#tab-${tabId} .page-scroll, #tab-${tabId} .scroll-area`);
+    const scrollBox = document.querySelector(`#tab-${tabId} .page-scroll, #tab-${tabId} .scroll-area, #tab-${tabId} .chat-body-messages`);
     if (scrollBox) scrollBox.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
 
-  // Hide old tab
-  const oldScene = document.getElementById(`tab-${currentActiveTab}`);
-  const oldDockBtn = document.getElementById(`tab-btn-${currentActiveTab}`) || document.getElementById(`dock-btn-${currentActiveTab}`);
-  if (oldScene) oldScene.classList.remove('active');
-  if (oldDockBtn) oldDockBtn.classList.remove('active');
+  // 1. Hide ALL tab pages
+  document.querySelectorAll('.tab-page').forEach(page => page.classList.remove('active'));
 
-  // Show new tab with animation
+  // 2. Deactivate ALL nav buttons
+  document.querySelectorAll('.tab-bar-btn, .dock-nav-btn').forEach(btn => btn.classList.remove('active'));
+
+  // 3. Show target tab with animation
   const targetScene = document.getElementById(`tab-${tabId}`);
   const targetDockBtn = document.getElementById(`tab-btn-${tabId}`) || document.getElementById(`dock-btn-${tabId}`);
-  if (targetScene && targetDockBtn) {
+  if (targetScene) {
     targetScene.classList.add('active');
-    targetDockBtn.classList.add('active');
     currentActiveTab = tabId;
+  }
+  if (targetDockBtn) {
+    targetDockBtn.classList.add('active');
   }
 
   triggerHaptic('selection');
@@ -817,6 +819,8 @@ window.viewStory = viewStory;
 // ── App Init (Immediate & Safe) ──
 function initApp() {
   try {
+    switchTab('home');
+
     if (tg?.initDataUnsafe?.user?.first_name) {
       const pName = document.getElementById('home-patient-name');
       if (pName) pName.textContent = tg.initDataUnsafe.user.first_name;

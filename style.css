@@ -112,7 +112,7 @@ input, select, textarea {
 
 /* ── Tab Pages & Motion ── */
 .tab-page {
-  display: none;
+  display: none !important;
   width: 100%;
   height: calc(100% - var(--tab-bar-height) - env(safe-area-inset-bottom, 0px));
   flex-direction: column;
@@ -1498,7 +1498,6 @@ input, select, textarea {
    TAB 4: DENTAI CHAT (EXACT MATCH SCREENSHOT 3)
    ═══════════════════════════════════════════════════════════════════ */
 .chat-full-page {
-  display: flex;
   flex-direction: column;
   height: calc(100% - var(--tab-bar-height) - env(safe-area-inset-bottom, 0px));
 }
