@@ -759,8 +759,9 @@ input, select, textarea {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   padding: 4px 0;
+  position: relative;
 }
 
 .sched-back-btn {
@@ -775,6 +776,8 @@ input, select, textarea {
   justify-content: center;
   flex-shrink: 0;
   transition: transform 0.15s, background 0.15s;
+  cursor: pointer;
+  z-index: 2;
 }
 
 .sched-back-btn:active {
@@ -790,10 +793,12 @@ input, select, textarea {
 
 .sched-title-box {
   flex: 1;
+  text-align: center;
+  margin-right: 38px;
 }
 
 .sched-main-title {
-  font-size: 18px;
+  font-size: 17.5px;
   font-weight: 800;
   color: var(--text-title);
   line-height: 1.2;
@@ -802,33 +807,34 @@ input, select, textarea {
 .sched-subtitle {
   font-size: 12px;
   color: var(--text-muted);
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 /* Selected Doctor Card */
 .selected-doctor-summary-card {
   background: var(--card-bg);
-  border-radius: var(--radius-card);
+  border-radius: 20px;
   border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-card);
-  padding: 13px 14px;
-  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  padding: 14px 15px;
+  margin-bottom: 16px;
 }
 
 .sched-doc-top {
   display: flex;
-  gap: 12px;
+  gap: 13px;
   align-items: flex-start;
 }
 
 .sched-doc-photo-wrap {
   position: relative;
-  width: 66px;
-  height: 72px;
-  border-radius: 14px;
+  width: 72px;
+  height: 80px;
+  border-radius: 16px;
   overflow: hidden;
   flex-shrink: 0;
-  background: #F3F4F6;
+  background: #E5E7EB;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .sched-doc-photo {
@@ -839,14 +845,15 @@ input, select, textarea {
 }
 
 .sched-doc-beacon {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--accent-green);
   border: 2px solid #FFFFFF;
   position: absolute;
-  bottom: 3px;
-  right: 3px;
+  bottom: 4px;
+  right: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 .sched-doc-info {
