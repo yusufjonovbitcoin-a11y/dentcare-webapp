@@ -86,20 +86,20 @@ const DENTAL_SERVICES = [
 // ── Tab Navigation with Spring Transitions ──
 function switchTab(tabId) {
   if (tabId === currentActiveTab) {
-    const scrollBox = document.querySelector(`#tab-${tabId} .scroll-area`);
+    const scrollBox = document.querySelector(`#tab-${tabId} .page-scroll, #tab-${tabId} .scroll-area`);
     if (scrollBox) scrollBox.scrollTo({ top: 0, behavior: 'smooth' });
     return;
   }
 
   // Hide old tab
   const oldScene = document.getElementById(`tab-${currentActiveTab}`);
-  const oldDockBtn = document.getElementById(`dock-btn-${currentActiveTab}`);
+  const oldDockBtn = document.getElementById(`tab-btn-${currentActiveTab}`) || document.getElementById(`dock-btn-${currentActiveTab}`);
   if (oldScene) oldScene.classList.remove('active');
   if (oldDockBtn) oldDockBtn.classList.remove('active');
 
   // Show new tab with animation
   const targetScene = document.getElementById(`tab-${tabId}`);
-  const targetDockBtn = document.getElementById(`dock-btn-${tabId}`);
+  const targetDockBtn = document.getElementById(`tab-btn-${tabId}`) || document.getElementById(`dock-btn-${tabId}`);
   if (targetScene && targetDockBtn) {
     targetScene.classList.add('active');
     targetDockBtn.classList.add('active');
@@ -140,13 +140,14 @@ function viewStory(storyType) {
   }
 }
 
-// ── Doctor Picker Helpers ──
-function selectDoctorQuick(doctorName, doctorSpec) {
+// ── Doctor Picker & Action Handlers ──
+function openBookingFor(doctorName) {
   chosenDoctor = doctorName;
   switchTab('schedule');
 
-  document.querySelectorAll('.doc-pick-card').forEach(card => {
-    if (card.textContent.includes(doctorName.split(' ')[1])) {
+  document.querySelectorAll('.sched-doc-chip, .doc-pick-card').forEach(card => {
+    const namePart = doctorName.split(' ')[1] || doctorName;
+    if (card.textContent.toLowerCase().includes(namePart.toLowerCase())) {
       card.classList.add('active');
     } else {
       card.classList.remove('active');
@@ -157,13 +158,41 @@ function selectDoctorQuick(doctorName, doctorSpec) {
   if (noteField) {
     noteField.value = `Shifokor: ${doctorName}`;
   }
+  showToast(`📅 ${doctorName} qabuliga yo'naltirildi`);
+}
+
+function selectDoctorQuick(doctorName, doctorSpec) {
+  openBookingFor(doctorName);
 }
 
 function pickDoctorCard(cardElement, doctorName) {
-  document.querySelectorAll('.doc-pick-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.sched-doc-chip, .doc-pick-card').forEach(c => c.classList.remove('active'));
   cardElement.classList.add('active');
   chosenDoctor = doctorName;
   triggerHaptic('selection');
+}
+
+function toggleFavorite(btn) {
+  btn.classList.toggle('liked');
+  triggerHaptic('selection');
+  if (btn.classList.contains('liked')) {
+    showToast('❤️ Sevimlilarga saqlandi');
+  } else {
+    showToast('🤍 Sevimlilardan olib tashlandi');
+  }
+}
+
+function handleGlobalSearch(query) {
+  const q = (query || '').toLowerCase().trim();
+  const docCards = document.querySelectorAll('.doctor-white-card');
+  docCards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    if (!q || text.includes(q)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
 }
 
 function bookCategory(categoryName) {
@@ -422,8 +451,8 @@ function bookServiceItem(svcTitle) {
   }
 }
 
-function filterServicesCatalog() {
-  const query = document.getElementById('search-svc-input')?.value.toLowerCase().trim() || '';
+function filterServicesCatalog(queryVal) {
+  const query = (queryVal !== undefined ? queryVal : (document.getElementById('services-search-input')?.value || document.getElementById('search-svc-input')?.value || '')).toLowerCase().trim();
   const filtered = DENTAL_SERVICES.filter(s =>
     s.title.toLowerCase().includes(query) ||
     s.category.toLowerCase().includes(query) ||
@@ -627,7 +656,10 @@ function callClinicPhone() {
 // ── Make functions available globally on window for inline HTML onclick ──
 window.switchTab = switchTab;
 window.selectDoctorQuick = selectDoctorQuick;
+window.openBookingFor = openBookingFor;
 window.pickDoctorCard = pickDoctorCard;
+window.toggleFavorite = toggleFavorite;
+window.handleGlobalSearch = handleGlobalSearch;
 window.bookCategory = bookCategory;
 window.executeBooking = executeBooking;
 window.closeBookingModal = closeBookingModal;
